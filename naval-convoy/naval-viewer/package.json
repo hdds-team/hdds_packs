@@ -1,0 +1,17 @@
+{
+  "name": "naval-viewer",
+  "version": "1.0.0",
+  "description": "HDDS Naval Convoy Demo - 3D Viewer with Ocean Shader",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "three": "^0.171.0"
+  }
+}

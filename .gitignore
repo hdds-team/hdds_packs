@@ -1,0 +1,76 @@
+# ======================
+# HDDS Demos - .gitignore
+# ======================
+
+# --- Rust build artifacts ---
+**/target/
+
+# --- Node.js ---
+**/node_modules/
+
+# --- Web build output ---
+**/dist/
+
+# --- ESP-IDF build artifacts ---
+**/.embuild/
+**/build/
+hdds-remote-sensor/archives/
+
+# --- Generated code (regenerable via `make gen`) ---
+**/generated.rs
+**/*-types/src/lib.rs
+**/*-types/src/mod.rs
+**/*-viewer/src/types.ts
+sentinel-home/sentinel-types/python/
+sentinel-home/sentinel-types/typescript/
+
+# --- Media (hosted on web, not in git) ---
+videos/
+screenshots/
+images/
+**/assets/raw/
+space-invaders/assets/sprites/sprite_*.png
+
+# --- WIP / planning docs ---
+DEMO_NEXT.md
+WIP_ROS2.md
+**/README2.md
+
+# --- Demos excluded (WIP / separate repos) ---
+sentinel-home/
+sentinel-demo/
+uds-fleet-diag/
+
+# --- Binary artifacts ---
+*.a
+*.so
+*.dylib
+*.o
+*.obj
+*.glb
+# Exception: convoy-escort humvee model (196K, required for viewer)
+!convoy-escort/convoy-viewer/public/assets/models/humvee.glb
+
+# --- Vendored third-party libs (auto-installed by PlatformIO via lib_deps) ---
+**/lib/EloquentEsp32cam/
+
+# --- Lock files (regenerable) ---
+**/package-lock.json
+
+# --- Editor / OS junk ---
+*.bak
+*.orig
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# --- Logs and runtime data ---
+*.log
+*.pid
+*.lp
+
+# --- IDE ---
+.idea/
+.vscode/
+*.iml

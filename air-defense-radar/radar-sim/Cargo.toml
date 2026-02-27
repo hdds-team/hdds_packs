@@ -1,0 +1,16 @@
+[package]
+name = "radar-sim"
+version = "0.1.0"
+edition = "2021"
+description = "Air Defense Radar Simulator - generates aircraft, SAM sites, and engagements"
+
+[dependencies]
+radar-types.workspace = true
+hdds.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+log.workspace = true
+env_logger.workspace = true
+rand.workspace = true
+anyhow.workspace = true

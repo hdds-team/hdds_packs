@@ -1,0 +1,304 @@
+/* Air Defense Radar Viewer Styles */
+
+:root {
+    /* Radar colors - military green phosphor style */
+    --radar-bg: #0a1a0a;
+    --radar-grid: rgba(0, 255, 0, 0.12);
+    --radar-sweep: #00ff00;
+    --radar-blip: #00ff00;
+    --radar-trail: rgba(0, 255, 0, 0.4);
+
+    /* Track status colors */
+    --track-hostile: #ff3333;
+    --track-friendly: #3366ff;
+    --track-neutral: #ffff00;
+    --track-unknown: #888888;
+
+    /* UI colors */
+    --ui-bg: rgba(0, 20, 0, 0.85);
+    --ui-border: rgba(0, 255, 0, 0.3);
+    --ui-text: #00ff00;
+    --ui-text-dim: rgba(0, 255, 0, 0.6);
+
+    /* Alert colors */
+    --alert-critical: #ff0000;
+    --alert-warning: #ffaa00;
+    --alert-info: #00ff00;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: 'Courier New', 'Consolas', monospace;
+    color: var(--ui-text);
+}
+
+/* Connection status bar */
+.connection-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--track-hostile);
+    z-index: 1000;
+    transition: background 0.3s;
+}
+
+.connection-bar.connected {
+    background: var(--ui-text);
+}
+
+/* Radar container */
+.radar-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #0a1a0a 0%, #000 100%);
+}
+
+#radar-canvas {
+    border-radius: 50%;
+    box-shadow:
+        0 0 60px rgba(0, 255, 0, 0.1),
+        inset 0 0 100px rgba(0, 0, 0, 0.5);
+}
+
+/* Overlay panels */
+.overlay {
+    position: fixed;
+    background: var(--ui-bg);
+    border: 1px solid var(--ui-border);
+    padding: 12px 16px;
+    font-size: 12px;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+}
+
+.overlay-top-left {
+    top: 20px;
+    left: 20px;
+}
+
+.overlay-top-right {
+    top: 20px;
+    right: 20px;
+}
+
+.overlay-bottom-left {
+    bottom: 20px;
+    left: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.overlay-bottom-right {
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Header panel */
+.header-panel {
+    min-width: 200px;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.header-subtitle {
+    font-size: 10px;
+    color: var(--ui-text-dim);
+    margin-bottom: 8px;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--track-hostile);
+}
+
+.status-dot.online {
+    background: var(--ui-text);
+    box-shadow: 0 0 8px var(--ui-text);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Stats panel */
+.stats-panel {
+    min-width: 140px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: var(--ui-text-dim);
+}
+
+.stat-value {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.stat-value.hostile {
+    color: var(--track-hostile);
+}
+
+.stat-value.friendly {
+    color: var(--track-friendly);
+}
+
+.stat-value.mono {
+    font-family: 'Courier New', monospace;
+}
+
+/* Panel titles */
+.panel-title {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: var(--ui-text-dim);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--ui-border);
+}
+
+/* SAM sites list */
+#sam-sites-list .sam-site {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 11px;
+}
+
+.sam-site .site-status {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ui-text);
+}
+
+.sam-site .site-status.inactive {
+    background: var(--track-hostile);
+}
+
+.sam-site .site-name {
+    flex: 1;
+}
+
+.sam-site .missile-count {
+    color: var(--ui-text-dim);
+}
+
+/* Alerts list */
+#alerts-list .alert {
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+    font-size: 10px;
+}
+
+.alert:last-child {
+    border-bottom: none;
+}
+
+.alert .alert-time {
+    color: var(--ui-text-dim);
+    margin-right: 8px;
+}
+
+.alert.critical {
+    color: var(--alert-critical);
+}
+
+.alert.warning {
+    color: var(--alert-warning);
+}
+
+.alert.info {
+    color: var(--alert-info);
+}
+
+/* Track tooltip */
+.track-tooltip {
+    position: fixed;
+    background: var(--ui-bg);
+    border: 1px solid var(--ui-border);
+    padding: 8px 12px;
+    font-size: 11px;
+    z-index: 200;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.track-tooltip.hidden {
+    display: none;
+}
+
+.track-tooltip .callsign {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.track-tooltip .detail {
+    color: var(--ui-text-dim);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ui-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ui-text-dim);
+}

@@ -1,0 +1,13 @@
+[package]
+name = "swarm-sim"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+swarm-types = { path = "../swarm-types" }
+hdds = { workspace = true }
+tokio = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+anyhow = { workspace = true }
+rand = { workspace = true }

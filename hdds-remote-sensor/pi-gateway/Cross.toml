@@ -1,0 +1,3 @@
+[build.env]
+passthrough = ["RUST_BACKTRACE"]
+volumes = ["/projects/public"]

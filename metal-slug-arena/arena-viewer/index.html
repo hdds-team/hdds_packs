@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METAL SLUG ARENA</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Game Canvas -->
+        <canvas id="game-canvas" width="800" height="600"></canvas>
+
+        <!-- HUD Overlay -->
+        <div class="hud">
+            <div class="hud-left">
+                <div class="player-info">
+                    <span class="player-name" id="player-name">PLAYER</span>
+                    <div class="health-bar">
+                        <div class="health-fill" id="health-fill"></div>
+                    </div>
+                    <span class="weapon-info" id="weapon-info">PISTOL</span>
+                </div>
+            </div>
+            <div class="hud-center">
+                <div class="score-display">
+                    <span class="team-score red" id="red-score">0</span>
+                    <span class="vs">VS</span>
+                    <span class="team-score blue" id="blue-score">0</span>
+                </div>
+                <div class="game-time" id="game-time">5:00</div>
+            </div>
+            <div class="hud-right">
+                <div class="stats">
+                    <span>K: <span id="kills">0</span></span>
+                    <span>D: <span id="deaths">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kill Feed -->
+        <div class="kill-feed" id="kill-feed"></div>
+
+        <!-- Connection Status -->
+        <div class="connection-status" id="connection-status">
+            <span class="status-dot"></span>
+            <span class="status-text">Connecting...</span>
+        </div>
+
+        <!-- Controls Help -->
+        <div class="controls-help">
+            <span>ARROWS: Move</span>
+            <span>SPACE: Jump</span>
+            <span>X: Shoot</span>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

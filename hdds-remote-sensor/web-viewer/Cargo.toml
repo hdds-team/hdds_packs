@@ -1,0 +1,18 @@
+[package]
+name = "hdds-web-viewer"
+version = "0.1.0"
+edition = "2021"
+description = "HDDS Remote Sensor Web Viewer - Subscribes to DDS topics and serves web UI"
+authors = ["naskel.com"]
+license = "Apache-2.0 OR MIT"
+
+[dependencies]
+hdds = { path = "/projects/public/hdds/crates/hdds", features = ["quic"] }
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+tower-http = { version = "0.5", features = ["fs", "cors"] }
+anyhow = "1.0"
+log = "0.4"
+env_logger = "0.11"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

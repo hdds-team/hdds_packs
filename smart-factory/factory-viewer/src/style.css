@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-dark: #1a1a2e;
+    --bg-panel: #16213e;
+    --text-primary: #e8e8e8;
+    --text-secondary: #8090a0;
+    --accent: #00d4ff;
+    --good: #00ff88;
+    --warning: #ffaa00;
+    --bad: #ff4466;
+    --machine-idle: #4a5568;
+    --machine-working: #00d4ff;
+    --machine-fault: #ff4466;
+    --conveyor: #6b7280;
+    --product: #fbbf24;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--bg-panel);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+header h1 {
+    font-size: 1.5rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+#connection-status {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+#connection-status.connected {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--good);
+    border: 1px solid var(--good);
+}
+
+#connection-status.disconnected {
+    background: rgba(255, 68, 102, 0.2);
+    color: var(--bad);
+    border: 1px solid var(--bad);
+}
+
+main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+#factory-container {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+}
+
+#factory-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#view-controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+#view-controls button {
+    padding: 0.5rem 1rem;
+    background: rgba(22, 33, 62, 0.9);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#view-controls button:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+#view-controls button.active {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+#panel {
+    width: 300px;
+    background: var(--bg-panel);
+    border-left: 1px solid rgba(0, 212, 255, 0.3);
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+section {
+    margin-bottom: 1.5rem;
+}
+
+section h2 {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+}
+
+.stat-row .label {
+    color: var(--text-secondary);
+}
+
+.stat-row .value {
+    color: var(--text-primary);
+    font-family: 'Consolas', monospace;
+}
+
+.stat-row .value.good {
+    color: var(--good);
+}
+
+.stat-row .value.bad {
+    color: var(--bad);
+}
+
+.machine-item {
+    padding: 0.6rem;
+    margin-bottom: 0.5rem;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 4px;
+    border-left: 3px solid var(--machine-idle);
+}
+
+.machine-item.working {
+    border-left-color: var(--machine-working);
+}
+
+.machine-item.fault {
+    border-left-color: var(--machine-fault);
+    background: rgba(255, 68, 102, 0.1);
+}
+
+.machine-item .name {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.machine-item .status {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.machine-item .telemetry {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.alert-item {
+    padding: 0.6rem;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 68, 102, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid var(--bad);
+    font-size: 0.85rem;
+}
+
+.alert-item.warning {
+    background: rgba(255, 170, 0, 0.1);
+    border-left-color: var(--warning);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.3rem 0;
+    font-size: 0.85rem;
+}
+
+.legend-item .icon {
+    width: 20px;
+    height: 14px;
+    border-radius: 2px;
+}
+
+.legend-item .icon.machine-idle {
+    background: var(--machine-idle);
+}
+
+.legend-item .icon.machine-working {
+    background: var(--machine-working);
+    box-shadow: 0 0 8px var(--machine-working);
+}
+
+.legend-item .icon.machine-fault {
+    background: var(--machine-fault);
+    animation: pulse 1s infinite;
+}
+
+.legend-item .icon.conveyor {
+    background: var(--conveyor);
+    height: 6px;
+}
+
+.legend-item .icon.product {
+    background: var(--product);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

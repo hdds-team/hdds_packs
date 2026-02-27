@@ -1,0 +1,21 @@
+[package]
+name = "naval-sim"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "HDDS Naval Convoy Demo - Simulator"
+
+[[bin]]
+name = "naval-sim"
+path = "src/main.rs"
+
+[dependencies]
+naval-types = { workspace = true }
+hdds = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+rand = { workspace = true }
+anyhow = { workspace = true }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1TENTH RACING</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <div id="scene-container">
+        <!-- Three.js canvas -->
+    </div>
+
+    <!-- HUD -->
+    <div class="hud">
+        <!-- Race banner -->
+        <div class="race-banner" id="race-banner"></div>
+
+        <!-- Timer -->
+        <div class="timer">
+            <span class="timer-label">RACE</span>
+            <span class="timer-value" id="race-time">00:00.000</span>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <div class="leaderboard-title">STANDINGS</div>
+            <div id="leaderboard-list"></div>
+        </div>
+
+        <!-- Selected car info -->
+        <div class="car-info" id="car-info">
+            <div class="car-name" id="car-name">---</div>
+            <div class="car-stats">
+                <div class="stat">
+                    <span class="stat-label">SPD</span>
+                    <span class="stat-value" id="car-speed">0</span>
+                    <span class="stat-unit">m/s</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">LAP</span>
+                    <span class="stat-value" id="car-lap">0/5</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">BEST</span>
+                    <span class="stat-value" id="car-best">--:--</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">LAST</span>
+                    <span class="stat-value" id="car-last">--:--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sector times -->
+        <div class="sectors" id="sectors">
+            <div class="sector" id="sector-0">S1</div>
+            <div class="sector" id="sector-1">S2</div>
+            <div class="sector" id="sector-2">S3</div>
+        </div>
+    </div>
+
+    <!-- Minimap -->
+    <div class="minimap-container">
+        <canvas id="minimap" width="220" height="220"></canvas>
+    </div>
+
+    <!-- Connection -->
+    <div class="connection" id="connection">
+        <span class="conn-dot"></span>
+        <span class="conn-text">Connecting...</span>
+    </div>
+
+    <!-- Controls help -->
+    <div class="controls">
+        <span>1-4: Follow car</span>
+        <span>0: Free cam</span>
+        <span>Scroll: Zoom</span>
+        <span>Click: Select car</span>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+// Railway Network Demo - IDL Types
+// HDDS DDS Types for train simulation
+
+module railway {
+
+    // ═══════════════════════════════════════════════════════════════
+    // ENUMS
+    // ═══════════════════════════════════════════════════════════════
+
+    enum SignalState {
+        SIGNAL_RED,
+        SIGNAL_YELLOW,
+        SIGNAL_GREEN
+    };
+
+    enum SwitchPosition {
+        SWITCH_LEFT,
+        SWITCH_RIGHT,
+        SWITCH_MOVING
+    };
+
+    enum TrainState {
+        TRAIN_STOPPED,
+        TRAIN_ACCELERATING,
+        TRAIN_CRUISING,
+        TRAIN_BRAKING,
+        TRAIN_AT_STATION
+    };
+
+    enum TrackType {
+        TRACK_STRAIGHT,
+        TRACK_CURVE_LEFT,
+        TRACK_CURVE_RIGHT,
+        TRACK_SWITCH
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // CORE TYPES
+    // ═══════════════════════════════════════════════════════════════
+
+    /// Train position and state
+    @appendable
+    @topic
+    struct Train {
+        @key uint32 train_id;
+        string<32> name;
+        uint32 color;           // RGB hex
+
+        // Position on track
+        uint32 current_segment;
+        float position;         // 0.0-1.0 within segment
+        float speed;            // km/h
+        int8 direction;         // 1=forward, -1=reverse
+
+        // State
+        TrainState state;
+        uint32 next_station;
+        float delay_seconds;    // Schedule delay
+
+        uint64 timestamp_us;
+    };
+
+    /// Railway signal
+    @appendable
+    @topic
+    struct Signal {
+        @key uint32 signal_id;
+        uint32 segment_id;      // Track segment this signal controls
+        float position;         // Position on segment
+        SignalState state;
+        uint64 timestamp_us;
+    };
+
+    /// Track switch/junction
+    @appendable
+    @topic
+    struct Switch {
+        @key uint32 switch_id;
+        uint32 segment_main;    // Main track segment
+        uint32 segment_left;    // Left branch
+        uint32 segment_right;   // Right branch
+        float x;                // Position for display
+        float y;
+        SwitchPosition position;
+        uint64 timestamp_us;
+    };
+
+    /// Track segment definition
+    @appendable
+    @topic
+    struct TrackSegment {
+        @key uint32 segment_id;
+        TrackType track_type;
+
+        // Endpoints
+        float x1;
+        float y1;
+        float x2;
+        float y2;
+
+        // Connectivity
+        uint32 next_segment;    // Next segment (0 = end)
+        uint32 prev_segment;    // Previous segment (0 = start)
+
+        // Properties
+        float length;           // meters
+        float speed_limit;      // km/h
+        boolean has_platform;   // Station platform
+    };
+
+    /// Railway station
+    @appendable
+    @topic
+    struct Station {
+        @key uint32 station_id;
+        string<32> name;
+        uint32 segment_id;      // Track segment
+        float position;         // Position on segment
+        float x;                // Display position
+        float y;
+        uint8 platform_count;
+    };
+
+    /// Train arrival/departure event
+    @appendable
+    @topic
+    struct TrainEvent {
+        uint32 train_id;
+        uint32 station_id;
+        boolean is_arrival;     // true=arrival, false=departure
+        float scheduled_time;   // seconds from start
+        float actual_time;
+        uint64 timestamp_us;
+    };
+
+    /// Control command for switches
+    @appendable
+    @topic
+    struct SwitchCommand {
+        uint32 switch_id;
+        SwitchPosition target_position;
+        uint64 timestamp_us;
+    };
+
+    /// Control command for signals
+    @appendable
+    @topic
+    struct SignalCommand {
+        uint32 signal_id;
+        SignalState target_state;
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // SYSTEM STATE
+    // ═══════════════════════════════════════════════════════════════
+
+    /// Overall network state
+    @appendable
+    @topic
+    struct NetworkState {
+        uint8 train_count;
+        uint8 trains_running;
+        uint8 trains_at_station;
+        uint8 signals_red;
+        uint8 signals_green;
+        float avg_delay_seconds;
+        uint64 timestamp_us;
+    };
+
+};

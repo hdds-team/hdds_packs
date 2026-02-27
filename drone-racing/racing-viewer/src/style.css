@@ -1,0 +1,279 @@
+/* Drone Racing - Futuristic Racing Style */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+    --bg-dark: #0a0a1a;
+    --neon-blue: #00ffff;
+    --neon-pink: #ff00ff;
+    --neon-green: #00ff66;
+    --neon-yellow: #ffff00;
+    --text-primary: #ffffff;
+    --text-secondary: #88aacc;
+    --hud-bg: rgba(0, 20, 40, 0.8);
+    --hud-border: rgba(0, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+#game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    display: block;
+}
+
+/* HUD */
+.hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Race Status - Top Center */
+.race-status {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.countdown {
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 30px var(--neon-yellow), 0 0 60px var(--neon-yellow);
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.race-time {
+    font-size: 24px;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+}
+
+/* Player HUD - Bottom Left */
+.player-hud {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.speed-display {
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    padding: 15px 25px;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.speed-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.speed-unit {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.position-display {
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+}
+
+.position-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--neon-green);
+    text-shadow: 0 0 10px var(--neon-green);
+}
+
+.position-suffix {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.lap-display {
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    padding: 10px 20px;
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.lap-display span {
+    color: var(--neon-pink);
+}
+
+/* Leaderboard - Top Right */
+.leaderboard {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    padding: 15px;
+    min-width: 250px;
+}
+
+.leaderboard h3 {
+    font-size: 14px;
+    color: var(--neon-blue);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+#leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 12px;
+}
+
+.leaderboard-entry.self {
+    background: rgba(0, 255, 255, 0.1);
+    border-left: 3px solid var(--neon-blue);
+}
+
+.entry-position {
+    font-weight: 700;
+    min-width: 25px;
+    color: var(--neon-yellow);
+}
+
+.entry-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.entry-name {
+    flex: 1;
+    color: var(--text-primary);
+}
+
+.entry-time {
+    color: var(--text-secondary);
+    font-size: 10px;
+}
+
+/* Minimap - Bottom Right */
+.minimap {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    padding: 10px;
+}
+
+#minimap-canvas {
+    display: block;
+}
+
+/* Connection Status */
+.connection-status {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    background: var(--hud-bg);
+    padding: 8px 15px;
+    border: 1px solid var(--hud-border);
+    z-index: 200;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff4444;
+}
+
+.status-dot.connected {
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+}
+
+/* Controls Help */
+.controls-help {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--hud-bg);
+    padding: 8px 20px;
+    border: 1px solid var(--hud-border);
+    z-index: 200;
+}
+
+/* Gate Pass Flash */
+.gate-flash {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--neon-green);
+    text-shadow: 0 0 30px var(--neon-green);
+    animation: gateFlash 0.5s ease-out forwards;
+    z-index: 300;
+}
+
+@keyframes gateFlash {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}

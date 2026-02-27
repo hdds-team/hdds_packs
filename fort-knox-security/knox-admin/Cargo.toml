@@ -1,0 +1,13 @@
+[package]
+name = "knox-admin"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+knox-types = { workspace = true }
+eframe = { workspace = true }
+egui = { workspace = true }
+rand = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

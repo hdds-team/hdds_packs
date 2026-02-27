@@ -1,0 +1,12 @@
+[package]
+name = "recorder-replay"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+recorder-types = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+ratatui = { workspace = true }
+crossterm = { workspace = true }

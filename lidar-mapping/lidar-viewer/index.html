@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiDAR Mapping</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>LIDAR MAPPING</h1>
+            <div id="connection-status" class="disconnected">OFFLINE</div>
+        </header>
+
+        <main>
+            <div id="map-container">
+                <canvas id="map-canvas"></canvas>
+                <div id="view-controls">
+                    <button id="btn-walls" class="active" title="Show walls">Walls</button>
+                    <button id="btn-lidar" class="active" title="Show LiDAR">LiDAR</button>
+                    <button id="btn-map" class="active" title="Show map">Map</button>
+                    <button id="btn-follow" class="active" title="Follow robot">Follow</button>
+                </div>
+            </div>
+
+            <aside id="panel">
+                <section id="robot-info">
+                    <h2>ROBOT STATUS</h2>
+                    <div class="stat-row">
+                        <span class="label">Position</span>
+                        <span id="position" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Heading</span>
+                        <span id="heading" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Speed</span>
+                        <span id="speed" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Mode</span>
+                        <span id="mode" class="value">--</span>
+                    </div>
+                </section>
+
+                <section id="scan-info">
+                    <h2>LIDAR</h2>
+                    <div class="stat-row">
+                        <span class="label">Scan ID</span>
+                        <span id="scan-id" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Readings</span>
+                        <span id="readings" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Range</span>
+                        <span id="range" class="value">300 cm</span>
+                    </div>
+                </section>
+
+                <section id="map-info">
+                    <h2>MAP</h2>
+                    <div class="stat-row">
+                        <span class="label">Cells mapped</span>
+                        <span id="cells-mapped" class="value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Free</span>
+                        <span id="cells-free" class="value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Occupied</span>
+                        <span id="cells-occupied" class="value">0</span>
+                    </div>
+                </section>
+
+                <section id="legend">
+                    <h2>LEGEND</h2>
+                    <div class="legend-item">
+                        <span class="icon robot"></span>
+                        <span>Robot</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon lidar"></span>
+                        <span>LiDAR beam</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon wall"></span>
+                        <span>Wall (known)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon free"></span>
+                        <span>Free space</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon occupied"></span>
+                        <span>Occupied</span>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

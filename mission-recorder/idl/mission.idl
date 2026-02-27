@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Mission Recorder DDS types
+// Generate: hddsgen gen rust idl/mission.idl -o recorder-types/src/generated.rs
+
+@topic
+struct MissionEvent {
+    @key int64_t event_id;
+    string event_type;
+    string source;
+    double latitude;
+    double longitude;
+    double altitude_m;
+    float heading_deg;
+    float speed_knots;
+    string payload;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct MissionStatus {
+    @key string mission_id;
+    string phase;
+    double elapsed_seconds;
+    int64_t events_recorded;
+    int32_t participants_active;
+    int64_t timestamp_ns;
+};

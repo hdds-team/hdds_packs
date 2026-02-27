@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-space: #0a0a1a;
+    --text-primary: #ffffff;
+    --text-secondary: #8899aa;
+    --accent-cyan: #00ffff;
+    --accent-green: #00ff00;
+    --accent-red: #ff3333;
+    --accent-yellow: #ffff00;
+}
+
+body {
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    background: var(--bg-space);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#game-container {
+    position: relative;
+    border: 2px solid var(--accent-cyan);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+#game-canvas {
+    display: block;
+    background: var(--bg-space);
+}
+
+#hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--accent-green);
+    text-shadow: 0 0 10px var(--accent-green);
+}
+
+#hud > div {
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+#connection-status {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 15px;
+    background: rgba(255, 0, 0, 0.3);
+    border: 1px solid var(--accent-red);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--accent-red);
+}
+
+#connection-status.connected {
+    background: rgba(0, 255, 0, 0.2);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+#connection-status.demo {
+    background: rgba(255, 255, 0, 0.2);
+    border-color: var(--accent-yellow);
+    color: var(--accent-yellow);
+}
+
+#game-over, #wave-clear {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 30px 50px;
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--accent-cyan);
+    border-radius: 8px;
+}
+
+#game-over h1 {
+    color: var(--accent-red);
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px var(--accent-red);
+    animation: blink 0.5s infinite;
+}
+
+#wave-clear h1 {
+    color: var(--accent-green);
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px var(--accent-green);
+}
+
+#game-over p, #wave-clear p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+#restart-btn {
+    font-family: inherit;
+    font-size: 12px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#restart-btn:hover {
+    background: var(--accent-cyan);
+    color: var(--bg-space);
+}
+
+#controls-info {
+    font-size: 10px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Starfield animation */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}

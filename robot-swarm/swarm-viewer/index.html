@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Swarm Viewer</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>🤖 ROBOT SWARM</h1>
+            <div id="connection-status" class="disconnected">OFFLINE</div>
+        </header>
+
+        <main>
+            <div id="arena-container">
+                <canvas id="arena"></canvas>
+            </div>
+
+            <aside id="panel">
+                <section id="swarm-info">
+                    <h2>SWARM STATUS</h2>
+                    <div class="stat-row">
+                        <span class="label">Mode</span>
+                        <span id="mode" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Formation</span>
+                        <span id="formation" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Robots</span>
+                        <span id="robot-count" class="value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Spread</span>
+                        <span id="spread" class="value">0 cm</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Avg Battery</span>
+                        <span id="avg-battery" class="value">0%</span>
+                    </div>
+                </section>
+
+                <section id="robot-list">
+                    <h2>ROBOTS</h2>
+                    <div id="robots"></div>
+                </section>
+
+                <section id="legend">
+                    <h2>LEGEND</h2>
+                    <div class="legend-item">
+                        <span class="icon robot"></span>
+                        <span>Robot</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon leader"></span>
+                        <span>Leader</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon obstacle"></span>
+                        <span>Obstacle</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon waypoint"></span>
+                        <span>Waypoint</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon centroid"></span>
+                        <span>Centroid</span>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

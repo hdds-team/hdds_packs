@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Defense Radar - HDDS Demo</title>
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <!-- Connection status bar -->
+    <div id="connection-bar" class="connection-bar"></div>
+
+    <!-- Main radar display -->
+    <div class="radar-container">
+        <canvas id="radar-canvas"></canvas>
+    </div>
+
+    <!-- Header overlay -->
+    <div class="overlay overlay-top-left header-panel">
+        <div class="header-title">AIR DEFENSE RADAR</div>
+        <div class="header-subtitle">HDDS Demo - 200km Range</div>
+        <div class="connection-status">
+            <span class="status-dot offline"></span>
+            <span class="status-text">Disconnected</span>
+        </div>
+    </div>
+
+    <!-- Stats panel -->
+    <div class="overlay overlay-top-right stats-panel">
+        <div class="stat-row">
+            <span class="stat-label">TRACKS</span>
+            <span class="stat-value" id="track-count">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">HOSTILE</span>
+            <span class="stat-value hostile" id="hostile-count">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">FRIENDLY</span>
+            <span class="stat-value friendly" id="friendly-count">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">ENGAGEMENTS</span>
+            <span class="stat-value" id="engagement-count">0</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">SWEEP</span>
+            <span class="stat-value mono" id="sweep-angle">000°</span>
+        </div>
+    </div>
+
+    <!-- SAM sites panel -->
+    <div class="overlay overlay-bottom-left sam-panel">
+        <div class="panel-title">SAM SITES</div>
+        <div id="sam-sites-list"></div>
+    </div>
+
+    <!-- Alerts panel -->
+    <div class="overlay overlay-bottom-right alerts-panel">
+        <div class="panel-title">ALERTS</div>
+        <div id="alerts-list"></div>
+    </div>
+
+    <!-- Track info tooltip (hidden by default) -->
+    <div id="track-tooltip" class="track-tooltip hidden"></div>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

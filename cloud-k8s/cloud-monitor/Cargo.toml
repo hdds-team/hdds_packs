@@ -1,0 +1,15 @@
+[package]
+name = "cloud-monitor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cloud-types = { workspace = true }
+hdds = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }
+ratatui = { workspace = true }
+crossterm = { workspace = true }
+clap = { workspace = true }

@@ -1,0 +1,119 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Artillery Fire Control System types
+// Generate: hddsgen gen rust idl/artillery.idl -o arty-types/src/generated.rs
+
+/// Fire mission status
+enum MissionStatus {
+    PENDING    = 0,
+    COMPUTING  = 1,
+    FIRING     = 2,
+    ADJUSTING  = 3,
+    COMPLETE   = 4,
+    CANCELLED  = 5
+};
+
+/// Round type
+enum RoundType {
+    HE       = 0,
+    SMOKE    = 1,
+    ILLUM    = 2,
+    WP       = 3
+};
+
+/// Battery readiness
+enum BatteryState {
+    READY     = 0,
+    LOADING   = 1,
+    FIRING    = 2,
+    COOLDOWN  = 3,
+    OFFLINE   = 4
+};
+
+/// Artillery battery position and status (1 Hz)
+@topic
+struct BatteryStatus {
+    @key string battery_id;
+    double lat_deg;
+    double lon_deg;
+    double alt_m;
+    BatteryState state;
+    uint32_t rounds_remaining;
+    uint32_t rounds_fired;
+    double barrel_temp_c;
+    double heading_deg;
+    int64_t timestamp_ns;
+};
+
+/// Fire mission request from FDC (event)
+@topic
+struct FireMission {
+    @key uint32_t mission_id;
+    string requesting_unit;
+    string target_description;
+    double target_lat;
+    double target_lon;
+    double target_alt;
+    RoundType round_type;
+    uint32_t rounds_requested;
+    MissionStatus status;
+    int64_t timestamp_ns;
+};
+
+/// Ballistic solution computed by FDC (event)
+@topic
+struct BallisticSolution {
+    @key uint32_t mission_id;
+    string battery_id;
+    double azimuth_deg;
+    double elevation_deg;
+    double charge_vel_mps;
+    double time_of_flight_s;
+    double max_alt_m;
+    double range_m;
+    double deflection_mil;
+    double wind_correction_mil;
+    int64_t timestamp_ns;
+};
+
+/// Round in flight tracking (10 Hz during flight)
+@topic
+struct RoundInFlight {
+    @key uint32_t round_id;
+    uint32_t mission_id;
+    string battery_id;
+    double lat_deg;
+    double lon_deg;
+    double alt_m;
+    double velocity_mps;
+    double time_remaining_s;
+    int64_t timestamp_ns;
+};
+
+/// Impact observation from forward observer (event)
+@topic
+struct ImpactObservation {
+    @key uint32_t mission_id;
+    string observer_id;
+    double impact_lat;
+    double impact_lon;
+    double error_range_m;
+    double error_deflection_m;
+    string correction;
+    boolean target_destroyed;
+    int64_t timestamp_ns;
+};
+
+/// Wind and weather conditions (0.5 Hz)
+@topic
+struct MeteoData {
+    @key string station_id;
+    double wind_speed_mps;
+    double wind_dir_deg;
+    double air_density;
+    double temperature_c;
+    double pressure_hpa;
+    double humidity_pct;
+    int64_t timestamp_ns;
+};

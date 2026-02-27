@@ -1,0 +1,124 @@
+/*
+ * Robot Swarm Demo - HDDS IDL
+ *
+ * Coordinated swarm robotics with multiple behavior modes via DDS
+ */
+
+module swarm {
+
+    /* Robot operational state */
+    enum RobotState {
+        IDLE,
+        MOVING,
+        ROTATING,
+        AVOIDING,
+        CHARGING,
+        ERROR
+    };
+
+    /* Swarm behavior modes */
+    enum SwarmMode {
+        IDLE,
+        FLOCK,              // Boids-like flocking
+        FORMATION,          // Hold formation pattern
+        FOLLOW_LEADER,      // Follow designated leader
+        SCATTER,            // Spread out
+        GATHER,             // Converge to point
+        PATROL,             // Patrol waypoints
+        SEARCH              // Search pattern
+    };
+
+    /* Formation patterns */
+    enum FormationType {
+        LINE,
+        CIRCLE,
+        WEDGE,
+        GRID,
+        DIAMOND
+    };
+
+    /* Individual robot state (published at ~20Hz) */
+    @appendable
+    struct Robot {
+        @key uint32 robot_id;
+        string<32> name;
+        uint32 color;                // RGB hex
+        // Position (cm)
+        float x;
+        float y;
+        float heading;               // radians, 0 = up
+        // Velocity
+        float vx;
+        float vy;
+        float omega;                 // Angular velocity (rad/s)
+        // State
+        RobotState state;
+        uint8 battery;               // 0-100%
+        // Sensors (cm)
+        float front_dist;            // Front distance sensor
+        float left_dist;
+        float right_dist;
+        // Communication
+        boolean is_leader;
+        uint8 group_id;
+        uint64 timestamp_us;
+    };
+
+    /* Robot command from controller (published on demand) */
+    @appendable
+    struct RobotCommand {
+        @key uint32 robot_id;
+        float target_x;
+        float target_y;
+        float target_heading;
+        float speed;
+        uint64 timestamp_us;
+    };
+
+    /* Swarm-wide command broadcast (published on demand) */
+    @appendable
+    struct SwarmCommand {
+        @key uint32 command_id;
+        SwarmMode mode;
+        FormationType formation;
+        float target_x;
+        float target_y;
+        float param1;                // Mode-specific parameter
+        float param2;
+        uint64 timestamp_us;
+    };
+
+    /* Swarm aggregate state (published at ~2Hz) */
+    @appendable
+    struct SwarmState {
+        uint8 robot_count;
+        SwarmMode mode;
+        FormationType formation;
+        float centroid_x;            // Swarm center (cm)
+        float centroid_y;
+        float spread;                // Avg distance from centroid
+        uint8 avg_battery;
+        uint64 timestamp_us;
+    };
+
+    /* Static obstacle in arena (published once at init) */
+    @appendable
+    struct Obstacle {
+        @key uint32 obstacle_id;
+        float x;
+        float y;
+        float radius;
+        uint8 obstacle_type;         // 0=static, 1=dynamic
+    };
+
+    /* Waypoint for patrol mode (published on route updates) */
+    @appendable
+    struct Waypoint {
+        @key uint32 waypoint_id;
+        float x;
+        float y;
+        float radius;                // Arrival threshold (cm)
+        uint8 seq_num;
+    };
+
+};

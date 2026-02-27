@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Network</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>RAILWAY NETWORK</h1>
+            <div id="connection-status" class="disconnected">OFFLINE</div>
+        </header>
+
+        <main>
+            <div id="map-container">
+                <canvas id="map-canvas"></canvas>
+                <div id="view-controls">
+                    <button id="btn-tracks" class="active" title="Show tracks">Tracks</button>
+                    <button id="btn-trains" class="active" title="Show trains">Trains</button>
+                    <button id="btn-signals" class="active" title="Show signals">Signals</button>
+                    <button id="btn-stations" class="active" title="Show stations">Stations</button>
+                </div>
+            </div>
+
+            <aside id="panel">
+                <section id="network-info">
+                    <h2>NETWORK STATUS</h2>
+                    <div class="stat-row">
+                        <span class="label">Trains</span>
+                        <span id="train-count" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Running</span>
+                        <span id="trains-running" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">At Station</span>
+                        <span id="trains-at-station" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Signals Red</span>
+                        <span id="signals-red" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Signals Green</span>
+                        <span id="signals-green" class="value">--</span>
+                    </div>
+                </section>
+
+                <section id="trains-list">
+                    <h2>TRAINS</h2>
+                    <div id="train-items"></div>
+                </section>
+
+                <section id="stations-list">
+                    <h2>STATIONS</h2>
+                    <div id="station-items"></div>
+                </section>
+
+                <section id="legend">
+                    <h2>LEGEND</h2>
+                    <div class="legend-item">
+                        <span class="icon track"></span>
+                        <span>Track</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon train"></span>
+                        <span>Train</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon signal-green"></span>
+                        <span>Signal Green</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon signal-red"></span>
+                        <span>Signal Red</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon station"></span>
+                        <span>Station</span>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[package]
+name = "radar-types"
+version = "0.1.0"
+edition = "2021"
+description = "DDS types for Air Defense Radar demo"
+
+[dependencies]
+hdds = { path = "/projects/public/hdds/crates/hdds" }
+serde = { version = "1", features = ["derive"] }

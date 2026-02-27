@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artillery Fire Control - Tactical Map</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #c0c0c0;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+    #map-container {
+      flex: 1;
+      position: relative;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #sidebar {
+      width: 340px;
+      background: #0d1a0d;
+      border-left: 1px solid #1a3a1a;
+      padding: 12px;
+      overflow-y: auto;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    #sidebar h2 {
+      color: #ffa500;
+      font-size: 13px;
+      border-bottom: 1px solid #2a4a2a;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    #sidebar h3 {
+      color: #88aa88;
+      font-size: 11px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .mission-entry {
+      background: #0a150a;
+      border: 1px solid #1a3a1a;
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      border-radius: 3px;
+    }
+    .mission-entry.active { border-color: #ffa500; }
+    .mission-entry.complete { border-color: #335533; opacity: 0.7; }
+    .status-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .status-computing { background: #333300; color: #ffff00; }
+    .status-firing { background: #330000; color: #ff3333; }
+    .status-adjusting { background: #332200; color: #ffa500; }
+    .status-complete { background: #003300; color: #33ff33; }
+    .meteo-panel {
+      background: #0a150a;
+      border: 1px solid #1a3a1a;
+      padding: 8px;
+      border-radius: 3px;
+    }
+    .battery-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .battery-row .name { color: #ffa500; }
+    .battery-row .state { color: #88aa88; }
+    .ws-status {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      z-index: 10;
+    }
+    .ws-connected { background: #003300; color: #33ff33; }
+    .ws-disconnected { background: #330000; color: #ff3333; }
+    #impact-log {
+      max-height: 120px;
+      overflow-y: auto;
+      font-size: 10px;
+    }
+    #impact-log div {
+      padding: 1px 0;
+      border-bottom: 1px solid #0a150a;
+    }
+  </style>
+</head>
+<body>
+  <div id="map-container">
+    <canvas id="tactical-map"></canvas>
+    <div id="ws-indicator" class="ws-status ws-disconnected">DISCONNECTED</div>
+  </div>
+  <div id="sidebar">
+    <h2>ARTILLERY FIRE CONTROL</h2>
+
+    <h3>BATTERIES</h3>
+    <div id="battery-panel"></div>
+
+    <h3>WEATHER</h3>
+    <div id="meteo-panel" class="meteo-panel">Awaiting data...</div>
+
+    <h3>ACTIVE MISSIONS</h3>
+    <div id="mission-panel"></div>
+
+    <h3>IMPACT LOG</h3>
+    <div id="impact-log"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

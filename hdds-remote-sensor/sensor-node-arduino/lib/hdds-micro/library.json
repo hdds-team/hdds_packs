@@ -1,0 +1,22 @@
+{
+    "name": "hdds-micro",
+    "version": "1.0.5",
+    "description": "HDDS Micro - Embedded DDS for microcontrollers",
+    "keywords": ["dds", "rtps", "embedded", "iot"],
+    "repository": {
+        "type": "git",
+        "url": "https://git.hdds.io/hdds/hdds.git"
+    },
+    "authors": [
+        {
+            "name": "naskel.com"
+        }
+    ],
+    "license": "Apache-2.0 OR MIT",
+    "frameworks": ["arduino", "espidf"],
+    "platforms": ["espressif32"],
+    "build": {
+        "flags": ["-I lib/hdds-micro"],
+        "extraScript": ""
+    }
+}

@@ -1,0 +1,11 @@
+[package]
+name = "tsn-sim"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+tsn-types = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }

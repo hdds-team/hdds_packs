@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Factory</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>SMART FACTORY</h1>
+            <div id="connection-status" class="disconnected">OFFLINE</div>
+        </header>
+
+        <main>
+            <div id="factory-container">
+                <canvas id="factory-canvas"></canvas>
+                <div id="view-controls">
+                    <button id="btn-machines" class="active" title="Show machines">Machines</button>
+                    <button id="btn-conveyors" class="active" title="Show conveyors">Conveyors</button>
+                    <button id="btn-products" class="active" title="Show products">Products</button>
+                </div>
+            </div>
+
+            <aside id="panel">
+                <section id="factory-stats">
+                    <h2>FACTORY STATUS</h2>
+                    <div class="stat-row">
+                        <span class="label">Machines</span>
+                        <span id="machines-total" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Working</span>
+                        <span id="machines-working" class="value good">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Idle</span>
+                        <span id="machines-idle" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Fault</span>
+                        <span id="machines-fault" class="value bad">--</span>
+                    </div>
+                </section>
+
+                <section id="production-stats">
+                    <h2>PRODUCTION</h2>
+                    <div class="stat-row">
+                        <span class="label">In Progress</span>
+                        <span id="products-in-progress" class="value">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Completed</span>
+                        <span id="products-completed" class="value good">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Rejected</span>
+                        <span id="products-rejected" class="value bad">--</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Throughput</span>
+                        <span id="throughput" class="value">-- /hr</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Efficiency</span>
+                        <span id="efficiency" class="value">--%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="label">Power</span>
+                        <span id="power" class="value">-- kW</span>
+                    </div>
+                </section>
+
+                <section id="machines-list">
+                    <h2>MACHINES</h2>
+                    <div id="machine-items"></div>
+                </section>
+
+                <section id="alerts-section">
+                    <h2>ALERTS</h2>
+                    <div id="alert-items"></div>
+                </section>
+
+                <section id="legend">
+                    <h2>LEGEND</h2>
+                    <div class="legend-item">
+                        <span class="icon machine-idle"></span>
+                        <span>Idle</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon machine-working"></span>
+                        <span>Working</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon machine-fault"></span>
+                        <span>Fault</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon conveyor"></span>
+                        <span>Conveyor</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="icon product"></span>
+                        <span>Product</span>
+                    </div>
+                </section>
+            </aside>
+        </main>
+    </div>
+
+    <script type="module" src="src/main.ts"></script>
+</body>
+</html>

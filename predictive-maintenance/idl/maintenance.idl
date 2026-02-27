@@ -1,0 +1,86 @@
+/*
+ * Predictive Maintenance Demo - HDDS IDL
+ *
+ * Industrial sensor monitoring, machine health tracking, and
+ * failure prediction via DDS real-time data distribution.
+ */
+
+module maintenance {
+
+    /* Sensor types */
+    enum SensorType {
+        TEMPERATURE,
+        VIBRATION,
+        PRESSURE,
+        CURRENT,
+        RPM,
+        FLOW_RATE
+    };
+
+    /* Machine operational status */
+    enum MachineState {
+        STOPPED,
+        RUNNING,
+        WARNING,
+        CRITICAL,
+        MAINTENANCE
+    };
+
+    /* Alert severity levels */
+    enum AlertSeverity {
+        INFO,
+        WARNING,
+        CRITICAL
+    };
+
+    /* Individual sensor reading (published at ~10Hz per sensor) */
+    @appendable
+    struct SensorReading {
+        @key uint32 sensor_id;
+        uint32 machine_id;
+        SensorType sensor_type;
+        float value;
+        float min_threshold;
+        float max_threshold;
+        uint64 timestamp_us;
+    };
+
+    /* Machine overall status (published at ~1Hz) */
+    @appendable
+    struct MachineStatus {
+        @key uint32 machine_id;
+        string<64> name;
+        MachineState status;
+        uint8 health_score;          // 0-100
+        float operating_hours;
+        uint8 sensor_count;
+        uint64 timestamp_us;
+    };
+
+    /* Alert notification (published on event) */
+    @appendable
+    struct Alert {
+        @key uint32 alert_id;
+        uint32 machine_id;
+        uint32 sensor_id;
+        AlertSeverity severity;
+        string<32> alert_type;       // "THRESHOLD_EXCEEDED", "ANOMALY", "DEGRADATION"
+        string<256> message;
+        float value;
+        float threshold;
+        uint64 timestamp_us;
+    };
+
+    /* Maintenance prediction (published periodically by ML engine) */
+    @appendable
+    struct MaintenancePrediction {
+        @key uint32 prediction_id;
+        uint32 machine_id;
+        string<32> failure_type;     // "BEARING_WEAR", "OVERHEATING", "MOTOR_DEGRADATION"
+        float hours_to_failure;
+        uint8 confidence;            // 0-100
+        string<256> recommendation;
+        uint64 timestamp_us;
+    };
+
+};

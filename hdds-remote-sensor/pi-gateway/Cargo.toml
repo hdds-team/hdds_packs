@@ -1,0 +1,39 @@
+[package]
+name = "hdds-pi-gateway"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "HDDS Remote Sensor - Pi Zero 2 W Gateway with full HDDS"
+
+[dependencies]
+# Full HDDS stack with QUIC transport!
+hdds = { path = "../../../hdds/crates/hdds", features = ["quic"] }
+
+# Serial port for HC-12 (serial2 doesn't need libudev!)
+serial2 = "0.2"
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Error handling
+anyhow = "1.0"
+
+# Web server for status page
+axum = "0.7"
+tower-http = { version = "0.5", features = ["fs", "cors"] }
+
+# Image handling
+image = { version = "0.25", default-features = false, features = ["jpeg"] }
+
+# Serde for config
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

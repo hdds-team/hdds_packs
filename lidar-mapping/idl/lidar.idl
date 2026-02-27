@@ -1,0 +1,126 @@
+/*
+ * LiDAR Mapping Demo - HDDS IDL
+ *
+ * SLAM (Simultaneous Localization and Mapping) with real-time
+ * LiDAR point cloud processing and occupancy grid updates via DDS
+ */
+
+module lidar {
+
+    /* Robot control modes */
+    enum ControlMode {
+        MANUAL,
+        EXPLORE,
+        WAYPOINT
+    };
+
+    /* Cell occupancy values (FREE=0, UNKNOWN=1, OCCUPIED=2)
+     * Note: actual wire values 0/127/255 are mapped at application level */
+    enum CellOccupancy {
+        FREE,
+        UNKNOWN,
+        OCCUPIED
+    };
+
+    /* Raw LiDAR scan metadata (published at ~10Hz) */
+    @appendable
+    struct LidarScan {
+        @key uint32 scan_id;
+        uint32 robot_id;
+        // Robot pose when scan was taken
+        float robot_x;
+        float robot_y;
+        float robot_heading;
+        // Scan info
+        uint16 num_readings;         // Number of valid readings
+        uint64 timestamp_us;
+    };
+
+    /* Individual LiDAR ray reading (published per-ray) */
+    @appendable
+    struct LidarReading {
+        uint32 scan_id;
+        uint16 ray_index;            // 0 to 359 (1 degree resolution)
+        float angle;                 // radians
+        float distance;              // cm (0 = no hit)
+        uint8 intensity;             // Reflection intensity
+    };
+
+    /* Batch of LiDAR readings for efficiency (published per scan batch) */
+    @appendable
+    struct LidarBatch {
+        @key uint32 scan_id;
+        uint32 robot_id;
+        float robot_x;
+        float robot_y;
+        float robot_heading;
+        uint8 batch_index;           // 0-3 (4 batches per full 360 scan)
+        uint8 batch_count;           // Total batches in this scan
+        // Packed readings as angle/distance pairs
+        // Up to 90 readings per batch
+        sequence<float, 180> readings; // [angle0, dist0, angle1, dist1, ...]
+        uint64 timestamp_us;
+    };
+
+    /* Robot pose - position and orientation (published at ~20Hz) */
+    @appendable
+    struct RobotPose {
+        @key uint32 robot_id;
+        float x;                     // cm
+        float y;                     // cm
+        float heading;               // radians
+        float vx;                    // velocity cm/s
+        float vy;
+        float omega;                 // angular velocity rad/s
+        ControlMode mode;
+        uint64 timestamp_us;
+    };
+
+    /* Single map cell update (published on cell change) */
+    @appendable
+    struct MapCell {
+        uint16 cell_x;               // 0 to MAP_CELLS_X-1
+        uint16 cell_y;               // 0 to MAP_CELLS_Y-1
+        uint8 occupancy;             // 0=free, 127=unknown, 255=occupied
+        uint64 timestamp_us;
+    };
+
+    /* Batch map update for efficiency (published periodically) */
+    @appendable
+    struct MapBatch {
+        @key uint32 batch_id;
+        // Packed cells: each is (cell_x, cell_y, occupancy)
+        sequence<uint16, 600> cells;  // [x0, y0, occ0, x1, y1, occ1, ...]
+        uint64 timestamp_us;
+    };
+
+    /* Wall segment detected in environment (published on detection) */
+    @appendable
+    struct WallSegment {
+        @key uint32 wall_id;
+        float x1;
+        float y1;
+        float x2;
+        float y2;
+        float thickness;
+    };
+
+    /* Robot velocity command (published from UI/controller) */
+    @appendable
+    struct VelocityCommand {
+        @key uint32 robot_id;
+        float linear_vel;            // cm/s
+        float angular_vel;           // rad/s
+        uint64 timestamp_us;
+    };
+
+    /* Navigation waypoint (published on route changes) */
+    @appendable
+    struct Waypoint {
+        @key uint32 waypoint_id;
+        float x;
+        float y;
+        boolean reached;
+    };
+
+};

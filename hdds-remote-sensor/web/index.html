@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDDS Remote Sensor Demo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #00d4ff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .card h2 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #00d4ff;
+            border-radius: 50%;
+        }
+        .sensor-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .sensor-unit {
+            font-size: 1.5rem;
+            color: #888;
+            margin-left: 5px;
+        }
+        .sensor-label {
+            color: #666;
+            margin-top: 10px;
+        }
+        .gauge {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            margin: 20px auto;
+        }
+        .gauge-bg {
+            fill: none;
+            stroke: #333;
+            stroke-width: 20;
+        }
+        .gauge-fill {
+            fill: none;
+            stroke: #00d4ff;
+            stroke-width: 20;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .image-container {
+            position: relative;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .image-placeholder {
+            color: #444;
+            font-size: 0.9rem;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .status-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .status-label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .status-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .status-online {
+            color: #0f0;
+        }
+        .status-offline {
+            color: #f00;
+        }
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f00;
+        }
+        .status-dot.connected {
+            background: #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+        .timestamp {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #444;
+        }
+        footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HDDS Remote Sensor</h1>
+            <p class="subtitle">433MHz Long-Range IoT Demo</p>
+        </header>
+
+        <div class="connection-status">
+            <div class="status-dot" id="connectionDot"></div>
+            <span id="connectionText">Connecting...</span>
+        </div>
+
+        <div class="grid">
+            <!-- Temperature Card -->
+            <div class="card">
+                <h2>Temperature</h2>
+                <svg class="gauge" viewBox="0 0 200 100">
+                    <path class="gauge-bg" d="M 20 90 A 80 80 0 0 1 180 90"/>
+                    <path class="gauge-fill" id="tempGauge" d="M 20 90 A 80 80 0 0 1 180 90"
+                          stroke-dasharray="251" stroke-dashoffset="251"/>
+                </svg>
+                <div style="text-align: center;">
+                    <span class="sensor-value" id="temperature">--</span>
+                    <span class="sensor-unit">°C</span>
+                </div>
+                <p class="sensor-label" style="text-align: center;">DHT22 Sensor</p>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="card">
+                <h2>Humidity</h2>
+                <svg class="gauge" viewBox="0 0 200 100">
+                    <path class="gauge-bg" d="M 20 90 A 80 80 0 0 1 180 90"/>
+                    <path class="gauge-fill" id="humidGauge" d="M 20 90 A 80 80 0 0 1 180 90"
+                          stroke-dasharray="251" stroke-dashoffset="251" style="stroke: #00ff88;"/>
+                </svg>
+                <div style="text-align: center;">
+                    <span class="sensor-value" id="humidity">--</span>
+                    <span class="sensor-unit">%</span>
+                </div>
+                <p class="sensor-label" style="text-align: center;">Relative Humidity</p>
+            </div>
+
+            <!-- Camera Card -->
+            <div class="card">
+                <h2>Camera Feed</h2>
+                <div style="margin-bottom: 10px; text-align: center;">
+                    <label for="imageSize" style="color: #888; font-size: 0.9rem;">Display size: </label>
+                    <select id="imageSize" style="background: #333; color: #fff; border: 1px solid #555; padding: 5px 10px; border-radius: 5px;">
+                        <option value="1">1x (160x120)</option>
+                        <option value="2" selected>2x (320x240)</option>
+                        <option value="3">3x (480x360)</option>
+                        <option value="4">4x (640x480)</option>
+                    </select>
+                </div>
+                <div class="image-container" id="imageContainer">
+                    <img id="cameraImage" src="" alt="Camera" style="display: none;">
+                    <span class="image-placeholder" id="imagePlaceholder">Waiting for image...</span>
+                </div>
+                <p class="sensor-label" style="text-align: center; margin-top: 10px;">
+                    <span id="imageInfo">160x120 JPEG via 433MHz</span>
+                </p>
+            </div>
+
+            <!-- Status Card -->
+            <div class="card">
+                <h2>Node Status</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-label">Node</div>
+                        <div class="status-value" id="nodeStatus">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Uptime</div>
+                        <div class="status-value" id="nodeUptime">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">TX Frames</div>
+                        <div class="status-value" id="txFrames">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">RX Frames</div>
+                        <div class="status-value" id="rxFrames">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Errors</div>
+                        <div class="status-value" id="errors">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Images</div>
+                        <div class="status-value" id="images">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Bitrate</div>
+                        <div class="status-value" id="bitrate">--</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Node Uptime</div>
+                        <div class="status-value" id="nodeUptimeValue">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="timestamp">Last update: <span id="lastUpdate">--</span></p>
+
+        <footer>
+            <p>Powered by <a href="https://hdds.io">HDDS</a> - High-Performance DDS in Rust</p>
+            <p style="margin-top: 5px;">ESP32-WROVER-CAM → HC-12 433MHz → Pi Zero 2 W → HDDS Network</p>
+        </footer>
+    </div>
+
+    <script>
+        // Configuration
+        const GATEWAY_URL = '';  // Use relative URLs (same host as page)
+        const POLL_INTERVAL = 2000;  // ms
+
+        // State
+        let connected = false;
+        let lastData = null;
+
+        // DOM elements
+        const connectionDot = document.getElementById('connectionDot');
+        const connectionText = document.getElementById('connectionText');
+        const temperatureEl = document.getElementById('temperature');
+        const humidityEl = document.getElementById('humidity');
+        const tempGauge = document.getElementById('tempGauge');
+        const humidGauge = document.getElementById('humidGauge');
+        const cameraImage = document.getElementById('cameraImage');
+        const imagePlaceholder = document.getElementById('imagePlaceholder');
+        const imageInfo = document.getElementById('imageInfo');
+        const imageContainer = document.getElementById('imageContainer');
+        const imageSizeSelect = document.getElementById('imageSize');
+        const nodeStatus = document.getElementById('nodeStatus');
+        const nodeUptime = document.getElementById('nodeUptime');
+        const nodeUptimeValue = document.getElementById('nodeUptimeValue');
+        const txFrames = document.getElementById('txFrames');
+        const rxFrames = document.getElementById('rxFrames');
+        const errors = document.getElementById('errors');
+        const images = document.getElementById('images');
+        const bitrate = document.getElementById('bitrate');
+        const lastUpdate = document.getElementById('lastUpdate');
+
+        // Image size handler
+        imageSizeSelect.addEventListener('change', function() {
+            const scale = parseInt(this.value);
+            const width = 160 * scale;
+            const height = 120 * scale;
+            imageContainer.style.width = width + 'px';
+            imageContainer.style.height = height + 'px';
+        });
+        // Initialize with default size
+        imageContainer.style.width = '320px';
+        imageContainer.style.height = '240px';
+
+        // Update gauge (0-100 scale for percentage, custom scale for temp)
+        function updateGauge(element, value, min, max) {
+            const percent = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100));
+            const offset = 251 - (251 * percent / 100);
+            element.style.strokeDashoffset = offset;
+        }
+
+        // Format uptime
+        function formatUptime(seconds) {
+            if (seconds < 60) return `${seconds}s`;
+            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
+            const hours = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            return `${hours}h ${mins}m`;
+        }
+
+        // Update UI with data
+        function updateUI(data) {
+            // Temperature
+            if (data.temperature !== undefined) {
+                temperatureEl.textContent = data.temperature.toFixed(1);
+                updateGauge(tempGauge, data.temperature, -10, 50);
+            }
+
+            // Humidity
+            if (data.humidity !== undefined) {
+                humidityEl.textContent = data.humidity.toFixed(0);
+                updateGauge(humidGauge, data.humidity, 0, 100);
+            }
+
+            // Node status
+            if (data.node_online !== undefined) {
+                nodeStatus.textContent = data.node_online ? 'ONLINE' : 'OFFLINE';
+                nodeStatus.className = 'status-value ' + (data.node_online ? 'status-online' : 'status-offline');
+            }
+
+            // Statistics
+            if (data.uptime !== undefined) nodeUptime.textContent = formatUptime(data.uptime);
+            if (data.node_uptime !== undefined) nodeUptimeValue.textContent = formatUptime(data.node_uptime);
+            if (data.tx_frames !== undefined) txFrames.textContent = data.tx_frames;
+            if (data.rx_frames !== undefined) rxFrames.textContent = data.rx_frames;
+            if (data.errors !== undefined) errors.textContent = data.errors;
+            if (data.images_received !== undefined) images.textContent = data.images_received;
+            if (data.bitrate !== undefined) {
+                if (data.bitrate < 1000) {
+                    bitrate.textContent = data.bitrate + ' bps';
+                } else {
+                    bitrate.textContent = (data.bitrate / 1000).toFixed(1) + ' kbps';
+                }
+            }
+
+            // Last update time
+            lastUpdate.textContent = new Date().toLocaleTimeString();
+        }
+
+        // Fetch status from gateway
+        async function fetchStatus() {
+            try {
+                // In a real deployment, this would fetch JSON from the gateway
+                // For demo purposes, we'll simulate with random data
+                const response = await fetch(GATEWAY_URL + '/api/status', {
+                    method: 'GET',
+                    mode: 'cors',
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setConnected(true);
+                    updateUI(data);
+                    lastData = data;
+                } else {
+                    throw new Error('HTTP ' + response.status);
+                }
+            } catch (e) {
+                console.log('Fetch error:', e.message);
+                // For demo, use simulated data
+                simulateData();
+            }
+        }
+
+        // Fetch image from gateway
+        async function fetchImage() {
+            try {
+                const timestamp = Date.now();
+                const imgUrl = GATEWAY_URL + '/image.jpg?t=' + timestamp;
+
+                // Create new image to test loading
+                const img = new Image();
+                img.onload = () => {
+                    cameraImage.src = imgUrl;
+                    cameraImage.style.display = 'block';
+                    imagePlaceholder.style.display = 'none';
+                    imageInfo.textContent = `${img.width}x${img.height} JPEG`;
+                };
+                img.onerror = () => {
+                    // Keep showing placeholder or last image
+                };
+                img.src = imgUrl;
+            } catch (e) {
+                console.log('Image fetch error:', e.message);
+            }
+        }
+
+        // Set connection status
+        function setConnected(isConnected) {
+            connected = isConnected;
+            connectionDot.className = 'status-dot' + (isConnected ? ' connected' : '');
+            connectionText.textContent = isConnected ? 'Connected to Gateway' : 'Disconnected';
+        }
+
+        // Simulate data for demo
+        function simulateData() {
+            setConnected(true);
+            connectionText.textContent = 'Demo Mode (Simulated)';
+
+            const data = {
+                temperature: 20 + Math.random() * 10,
+                humidity: 40 + Math.random() * 30,
+                node_online: true,
+                uptime: Math.floor(Date.now() / 1000) % 86400,
+                tx_frames: Math.floor(Math.random() * 10000),
+                rx_frames: Math.floor(Math.random() * 10000),
+                errors: Math.floor(Math.random() * 10),
+                images_received: Math.floor(Math.random() * 100),
+            };
+
+            updateUI(data);
+        }
+
+        // Initialize
+        function init() {
+            // Start polling
+            fetchStatus();
+            fetchImage();
+
+            setInterval(fetchStatus, POLL_INTERVAL);
+            setInterval(fetchImage, 5000);  // Image every 5 seconds
+        }
+
+        // Start when DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

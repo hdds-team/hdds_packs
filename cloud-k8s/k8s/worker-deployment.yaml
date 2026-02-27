@@ -1,0 +1,39 @@
+# HDDS Cloud-Native K8s Discovery Demo - Worker Deployment
+#
+# This manifest demonstrates how HDDS workers would be deployed
+# in a real Kubernetes cluster with DDS discovery via K8s DNS.
+#
+# CONCEPT DEMO - This YAML is for documentation purposes.
+# The actual demo uses simulated pods running locally.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hdds-worker
+  namespace: hdds-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hdds-worker
+  template:
+    metadata:
+      labels:
+        app: hdds-worker
+    spec:
+      containers:
+      - name: worker
+        image: hdds/cloud-worker:latest
+        env:
+        - name: HDDS_DISCOVERY
+          value: "k8s"
+        - name: HDDS_K8S_NAMESPACE
+          value: "hdds-demo"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "256Mi"

@@ -1,0 +1,96 @@
+/*
+ * F1Tenth Autonomous Racing Demo - HDDS IDL
+ *
+ * 4 autonomous cars racing on a circuit with real-time telemetry via DDS.
+ * Bicycle model physics, waypoint-following AI, Three.js 3D viewer.
+ */
+
+module f1tenth {
+
+    /* Race phase */
+    enum RacePhase {
+        WAITING,
+        COUNTDOWN,
+        RACING,
+        FINISHED
+    };
+
+    /* Car operational state */
+    enum CarState {
+        IDLE,
+        READY,
+        RACING,
+        CRASHED,
+        FINISHED
+    };
+
+    /* Car telemetry - published at ~60Hz per car */
+    @appendable
+    struct Car {
+        @key uint32 car_id;
+        string<16> name;
+        uint32 color;               // RGB hex
+        // Position (2D track, Y = up)
+        float x;
+        float y;                    // elevation
+        float z;
+        // Velocity
+        float vx;
+        float vz;
+        float speed;                // m/s scalar
+        // Orientation
+        float heading;              // radians, 0 = +Z
+        float steering_angle;       // front wheel angle, radians
+        // Race progress
+        CarState state;
+        uint8 lap;
+        uint8 total_laps;
+        uint8 sector;               // current track sector
+        float track_progress;       // 0.0-1.0 along current lap
+        uint32 best_lap_ms;
+        uint32 last_lap_ms;
+        uint32 total_time_ms;
+        uint8 position;             // race position (1-4)
+        uint64 timestamp_us;
+    };
+
+    /* Track segment - published once at start */
+    @appendable
+    struct TrackPoint {
+        @key uint16 index;
+        float x;
+        float z;
+        float width;                // track half-width at this point
+    };
+
+    /* Race state - published at ~2Hz */
+    @appendable
+    struct RaceState {
+        RacePhase phase;
+        uint8 countdown;            // 3, 2, 1, GO
+        uint8 total_laps;
+        uint32 elapsed_ms;
+        uint8 car_count;
+        uint64 timestamp_us;
+    };
+
+    /* Lap completed event */
+    @appendable
+    struct LapEvent {
+        uint32 car_id;
+        uint8 lap;
+        uint32 lap_time_ms;
+        uint32 best_lap_ms;
+        uint64 timestamp_us;
+    };
+
+    /* Sector timing */
+    @appendable
+    struct SectorTime {
+        uint32 car_id;
+        uint8 sector;
+        uint32 sector_time_ms;
+        uint64 timestamp_us;
+    };
+
+};

@@ -1,0 +1,56 @@
+/*
+ * HDDS Remote Sensor Demo - HDDS IDL
+ *
+ * Real hardware IoT demo: ESP32 sensor node communicates via
+ * HC-12 radio (RTPS/CDR2 over serial) to Raspberry Pi gateway,
+ * which bridges to HDDS DDS network.
+ *
+ * Demonstrates: hdds-micro (embedded) <-> hdds (full) interop
+ */
+
+module remote_sensor {
+
+    /* Temperature reading from ESP32 sensor node */
+    @appendable
+    struct TemperatureSample {
+        @key uint32 sensor_id;
+        float value;                 // Degrees Celsius
+        uint64 timestamp_ms;
+    };
+
+    /* Camera image transfer - start marker */
+    @appendable
+    struct ImageStart {
+        @key uint32 image_id;
+        uint32 total_size;           // Total image size in bytes
+        uint16 num_fragments;
+    };
+
+    /* Camera image transfer - data fragment */
+    @appendable
+    struct ImageData {
+        uint32 image_id;
+        uint16 fragment_num;
+        sequence<octet, 512> payload; // Fragment payload bytes
+    };
+
+    /* Camera image transfer - end marker with integrity check */
+    @appendable
+    struct ImageEnd {
+        @key uint32 image_id;
+        uint32 checksum;             // CRC32 of complete image
+    };
+
+    /* Gateway status (published by Pi gateway at ~0.5Hz) */
+    @appendable
+    struct GatewayStatus {
+        @key string<32> gateway_id;
+        uint8 connected_sensors;
+        uint32 messages_received;
+        uint32 messages_forwarded;
+        float signal_quality;        // 0.0 - 1.0
+        uint64 uptime_ms;
+        uint64 timestamp_ms;
+    };
+
+};

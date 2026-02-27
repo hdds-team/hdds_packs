@@ -1,0 +1,8 @@
+[package]
+name = "cockpit-types"
+version = "0.1.0"
+edition = "2021"
+description = "DDS types for HDDS QoS Hot-Reload Cockpit demo"
+
+[dependencies]
+hdds = { path = "/projects/public/hdds/crates/hdds" }

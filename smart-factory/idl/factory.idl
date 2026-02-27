@@ -1,0 +1,193 @@
+// Smart Factory Demo - IDL Types
+// HDDS DDS Types for industrial production line simulation
+
+module factory {
+
+    // ═══════════════════════════════════════════════════════════════
+    // ENUMS
+    // ═══════════════════════════════════════════════════════════════
+
+    enum MachineType {
+        MACHINE_CNC,            // CNC milling
+        MACHINE_WELDER,         // Welding robot
+        MACHINE_ASSEMBLER,      // Assembly station
+        MACHINE_PAINTER,        // Paint booth
+        MACHINE_INSPECTOR,      // Quality control
+        MACHINE_PACKAGER        // Packaging
+    };
+
+    enum MachineState {
+        STATE_IDLE,
+        STATE_WORKING,
+        STATE_BLOCKED,          // Output full
+        STATE_STARVED,          // No input
+        STATE_MAINTENANCE,
+        STATE_FAULT
+    };
+
+    enum ProductType {
+        PRODUCT_RAW,            // Raw material
+        PRODUCT_MACHINED,       // After CNC
+        PRODUCT_WELDED,         // After welding
+        PRODUCT_ASSEMBLED,      // After assembly
+        PRODUCT_PAINTED,        // After painting
+        PRODUCT_INSPECTED,      // After QC
+        PRODUCT_PACKAGED        // Final product
+    };
+
+    enum AlertSeverity {
+        ALERT_INFO,
+        ALERT_WARNING,
+        ALERT_CRITICAL
+    };
+
+    enum ConveyorState {
+        CONVEYOR_RUNNING,
+        CONVEYOR_STOPPED,
+        CONVEYOR_JAM
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // CORE TYPES
+    // ═══════════════════════════════════════════════════════════════
+
+    /// Machine status and telemetry
+    @appendable
+    @topic
+    struct Machine {
+        @key uint32 machine_id;
+        string<32> name;
+        MachineType machine_type;
+        MachineState state;
+
+        // Position in factory (isometric grid)
+        int16 grid_x;
+        int16 grid_y;
+
+        // Telemetry
+        float temperature_c;        // Operating temperature
+        float vibration_mm_s;       // Vibration level
+        float power_kw;             // Power consumption
+        uint8 efficiency_pct;       // 0-100%
+
+        // Production
+        uint32 items_processed;
+        uint32 items_rejected;
+        float cycle_time_s;         // Time per item
+
+        uint64 timestamp_us;
+    };
+
+    /// Conveyor belt segment
+    @appendable
+    @topic
+    struct Conveyor {
+        @key uint32 conveyor_id;
+        ConveyorState state;
+
+        // Grid position (start and end)
+        int16 start_x;
+        int16 start_y;
+        int16 end_x;
+        int16 end_y;
+
+        float speed_m_s;            // Belt speed
+        uint8 capacity;             // Max items
+        uint8 current_items;        // Items on belt
+
+        uint64 timestamp_us;
+    };
+
+    /// Product/item being manufactured
+    @appendable
+    @topic
+    struct Product {
+        @key uint32 product_id;
+        ProductType product_type;
+        uint8 quality_pct;          // 0-100% quality score
+
+        // Current location
+        uint32 on_conveyor_id;      // 0 = in machine
+        uint32 in_machine_id;       // 0 = on conveyor
+        float conveyor_position;    // 0.0-1.0 on conveyor
+
+        // Tracking
+        uint32 batch_id;
+        uint64 created_us;
+
+        uint64 timestamp_us;
+    };
+
+    /// Sensor reading
+    @appendable
+    @topic
+    struct Sensor {
+        @key uint32 sensor_id;
+        uint32 machine_id;          // Associated machine (0 = standalone)
+        string<16> sensor_type;     // "temp", "vibration", "presence", "pressure"
+
+        float value;
+        float min_threshold;
+        float max_threshold;
+        boolean alarm_active;
+
+        int16 grid_x;
+        int16 grid_y;
+
+        uint64 timestamp_us;
+    };
+
+    /// Alert/alarm event
+    @appendable
+    @topic
+    struct Alert {
+        @key uint32 alert_id;
+        uint32 machine_id;          // 0 = system alert
+        AlertSeverity severity;
+        string<64> message;
+        boolean acknowledged;
+
+        uint64 timestamp_us;
+    };
+
+    /// Production order
+    @appendable
+    @topic
+    struct ProductionOrder {
+        @key uint32 order_id;
+        uint32 target_quantity;
+        uint32 completed_quantity;
+        uint32 rejected_quantity;
+        boolean is_active;
+
+        uint64 start_time_us;
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════
+    // SYSTEM STATE
+    // ═══════════════════════════════════════════════════════════════
+
+    /// Overall factory statistics
+    @appendable
+    @topic
+    struct FactoryState {
+        uint8 machines_total;
+        uint8 machines_working;
+        uint8 machines_idle;
+        uint8 machines_fault;
+
+        uint32 products_in_progress;
+        uint32 products_completed;
+        uint32 products_rejected;
+
+        float throughput_per_hour;
+        float overall_efficiency_pct;
+        float total_power_kw;
+
+        uint8 active_alerts;
+
+        uint64 timestamp_us;
+    };
+
+};

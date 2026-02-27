@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance Dashboard</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>PREDICTIVE MAINTENANCE</h1>
+                <span class="subtitle">Industrial IoT Monitoring System</span>
+            </div>
+            <div class="header-right">
+                <div class="connection-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Disconnected</span>
+                </div>
+                <div class="timestamp" id="current-time">--:--:--</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Machines Overview -->
+            <section class="machines-panel">
+                <h2>MACHINES</h2>
+                <div id="machines-list" class="machines-list">
+                    <!-- Machine cards will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Center Panel: Sensor Gauges -->
+            <section class="sensors-panel">
+                <h2>SENSOR READINGS</h2>
+                <div id="sensors-grid" class="sensors-grid">
+                    <!-- Sensor gauges will be inserted here -->
+                </div>
+            </section>
+
+            <!-- Right Panel: Alerts & Predictions -->
+            <section class="alerts-panel">
+                <div class="alerts-section">
+                    <h2>ALERTS</h2>
+                    <div id="alerts-list" class="alerts-list">
+                        <!-- Alerts will be inserted here -->
+                    </div>
+                </div>
+                <div class="predictions-section">
+                    <h2>MAINTENANCE PREDICTIONS</h2>
+                    <div id="predictions-list" class="predictions-list">
+                        <!-- Predictions will be inserted here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Stats -->
+        <footer class="footer">
+            <div class="stat">
+                <span class="stat-label">Total Machines</span>
+                <span class="stat-value" id="total-machines">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Active Sensors</span>
+                <span class="stat-value" id="active-sensors">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Alerts (24h)</span>
+                <span class="stat-value" id="alert-count">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Avg Health</span>
+                <span class="stat-value" id="avg-health">--%</span>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+[workspace]
+members = [
+    "radar-types",
+    "radar-sim",
+]
+resolver = "2"
+
+[workspace.dependencies]
+radar-types = { path = "radar-types" }
+hdds = { path = "/projects/public/hdds/crates/hdds" }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+log = "0.4"
+env_logger = "0.11"
+rand = "0.8"
+anyhow = "1"

@@ -1,0 +1,286 @@
+// HDDS Naval Convoy Demo - IDL Type Definitions
+// SPDX-License-Identifier: MIT
+//
+// Simulates a naval convoy with escort ships, enemy submarines,
+// sonar detection, and torpedo/depth charge combat.
+
+module naval {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ENUMS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Ship classification
+    enum ShipClass {
+        CARRIER,        // Aircraft carrier (high value target)
+        DESTROYER,      // Anti-submarine warfare
+        FRIGATE,        // Escort, general purpose
+        CRUISER,        // Heavy escort
+        CARGO,          // Merchant vessel (convoy target)
+        TANKER,         // Oil/fuel tanker (convoy target)
+        PATROL          // Small patrol boat
+    };
+
+    // Ship allegiance
+    enum Allegiance {
+        FRIENDLY,
+        HOSTILE,
+        NEUTRAL
+    };
+
+    // Submarine state
+    enum SubState {
+        SURFACED,       // On surface, fast but visible
+        PERISCOPE,      // Periscope depth, can see/be seen
+        SHALLOW,        // 50-100m, quiet running
+        DEEP,           // 100-300m, very quiet, slow
+        EMERGENCY       // Emergency dive/surface
+    };
+
+    // Torpedo state
+    enum TorpedoPhase {
+        LAUNCHED,       // Just fired
+        SEARCHING,      // Active sonar search
+        ACQUIRED,       // Target locked
+        TERMINAL,       // Final run
+        DETONATED,      // Hit or proximity
+        MISSED          // Lost target
+    };
+
+    // Sonar type
+    enum SonarType {
+        ACTIVE_HULL,    // Hull-mounted active
+        ACTIVE_TOWED,   // Towed array active
+        PASSIVE,        // Listen only
+        DIPPING         // Helicopter dipping sonar
+    };
+
+    // Contact classification confidence
+    enum ContactConfidence {
+        UNKNOWN,        // Noise, could be anything
+        POSSIBLE,       // Maybe a sub
+        PROBABLE,       // Likely a sub
+        CONFIRMED       // Definitely identified
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SURFACE VESSELS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Surface ship - convoy members and escorts
+    @appendable
+    @topic
+    struct Ship {
+        @key uint32 ship_id;
+        string<32> name;              // "USS Enterprise", "MV Atlantic Carrier"
+        ShipClass ship_class;
+        Allegiance allegiance;
+
+        // Position (nautical miles from origin)
+        float x_nm;
+        float y_nm;
+        float heading_deg;            // 0-360, 0 = North
+        float speed_kts;              // Speed in knots
+
+        // Status
+        float hull_integrity;         // 0.0 - 1.0
+        boolean active_sonar;         // Sonar transmitting
+        uint8 torpedoes_remaining;    // Weapon loadout
+        uint8 depth_charges_remaining;
+
+        uint64 timestamp_us;
+    };
+
+    // Convoy formation info
+    @appendable
+    @topic
+    struct ConvoyStatus {
+        @key uint32 convoy_id;
+        string<32> convoy_name;       // "CONVOY ALPHA"
+        float center_x_nm;            // Formation center
+        float center_y_nm;
+        float base_heading_deg;
+        float base_speed_kts;
+        uint8 ship_count;
+        uint8 escort_count;
+        string<128> status_message;   // "On course", "Under attack", etc.
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SUBMARINES
+    // ═══════════════════════════════════════════════════════════════════════
+
+    @appendable
+    @topic
+    struct Submarine {
+        @key uint32 sub_id;
+        string<32> name;              // "K-219", "USS Seawolf"
+        Allegiance allegiance;
+
+        // Position
+        float x_nm;
+        float y_nm;
+        float depth_m;                // Negative = underwater
+        float heading_deg;
+        float speed_kts;
+
+        // State
+        SubState state;
+        float battery_percent;        // 0-100, affects speed when submerged
+        float noise_level;            // 0.0 = silent, 1.0 = very noisy
+        uint8 torpedoes_remaining;
+
+        // Only visible to own side
+        float distance_to_convoy_nm;
+
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SONAR SYSTEM
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Active sonar ping - radiates from source
+    @appendable
+    @topic
+    struct SonarPing {
+        @key uint32 ping_id;
+        uint32 source_id;             // Ship or sub that pinged
+        SonarType sonar_type;
+        float x_nm;                   // Origin position
+        float y_nm;
+        float radius_nm;              // Current ping radius (expands)
+        float max_range_nm;           // Maximum detection range
+        float bearing_deg;            // Directional ping (360 = omnidirectional)
+        float beam_width_deg;         // Beam width (360 = full circle)
+        uint64 timestamp_us;
+    };
+
+    // Sonar contact - detected object
+    @appendable
+    @topic
+    struct SonarContact {
+        @key uint32 contact_id;
+        uint32 detector_id;           // Ship that detected
+
+        // Estimated position (with uncertainty)
+        float bearing_deg;            // Relative to detector
+        float range_nm;               // Estimated (passive) or measured (active)
+        float range_uncertainty_nm;   // Position error
+        float depth_estimate_m;       // If known
+
+        // Classification
+        ContactConfidence confidence;
+        string<32> classification;    // "SUBMARINE", "WHALE", "THERMAL LAYER"
+        float signal_strength;        // 0.0 - 1.0
+
+        // Tracking
+        float estimated_speed_kts;
+        float estimated_heading_deg;
+        uint64 first_detected_us;
+        uint64 last_update_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // WEAPONS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Torpedo - submarine or ship launched
+    @appendable
+    @topic
+    struct Torpedo {
+        @key uint32 torpedo_id;
+        uint32 launcher_id;           // Ship or sub that fired
+        uint32 target_id;             // Target (if acquired)
+        Allegiance allegiance;
+
+        // Position & movement
+        float x_nm;
+        float y_nm;
+        float depth_m;
+        float heading_deg;
+        float speed_kts;              // Typically 40-50 kts
+
+        // State
+        TorpedoPhase phase;
+        float fuel_remaining;         // 0.0 - 1.0
+        float search_radius_nm;       // Active sonar cone
+
+        uint64 timestamp_us;
+    };
+
+    // Depth charge - dropped from surface ship
+    @appendable
+    @topic
+    struct DepthCharge {
+        @key uint32 charge_id;
+        uint32 launcher_id;           // Ship that dropped
+
+        float x_nm;
+        float y_nm;
+        float depth_m;                // Sinking toward set depth
+        float set_depth_m;            // Detonation depth
+        float sink_rate_m_s;          // Typically 3-5 m/s
+
+        boolean detonated;
+        float blast_radius_m;         // Lethal radius
+
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // EVENTS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Explosion - torpedo hit, depth charge, etc.
+    @appendable
+    @topic
+    struct Explosion {
+        @key uint32 explosion_id;
+
+        float x_nm;
+        float y_nm;
+        float depth_m;                // 0 = surface, negative = underwater
+
+        float magnitude;              // 0.0 - 1.0 for visual scaling
+        string<32> explosion_type;    // "TORPEDO_HIT", "DEPTH_CHARGE", "SHIP_SINKING"
+        uint32 source_id;             // Weapon that caused it
+        uint32 victim_id;             // Ship/sub that was hit (0 if miss)
+
+        uint64 timestamp_us;
+    };
+
+    // Combat event log
+    @appendable
+    @topic
+    struct CombatEvent {
+        @key uint32 event_id;
+        string<16> event_type;        // "CONTACT", "LAUNCH", "HIT", "KILL", "MISS"
+        string<256> description;      // Human readable
+        uint32 actor_id;              // Who did it
+        uint32 target_id;             // Who was affected
+        uint8 priority;               // 0=info, 1=warning, 2=critical
+        uint64 timestamp_us;
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ENVIRONMENT
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Sea conditions affecting sonar and movement
+    @appendable
+    @topic
+    struct SeaState {
+        @key uint32 zone_id;          // 0 = global
+        float wave_height_m;          // Sea state (0-10m)
+        float wave_period_s;          // Wave period
+        float wave_direction_deg;     // Wave direction
+        float wind_speed_kts;
+        float wind_direction_deg;
+        float visibility_nm;          // Surface visibility
+        float thermal_layer_depth_m;  // Thermocline (affects sonar)
+        uint64 timestamp_us;
+    };
+
+};

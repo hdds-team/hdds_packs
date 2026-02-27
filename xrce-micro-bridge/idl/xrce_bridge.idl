@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// XRCE Micro Bridge types
+// Generate: hddsgen gen rust idl/xrce_bridge.idl -o xrce-types/src/generated.rs
+
+@topic
+struct MicroSensorData {
+    @key string client_id;
+    string sensor_type;
+    double value;
+    string unit;
+    float battery_percent;
+    int32_t rssi_dbm;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct ActuatorCommand {
+    @key string target_client;
+    string command_type;
+    double value;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct XrceSessionInfo {
+    @key string client_key;
+    int32_t session_id;
+    string transport;
+    boolean connected;
+    int32_t reliable_streams;
+    int32_t best_effort_streams;
+    int64_t bytes_received;
+    int64_t bytes_sent;
+    int64_t timestamp_ns;
+};

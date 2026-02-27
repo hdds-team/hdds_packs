@@ -1,0 +1,12 @@
+[package]
+name = "wan-site"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+wan-types = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }

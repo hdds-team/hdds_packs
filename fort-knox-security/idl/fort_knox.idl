@@ -1,0 +1,94 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Fort Knox Security - DDS IDL types
+// Generate: hddsgen gen rust idl/fort_knox.idl -o knox-types/src/generated.rs
+
+enum Zone {
+    PUBLIC_LOBBY   = 0,
+    TELLER_AREA    = 1,
+    VAULT_CORRIDOR = 2,
+    VAULT_ROOM     = 3,
+    SERVER_ROOM    = 4
+};
+
+enum Severity {
+    INFO     = 0,
+    WARNING  = 1,
+    CRITICAL = 2,
+    BREACH   = 3
+};
+
+enum SensorType {
+    CAMERA    = 0,
+    MOTION    = 1,
+    DOOR      = 2,
+    VIBRATION = 3,
+    THERMAL   = 4,
+    WEIGHT    = 5
+};
+
+@topic
+struct SensorReading {
+    @key string sensor_id;
+    SensorType sensor_type;
+    Zone zone;
+    double value;
+    double confidence;
+    int64_t timestamp_ns;
+    boolean tamper_detected;
+};
+
+@topic
+struct SecurityAlert {
+    @key string alert_id;
+    Zone zone;
+    Severity severity;
+    string description;
+    int64_t timestamp_ns;
+    boolean acknowledged;
+};
+
+@topic
+struct AccessEvent {
+    @key string event_id;
+    string person_id;
+    string person_name;
+    Zone from_zone;
+    Zone to_zone;
+    boolean granted;
+    string reason;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct VaultStatus {
+    @key int32_t vault_id;
+    boolean door_sealed;
+    double internal_temperature;
+    double internal_humidity;
+    double weight_kg;
+    double expected_weight_kg;
+    boolean weight_anomaly;
+    int64_t last_opened_ns;
+};
+
+@topic
+struct AuditLogEntry {
+    @key int64_t sequence_number;
+    string source_entity;
+    string action;
+    string details;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct PermissionChange {
+    @key string change_id;
+    string subject;
+    Zone zone;
+    boolean grant;
+    string rule_expression;
+    int64_t effective_ns;
+    string authorized_by;
+};

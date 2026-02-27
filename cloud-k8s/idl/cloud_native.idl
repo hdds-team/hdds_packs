@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Cloud-Native K8s Discovery - IDL Type Definitions
+// Generate: hddsgen gen rust idl/cloud_native.idl -o cloud-types/src/generated.rs
+
+// Workload metric published by each simulated K8s pod
+@topic
+struct WorkloadMetric {
+    @key string pod_name;
+    string namespace;
+    string node_name;
+    double cpu_percent;
+    double memory_mb;
+    int32_t active_connections;
+    int32_t messages_per_second;
+    int64_t timestamp_ns;
+};
+
+// Discovery event emitted when participants join or leave
+@topic
+struct DiscoveryEvent {
+    @key string event_id;
+    string participant_guid;
+    string discovery_method;
+    string locator;
+    boolean joined;
+    int64_t timestamp_ns;
+};
+
+// Cross-site message for multi-cluster communication
+@topic
+struct CrossSiteMessage {
+    @key int64_t message_id;
+    string source_site;
+    string dest_site;
+    int32_t payload_size;
+    boolean via_turn_relay;
+    double round_trip_ms;
+    int64_t timestamp_ns;
+};
+
+// Auto-scaling decision made by the cluster monitor
+@topic
+struct ScalingDecision {
+    @key string decision_id;
+    string service_name;
+    int32_t current_replicas;
+    int32_t desired_replicas;
+    string reason;
+    int64_t timestamp_ns;
+};

@@ -1,0 +1,15 @@
+[package]
+name = "f1tenth-sim"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+f1tenth-types = { path = "../f1tenth-types" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+anyhow = { workspace = true }
+rand = { workspace = true }

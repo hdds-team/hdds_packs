@@ -1,0 +1,17 @@
+[package]
+name = "convoy-sim"
+version = "0.1.0"
+edition = "2021"
+description = "Convoy vehicle simulator - publishes GPS and status via HDDS"
+
+[[bin]]
+name = "convoy-sim"
+path = "src/main.rs"
+
+[dependencies]
+hdds = { workspace = true }
+convoy-types = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }

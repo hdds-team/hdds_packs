@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naval Convoy - HDDS Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a1929;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* HUD Overlay */
+        .hud {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .hud-panel {
+            background: rgba(10, 25, 41, 0.85);
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Top left - Convoy Status */
+        #convoy-status {
+            top: 20px;
+            left: 20px;
+        }
+
+        #convoy-status h2 {
+            color: #00bfff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-line {
+            font-size: 13px;
+            margin: 4px 0;
+            color: #a0c4e8;
+        }
+
+        .status-line .label {
+            color: #6090b0;
+        }
+
+        .status-alert {
+            color: #ff6b6b !important;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Top right - Mini map */
+        #mini-map {
+            top: 20px;
+            right: 20px;
+            width: 220px;
+            height: 220px;
+        }
+
+        #mini-map canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* Bottom left - Events log */
+        #events-log {
+            bottom: 20px;
+            left: 20px;
+            width: 350px;
+            max-height: 200px;
+        }
+
+        #events-log h3 {
+            color: #00bfff;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .event-item {
+            font-size: 11px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .event-item.priority-2 {
+            color: #ff6b6b;
+        }
+
+        .event-item.priority-1 {
+            color: #ffd93d;
+        }
+
+        .event-item .time {
+            color: #6090b0;
+            margin-right: 8px;
+        }
+
+        /* Bottom right - Controls */
+        #controls {
+            bottom: 20px;
+            right: 20px;
+            pointer-events: auto;
+        }
+
+        #controls button {
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            color: #00bfff;
+            padding: 8px 16px;
+            margin: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        #controls button:hover {
+            background: rgba(0, 150, 255, 0.4);
+        }
+
+        #controls button.active {
+            background: rgba(0, 150, 255, 0.5);
+            border-color: #00bfff;
+        }
+
+        /* Connection status */
+        #connection-status {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 101;
+        }
+
+        .status-connected {
+            color: #4ade80;
+        }
+
+        .status-disconnected {
+            color: #f87171;
+        }
+
+        /* Sonar ping effect */
+        .sonar-ping {
+            position: absolute;
+            border: 2px solid rgba(0, 255, 100, 0.8);
+            border-radius: 50%;
+            animation: sonar-expand 2s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes sonar-expand {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Loading screen */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a1929;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #loading h1 {
+            color: #00bfff;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        #loading p {
+            color: #6090b0;
+            font-size: 14px;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 150, 255, 0.2);
+            border-top-color: #00bfff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <h1>NAVAL CONVOY</h1>
+        <div class="loading-spinner"></div>
+        <p>Connecting to simulation...</p>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="connection-status" class="hud hud-panel">
+        <span class="status-disconnected">Disconnected</span>
+    </div>
+
+    <div id="convoy-status" class="hud hud-panel">
+        <h2>Convoy Alpha</h2>
+        <div class="status-line"><span class="label">Ships:</span> <span id="ship-count">-</span></div>
+        <div class="status-line"><span class="label">Escorts:</span> <span id="escort-count">-</span></div>
+        <div class="status-line"><span class="label">Heading:</span> <span id="convoy-heading">-</span></div>
+        <div class="status-line"><span class="label">Speed:</span> <span id="convoy-speed">-</span></div>
+        <div class="status-line"><span class="label">Status:</span> <span id="convoy-status-text">-</span></div>
+    </div>
+
+    <div id="mini-map" class="hud hud-panel">
+        <canvas id="minimap-canvas" width="200" height="200"></canvas>
+    </div>
+
+    <div id="events-log" class="hud hud-panel">
+        <h3>Combat Log</h3>
+        <div id="events-list"></div>
+    </div>
+
+    <div id="controls" class="hud hud-panel">
+        <button id="btn-top" class="active">Top View</button>
+        <button id="btn-follow">Follow Convoy</button>
+        <button id="btn-free">Free Camera</button>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

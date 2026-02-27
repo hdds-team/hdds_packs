@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = ["cockpit-types", "cockpit-sim", "cockpit-panel"]
+
+[workspace.dependencies]
+hdds = { path = "/projects/public/hdds/crates/hdds", features = ["qos-loaders"] }
+cockpit-types = { path = "cockpit-types" }
+tokio = { version = "1.43", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+rand = "0.8"
+fltk = "1.4"
+log = "0.4"
+env_logger = "0.11"
+anyhow = "1"

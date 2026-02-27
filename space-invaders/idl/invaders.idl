@@ -1,0 +1,125 @@
+// Space Invaders DDS - IDL Types
+// Classic arcade game with DDS-based multiplayer
+
+module invaders {
+
+    // Alien types (different point values and behaviors)
+    enum AlienType {
+        ALIEN_BASIC,      // 10 pts, slow
+        ALIEN_FAST,       // 20 pts, faster movement
+        ALIEN_HEAVY,      // 30 pts, takes 2 hits
+        ALIEN_BOSS        // 100 pts, appears randomly at top
+    };
+
+    // Game state
+    enum GamePhase {
+        PHASE_WAITING,    // Waiting for players
+        PHASE_PLAYING,    // Game in progress
+        PHASE_WAVE_CLEAR, // Wave completed, next wave incoming
+        PHASE_GAME_OVER   // Player lost all lives
+    };
+
+    // Power-up types
+    enum PowerUpType {
+        POWER_NONE,
+        POWER_RAPID_FIRE,   // Faster shooting
+        POWER_SHIELD,       // One free hit
+        POWER_TRIPLE_SHOT   // 3 bullets at once
+    };
+
+    // Player ship state
+    @appendable
+    @topic struct Player {
+        @key uint32 player_id;
+        float x;              // Position X (0-800)
+        float y;              // Position Y (fixed near bottom)
+        uint8 lives;          // Remaining lives (0-3)
+        uint32 score;         // Current score
+        PowerUpType power_up; // Active power-up
+        float power_up_time;  // Remaining power-up duration
+        boolean alive;        // Currently alive (not respawning)
+        uint64 timestamp_us;
+    };
+
+    // Alien entity
+    @appendable
+    @topic struct Alien {
+        @key uint32 alien_id;
+        AlienType alien_type;
+        float x;              // Position X
+        float y;              // Position Y
+        int8 health;          // HP (1 for basic, 2 for heavy)
+        boolean alive;        // Still in play
+        uint8 row;            // Formation row (0-4)
+        uint8 col;            // Formation column (0-10)
+        uint64 timestamp_us;
+    };
+
+    // Bullet (player or alien)
+    @appendable
+    @topic struct Bullet {
+        @key uint32 bullet_id;
+        float x;
+        float y;
+        float velocity_y;     // Negative = up (player), Positive = down (alien)
+        boolean from_player;  // true = player bullet, false = alien bullet
+        boolean active;       // Still in flight
+        uint64 timestamp_us;
+    };
+
+    // Explosion effect
+    @appendable
+    @topic struct Explosion {
+        @key uint32 explosion_id;
+        float x;
+        float y;
+        uint8 frame;          // Animation frame (0-3)
+        boolean active;
+        uint64 timestamp_us;
+    };
+
+    // Power-up pickup
+    @appendable
+    @topic struct PowerUp {
+        @key uint32 powerup_id;
+        PowerUpType power_type;
+        float x;
+        float y;
+        boolean active;
+        uint64 timestamp_us;
+    };
+
+    // Player input commands
+    @appendable
+    @topic struct PlayerInput {
+        @key uint32 player_id;
+        int8 move_x;          // -1 = left, 0 = none, 1 = right
+        boolean fire;         // Shoot button pressed
+        uint64 timestamp_us;
+    };
+
+    // Overall game state
+    @appendable
+    @topic struct GameState {
+        GamePhase phase;
+        uint8 current_wave;       // Wave number (1, 2, 3...)
+        uint16 aliens_remaining;  // Aliens left in current wave
+        uint16 aliens_total;      // Total aliens in wave
+        float alien_speed;        // Current alien movement speed
+        uint32 high_score;        // Session high score
+        uint64 timestamp_us;
+    };
+
+    // Kill event (for kill feed / effects)
+    @appendable
+    @topic struct KillEvent {
+        @key uint32 event_id;
+        uint32 alien_id;
+        uint32 player_id;
+        AlienType alien_type;
+        uint16 points;            // Points awarded
+        float x;
+        float y;
+        uint64 timestamp_us;
+    };
+};

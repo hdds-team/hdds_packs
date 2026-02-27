@@ -1,0 +1,138 @@
+/*
+ * Convoy Escort Demo - HDDS IDL
+ *
+ * Real-time VIP convoy tracking and coordination via DDS
+ */
+
+module convoy {
+
+    /* Vehicle role in the convoy */
+    enum VehicleRole {
+        LEAD,       // Lead escort vehicle
+        VIP,        // Protected VIP vehicle
+        ESCORT,     // Side escort
+        REAR        // Rear guard
+    };
+
+    /* Vehicle operational status */
+    enum VehicleStatus {
+        OPERATIONAL,
+        DAMAGED,
+        DISABLED,
+        OFFLINE
+    };
+
+    /* Alert threat types */
+    enum AlertType {
+        IED,            // Improvised explosive device
+        AMBUSH,         // Enemy ambush
+        ROADBLOCK,      // Road obstruction
+        VEHICLE_BREAKDOWN,
+        CIVILIAN_HAZARD,
+        ALL_CLEAR
+    };
+
+    /* Threat level */
+    enum ThreatLevel {
+        GREEN,      // Safe
+        YELLOW,     // Caution
+        ORANGE,     // Elevated
+        RED         // Critical
+    };
+
+    /* Formation types */
+    enum FormationType {
+        COLUMN,         // Single file
+        STAGGERED,      // Offset positions
+        DIAMOND,        // Diamond protection
+        SCATTER         // Emergency scatter
+    };
+
+    /* GPS position of a vehicle - published at 10Hz */
+    @appendable
+    struct VehicleGPS {
+        @key string<32> vehicle_id;
+        VehicleRole role;
+        double latitude;
+        double longitude;
+        float altitude_m;
+        float heading_deg;      // 0-360, 0=North
+        float speed_kmh;
+        float course_deg;       // Direction of travel
+        uint64 timestamp_ms;
+    };
+
+    /* Vehicle detailed status - published at 1Hz */
+    @appendable
+    struct VehicleState {
+        @key string<32> vehicle_id;
+        VehicleStatus status;
+        float fuel_percent;
+        float battery_volts;
+        uint8 passengers;
+        boolean lights_on;
+        boolean sirens_on;
+        string<128> driver_name;
+    };
+
+    /* Convoy alert - published on event */
+    @appendable
+    struct ConvoyAlert {
+        @key uint32 alert_id;
+        AlertType alert_type;
+        ThreatLevel threat_level;
+        double latitude;
+        double longitude;
+        float radius_m;         // Affected area
+        string<256> description;
+        string<32> reported_by;
+        uint64 timestamp_ms;
+    };
+
+    /* Formation command - published on demand */
+    @appendable
+    struct FormationCommand {
+        uint32 command_id;
+        FormationType formation;
+        float target_speed_kmh;
+        float spacing_m;        // Inter-vehicle spacing
+        string<32> issued_by;
+        uint64 timestamp_ms;
+    };
+
+    /* Route waypoint */
+    @appendable
+    struct Waypoint {
+        uint16 seq_num;
+        double latitude;
+        double longitude;
+        float expected_speed_kmh;
+        boolean checkpoint;     // Stop required
+    };
+
+    /* Full route definition */
+    @appendable
+    struct ConvoyRoute {
+        @key string<32> route_id;
+        string<64> route_name;
+        sequence<Waypoint, 100> waypoints;
+        uint64 created_ms;
+    };
+
+    /* Convoy summary status - for C2 display */
+    @appendable
+    struct ConvoySummary {
+        @key string<32> convoy_id;
+        string<64> convoy_name;
+        uint8 total_vehicles;
+        uint8 operational_count;
+        ThreatLevel current_threat;
+        FormationType current_formation;
+        float progress_percent;     // Route completion
+        double center_lat;
+        double center_lon;
+        float avg_speed_kmh;
+        uint64 eta_ms;             // Estimated time of arrival
+    };
+
+};

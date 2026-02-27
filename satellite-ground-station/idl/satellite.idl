@@ -1,0 +1,107 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Satellite Ground Station Network types
+// Generate: hddsgen gen rust idl/satellite.idl -o sat-types/src/generated.rs
+
+/// Satellite operational status
+enum SatStatus {
+    ACTIVE    = 0,
+    STANDBY   = 1,
+    ECLIPSE   = 2,
+    SAFEMODE  = 3,
+    LOST      = 4
+};
+
+/// Ground station operational mode
+enum StationMode {
+    IDLE       = 0,
+    TRACKING   = 1,
+    DOWNLINK   = 2,
+    UPLINK     = 3,
+    HANDOFF    = 4,
+    MAINTENANCE = 5
+};
+
+/// Pass visibility status
+enum PassPhase {
+    UPCOMING    = 0,
+    AOS         = 1,
+    TRACKING_PASS = 2,
+    LOS         = 3,
+    COMPLETED   = 4
+};
+
+/// Satellite position in orbit (1 Hz per satellite)
+@topic
+struct SatellitePosition {
+    @key string norad_id;
+    string name;
+    double lat_deg;
+    double lon_deg;
+    double alt_km;
+    double velocity_kmps;
+    double inclination_deg;
+    double period_min;
+    SatStatus status;
+    int64_t timestamp_ns;
+};
+
+/// Ground station status (1 Hz)
+@topic
+struct GroundStation {
+    @key string station_id;
+    string name;
+    double lat_deg;
+    double lon_deg;
+    double alt_m;
+    StationMode mode;
+    double antenna_az_deg;
+    double antenna_el_deg;
+    string tracking_sat;
+    double signal_db;
+    double data_rate_kbps;
+    int64_t timestamp_ns;
+};
+
+/// Satellite pass prediction (event)
+@topic
+struct PassPrediction {
+    @key uint32_t pass_id;
+    string norad_id;
+    string station_id;
+    PassPhase phase;
+    double max_elevation_deg;
+    double aos_az_deg;
+    double los_az_deg;
+    uint64_t aos_epoch_ms;
+    uint64_t los_epoch_ms;
+    uint32_t duration_s;
+    int64_t timestamp_ns;
+};
+
+/// Telemetry frame received from satellite (event)
+@topic
+struct TelemetryFrame {
+    @key string norad_id;
+    string station_id;
+    uint32_t frame_seq;
+    double battery_v;
+    double solar_w;
+    double cpu_temp_c;
+    double signal_strength_db;
+    uint32_t bit_errors;
+    uint32_t bytes_received;
+    int64_t timestamp_ns;
+};
+
+/// Orbital alert (conjunction, decay, etc.)
+@topic
+struct OrbitalAlert {
+    @key uint32_t alert_id;
+    string norad_id;
+    string alert_type;
+    string description;
+    double miss_distance_km;
+    int64_t timestamp_ns;
+};

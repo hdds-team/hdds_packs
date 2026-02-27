@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders DDS</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="game-container">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+            <div id="hud">
+                <div id="score">SCORE: <span id="score-value">0</span></div>
+                <div id="wave">WAVE: <span id="wave-value">1</span></div>
+                <div id="lives">LIVES: <span id="lives-value">3</span></div>
+                <div id="high-score">HI: <span id="high-score-value">0</span></div>
+            </div>
+            <div id="connection-status">CONNECTING...</div>
+            <div id="game-over" class="hidden">
+                <h1>GAME OVER</h1>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">PRESS SPACE TO RESTART</button>
+            </div>
+            <div id="wave-clear" class="hidden">
+                <h1>WAVE CLEAR!</h1>
+                <p>Get ready for wave <span id="next-wave">2</span></p>
+            </div>
+        </div>
+        <div id="controls-info">
+            <p>← → MOVE | SPACE FIRE | R RESTART</p>
+        </div>
+    </div>
+    <script type="module" src="src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRONE RACING</title>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Three.js canvas will be inserted here -->
+    </div>
+
+    <!-- HUD Overlay -->
+    <div class="hud">
+        <!-- Race Status -->
+        <div class="race-status">
+            <div class="countdown" id="countdown"></div>
+            <div class="race-time" id="race-time">00:00.000</div>
+        </div>
+
+        <!-- Speed & Position -->
+        <div class="player-hud">
+            <div class="speed-display">
+                <span class="speed-value" id="speed">0</span>
+                <span class="speed-unit">km/h</span>
+            </div>
+            <div class="position-display">
+                <span class="position-value" id="position">-</span>
+                <span class="position-suffix" id="position-suffix">st</span>
+            </div>
+            <div class="lap-display">
+                LAP <span id="current-lap">0</span>/<span id="total-laps">3</span>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard">
+            <h3>LEADERBOARD</h3>
+            <div id="leaderboard-list"></div>
+        </div>
+
+        <!-- Minimap -->
+        <div class="minimap">
+            <canvas id="minimap-canvas" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connection-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Connecting...</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-help">
+        <span>W/S: Pitch</span>
+        <span>A/D: Yaw</span>
+        <span>Q/E: Roll</span>
+        <span>SHIFT: Throttle</span>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

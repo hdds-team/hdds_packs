@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// HDDS QoS Hot-Reload Cockpit Demo types
+// Generate: hddsgen gen rust idl/cockpit.idl -o cockpit-types/src/generated.rs
+
+@topic
+struct SensorFeed {
+    @key string sensor_id;
+    double value;
+    double quality;        // 0.0-1.0
+    int64_t timestamp_ns;
+};
+
+@topic
+struct QosSnapshot {
+    @key string entity_name;
+    string reliability;       // "RELIABLE" or "BEST_EFFORT"
+    int32_t deadline_ms;
+    int32_t history_depth;
+    string partition;
+    int32_t transport_priority;
+    int32_t latency_budget_ms;
+    int32_t lifespan_ms;
+    int32_t time_based_filter_ms;
+    int64_t captured_ns;
+};
+
+@topic
+struct MetricsDelta {
+    @key string entity_name;
+    double latency_before_us;
+    double latency_after_us;
+    int32_t missed_deadlines_before;
+    int32_t missed_deadlines_after;
+    double throughput_before_mps;
+    double throughput_after_mps;
+    int64_t timestamp_ns;
+};

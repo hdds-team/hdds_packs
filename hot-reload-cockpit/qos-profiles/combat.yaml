@@ -1,0 +1,7 @@
+profiles:
+  combat:
+    deadline_ms: 10
+    latency_budget_ms: 1
+    transport_priority: 7
+    history_depth: 5
+    reliability: reliable

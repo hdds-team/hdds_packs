@@ -1,0 +1,114 @@
+/*
+ * Drone Racing Demo - HDDS IDL
+ *
+ * 3D drone racing game with real-time telemetry via DDS
+ */
+
+module racing {
+
+    /* Race phase */
+    enum RacePhase {
+        WAITING,
+        COUNTDOWN,
+        RACING,
+        FINISHED
+    };
+
+    /* Drone operational state */
+    enum DroneState {
+        IDLE,
+        READY,
+        RACING,
+        CRASHED,
+        FINISHED
+    };
+
+    /* Drone state - position, rotation, velocity (published at ~30Hz) */
+    @appendable
+    struct Drone {
+        @key uint32 drone_id;
+        string<32> name;
+        uint32 color;                // RGB hex color
+        // Position (world units)
+        float x;
+        float y;                     // Height
+        float z;
+        // Velocity
+        float vx;
+        float vy;
+        float vz;
+        // Rotation (euler angles in radians)
+        float pitch;                 // Nose up/down
+        float yaw;                   // Heading
+        float roll;                  // Bank angle
+        // State
+        DroneState state;
+        float throttle;              // 0.0 - 1.0
+        uint8 current_gate;          // Next gate to pass
+        uint8 lap;
+        uint8 position;              // Race position (1st, 2nd, etc.)
+        uint32 best_lap_ms;
+        uint32 total_time_ms;
+        uint64 timestamp_us;
+    };
+
+    /* Drone input from player (published on input) */
+    @appendable
+    struct DroneInput {
+        @key uint32 drone_id;
+        float throttle;              // 0.0 - 1.0
+        float pitch;                 // -1.0 to 1.0
+        float yaw;                   // -1.0 to 1.0
+        float roll;                  // -1.0 to 1.0
+        uint32 seq;
+        uint64 timestamp_us;
+    };
+
+    /* Race gate/checkpoint (published once at race start) */
+    @appendable
+    struct Gate {
+        @key uint8 gate_id;
+        float x;
+        float y;
+        float z;
+        float rotation;              // Yaw rotation
+        float width;
+        float height;
+        boolean is_start_finish;
+    };
+
+    /* Gate pass event (published on gate crossing) */
+    @appendable
+    struct GatePass {
+        uint32 drone_id;
+        uint8 gate_id;
+        uint8 lap;
+        uint32 time_ms;
+        uint64 timestamp_us;
+    };
+
+    /* Race state (published at ~1Hz by race controller) */
+    @appendable
+    struct RaceState {
+        RacePhase phase;
+        uint8 countdown;             // 3, 2, 1, GO!
+        uint8 total_laps;
+        uint32 elapsed_ms;
+        uint8 drone_count;
+        uint64 timestamp_us;
+    };
+
+    /* Leaderboard entry (published on position changes) */
+    @appendable
+    struct LeaderboardEntry {
+        @key uint8 position;
+        uint32 drone_id;
+        string<32> drone_name;
+        uint8 lap;
+        uint8 gate;
+        uint32 total_time_ms;
+        uint32 best_lap_ms;
+        uint64 timestamp_us;
+    };
+
+};

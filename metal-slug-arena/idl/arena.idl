@@ -1,0 +1,184 @@
+/*
+ * Metal Slug Arena Demo - HDDS IDL
+ *
+ * Multiplayer 2D arena combat game with real-time state sync via DDS.
+ * Bidirectional: server publishes game state, clients publish inputs.
+ */
+
+module arena {
+
+    /* Player state */
+    enum PlayerState {
+        IDLE,
+        RUNNING,
+        JUMPING,
+        FALLING,
+        SHOOTING,
+        DYING,
+        DEAD,
+        IN_VEHICLE
+    };
+
+    /* Weapon types */
+    enum WeaponType {
+        PISTOL,         // Default, unlimited ammo
+        HEAVY_MG,       // "H" - Heavy Machine Gun
+        ROCKET,         // "R" - Rocket Launcher
+        SHOTGUN,        // "S" - Shotgun
+        LASER,          // "L" - Laser
+        FLAME,          // "F" - Flamethrower
+        GRENADE         // Throwable
+    };
+
+    /* Power-up types */
+    enum PowerUpType {
+        HEALTH,
+        HEAVY_MG,
+        ROCKET,
+        SHOTGUN,
+        GRENADE,
+        SHIELD,
+        SPEED
+    };
+
+    /* Team affiliation */
+    enum Team {
+        NONE,
+        RED,
+        BLUE
+    };
+
+    /* Game phase */
+    enum GamePhase {
+        WAITING,
+        COUNTDOWN,
+        PLAYING,
+        ROUND_END,
+        GAME_OVER
+    };
+
+    /* Explosion size */
+    enum ExplosionSize {
+        SMALL,
+        MEDIUM,
+        LARGE
+    };
+
+    /* Player event type */
+    enum PlayerEventType {
+        JOINED,
+        LEFT
+    };
+
+    /* Player state - broadcast by server at ~30Hz */
+    @appendable
+    struct Player {
+        @key uint32 player_id;
+        string<32> name;
+        Team team;
+        float x;
+        float y;
+        float vx;
+        float vy;
+        boolean facing_right;
+        PlayerState state;
+        uint8 health;               // 0-100
+        WeaponType weapon;
+        uint16 ammo;
+        uint16 kills;
+        uint16 deaths;
+        uint32 score;
+        uint64 timestamp_us;
+    };
+
+    /* Player input - sent by clients (published on input) */
+    @appendable
+    struct PlayerInput {
+        @key uint32 player_id;
+        boolean left;
+        boolean right;
+        boolean jump;
+        boolean shoot;
+        boolean grenade;
+        uint32 seq;                  // Sequence for server reconciliation
+        uint64 timestamp_us;
+    };
+
+    /* Projectile (bullets, rockets, etc.) - published by server */
+    @appendable
+    struct Projectile {
+        @key uint32 projectile_id;
+        uint32 owner_id;
+        WeaponType weapon;
+        float x;
+        float y;
+        float vx;
+        float vy;
+        uint8 damage;
+        boolean active;
+        uint64 timestamp_us;
+    };
+
+    /* Explosion effect - published on impact */
+    @appendable
+    struct Explosion {
+        @key uint32 explosion_id;
+        float x;
+        float y;
+        float size;                  // Radius
+        ExplosionSize explosion_type;
+        uint64 timestamp_us;
+    };
+
+    /* Power-up item - published by server */
+    @appendable
+    struct PowerUp {
+        @key uint32 powerup_id;
+        PowerUpType powerup_type;
+        float x;
+        float y;
+        boolean active;
+        uint64 timestamp_us;
+    };
+
+    /* Kill event - published on kill */
+    @appendable
+    struct KillEvent {
+        uint32 killer_id;
+        uint32 victim_id;
+        WeaponType weapon;
+        string<32> killer_name;
+        string<32> victim_name;
+        uint64 timestamp_us;
+    };
+
+    /* Game state - published at ~1Hz by server */
+    @appendable
+    struct GameState {
+        GamePhase phase;
+        uint16 time_remaining_s;
+        uint16 red_score;
+        uint16 blue_score;
+        uint8 player_count;
+        uint64 timestamp_us;
+    };
+
+    /* Chat message - published by clients */
+    @appendable
+    struct ChatMessage {
+        uint32 player_id;
+        string<32> player_name;
+        string<256> message;
+        uint64 timestamp_us;
+    };
+
+    /* Player join/leave event - published by server */
+    @appendable
+    struct PlayerEvent {
+        uint32 player_id;
+        string<32> player_name;
+        PlayerEventType event_type;
+        uint64 timestamp_us;
+    };
+
+};

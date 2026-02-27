@@ -1,0 +1,169 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// Fleet Service Mesh IDL - RPC Typed Dispatch Demo
+//
+// Defines request/reply types for a fleet management service mesh.
+// Each service exposes operations via typed DDS topics following
+// the DDS-RPC pattern (request topic + correlated reply topic).
+//
+// Services:
+//   - VehicleService:     Register and locate fleet vehicles
+//   - RouteService:       Compute routes between coordinates
+//   - MaintenanceService: Track maintenance tickets
+//   - AlertService:       Process fleet alerts
+//
+// Topic naming convention:
+//   rpc/{ServiceName}/{MethodName}/Request
+//   rpc/{ServiceName}/{MethodName}/Reply
+//
+// Generate: hddsgen gen rust idl/service_mesh.idl -o fleet-types/src/generated.rs
+
+// ============================================================================
+// Enumerations
+// ============================================================================
+
+enum VehicleState {
+    IDLE,
+    EN_ROUTE,
+    LOADING,
+    MAINTENANCE,
+    EMERGENCY
+};
+
+enum TicketStatus {
+    OPEN,
+    IN_PROGRESS,
+    RESOLVED,
+    CLOSED
+};
+
+enum AlertSeverity {
+    INFO,
+    WARNING,
+    CRITICAL,
+    EMERGENCY
+};
+
+// ============================================================================
+// VehicleService
+// ============================================================================
+
+@topic
+struct RegisterVehicleRequest {
+    @key string plate_number;
+    string model;
+    double max_payload_kg;
+    double home_lat;
+    double home_lon;
+};
+
+@topic
+struct RegisterVehicleReply {
+    @key string vehicle_id;
+    boolean success;
+    string error;
+};
+
+@topic
+struct LocateVehicleRequest {
+    @key string vehicle_id;
+};
+
+@topic
+struct LocateVehicleReply {
+    @key string vehicle_id;
+    double latitude;
+    double longitude;
+    VehicleState state;
+    double speed_kmh;
+    int64 last_update_ns;
+};
+
+// ============================================================================
+// RouteService
+// ============================================================================
+
+@topic
+struct ComputeRouteRequest {
+    double origin_lat;
+    double origin_lon;
+    double dest_lat;
+    double dest_lon;
+    boolean avoid_tolls;
+};
+
+@topic
+struct ComputeRouteReply {
+    @key string route_id;
+    double distance_km;
+    double estimated_minutes;
+    boolean success;
+};
+
+// ============================================================================
+// MaintenanceService
+// ============================================================================
+
+@topic
+struct CreateTicketRequest {
+    @key string vehicle_id;
+    string description;
+    uint32 priority;
+};
+
+@topic
+struct CreateTicketReply {
+    @key string ticket_id;
+    boolean success;
+    string error;
+};
+
+@topic
+struct GetTicketStatusRequest {
+    @key string ticket_id;
+};
+
+@topic
+struct GetTicketStatusReply {
+    @key string ticket_id;
+    string vehicle_id;
+    string description;
+    uint32 priority;
+    TicketStatus status;
+    int64 created_ns;
+    int64 updated_ns;
+};
+
+// ============================================================================
+// AlertService
+// ============================================================================
+
+@topic
+struct RaiseAlertRequest {
+    @key string vehicle_id;
+    AlertSeverity severity;
+    string message;
+    double latitude;
+    double longitude;
+};
+
+@topic
+struct RaiseAlertReply {
+    @key string alert_id;
+    boolean acknowledged;
+    string error;
+};
+
+// ============================================================================
+// Service Registry (discovery)
+// ============================================================================
+
+@topic
+struct ServiceRegistration {
+    @key string service_name;
+    string service_type;
+    string endpoint;
+    int64 registered_ns;
+    boolean healthy;
+};

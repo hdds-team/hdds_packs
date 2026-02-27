@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = ["sat-types", "sat-sim"]
+
+[workspace.dependencies]
+hdds = { path = "/projects/public/hdds/crates/hdds" }
+sat-types = { path = "sat-types" }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+rand = "0.8"

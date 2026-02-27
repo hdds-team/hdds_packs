@@ -1,0 +1,13 @@
+[package]
+name = "sensor-sim"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+sensor-types = { path = "../sensor-types" }
+tokio = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+anyhow = { workspace = true }
+rand = { workspace = true }

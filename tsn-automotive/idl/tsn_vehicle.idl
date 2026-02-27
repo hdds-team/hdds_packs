@@ -1,0 +1,52 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+// Copyright (c) 2025-2026 naskel.com
+//
+// TSN Automotive Vehicle ECU types
+// Generate: hddsgen gen rust idl/tsn_vehicle.idl -o tsn-types/src/generated.rs
+
+enum PriorityTier {
+    CRITICAL = 0,
+    HIGH     = 1,
+    MEDIUM   = 2,
+    LOW      = 3
+};
+
+@topic
+struct BrakeCommand {
+    @key int32_t ecu_id;
+    double pressure_bar;
+    boolean abs_active;
+    boolean emergency;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct SteeringCommand {
+    @key int32_t ecu_id;
+    double angle_deg;
+    double torque_nm;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct VehicleTelemetry {
+    @key int32_t vehicle_id;
+    double speed_kmh;
+    double rpm;
+    double fuel_percent;
+    double battery_volt;
+    double oil_temp_c;
+    int64_t timestamp_ns;
+};
+
+@topic
+struct TsnMetrics {
+    @key string interface_name;
+    PriorityTier tier;
+    int64_t packets_sent;
+    int64_t packets_on_time;
+    int64_t packets_late;
+    double p99_latency_us;
+    double jitter_us;
+    int64_t timestamp_ns;
+};

@@ -1,0 +1,10 @@
+[package]
+name = "naval-types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "HDDS Naval Convoy Demo - Type definitions"
+
+[dependencies]
+hdds = { workspace = true }
+serde = { workspace = true }
