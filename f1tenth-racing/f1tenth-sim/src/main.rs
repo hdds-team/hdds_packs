@@ -448,11 +448,26 @@ async fn main() -> Result<()> {
 
     let qos = QoS::best_effort();
 
-    let car_writer = participant.create_writer::<Car>(topics::CAR, qos.clone())?;
-    let track_writer = participant.create_writer::<TrackPoint>(topics::TRACK_POINT, qos.clone())?;
-    let state_writer = participant.create_writer::<RaceState>(topics::RACE_STATE, qos.clone())?;
-    let lap_writer = participant.create_writer::<LapEvent>(topics::LAP_EVENT, qos.clone())?;
-    let sector_writer = participant.create_writer::<SectorTime>(topics::SECTOR_TIME, qos.clone())?;
+    let car_writer = participant.topic::<Car>(topics::CAR)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let track_writer = participant.topic::<TrackPoint>(topics::TRACK_POINT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let state_writer = participant.topic::<RaceState>(topics::RACE_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let lap_writer = participant.topic::<LapEvent>(topics::LAP_EVENT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let sector_writer = participant.topic::<SectorTime>(topics::SECTOR_TIME)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
 
     info!("DDS participant ready (domain {})", DOMAIN_ID);
 

@@ -140,21 +140,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let qos = QoS::default();
 
     // Create writers for each topic
-    let sensor_writer = participant.create_writer::<SensorReading>(
-        topics::SENSOR_READING, qos.clone(),
-    )?;
-    let alert_writer = participant.create_writer::<SecurityAlert>(
-        topics::SECURITY_ALERT, qos.clone(),
-    )?;
-    let access_writer = participant.create_writer::<AccessEvent>(
-        topics::ACCESS_EVENT, qos.clone(),
-    )?;
-    let vault_writer = participant.create_writer::<VaultStatus>(
-        topics::VAULT_STATUS, qos.clone(),
-    )?;
-    let audit_writer = participant.create_writer::<AuditLogEntry>(
-        topics::AUDIT_LOG, qos,
-    )?;
+    let sensor_writer = participant.topic::<SensorReading>(topics::SENSOR_READING)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let alert_writer = participant.topic::<SecurityAlert>(topics::SECURITY_ALERT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let access_writer = participant.topic::<AccessEvent>(topics::ACCESS_EVENT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let vault_writer = participant.topic::<VaultStatus>(topics::VAULT_STATUS)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let audit_writer = participant.topic::<AuditLogEntry>(topics::AUDIT_LOG)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     tracing::info!("DDS participant created on domain 42");
     tracing::info!("Publishing {} sensors across {} zones", SENSORS.len(), ZONE_COUNT);

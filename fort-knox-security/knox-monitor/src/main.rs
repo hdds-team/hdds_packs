@@ -214,16 +214,28 @@ fn try_create_dds() -> Option<DdsContext> {
     let qos = hdds::QoS::default();
 
     let sensor_reader = participant
-        .create_reader::<SensorReading>(topics::SENSOR_READING, qos.clone())
+        .topic::<SensorReading>(topics::SENSOR_READING).ok()?
+        .reader()
+        .qos(qos.clone())
+        .build()
         .ok()?;
     let alert_reader = participant
-        .create_reader::<SecurityAlert>(topics::SECURITY_ALERT, qos.clone())
+        .topic::<SecurityAlert>(topics::SECURITY_ALERT).ok()?
+        .reader()
+        .qos(qos.clone())
+        .build()
         .ok()?;
     let access_reader = participant
-        .create_reader::<AccessEvent>(topics::ACCESS_EVENT, qos.clone())
+        .topic::<AccessEvent>(topics::ACCESS_EVENT).ok()?
+        .reader()
+        .qos(qos.clone())
+        .build()
         .ok()?;
     let vault_reader = participant
-        .create_reader::<VaultStatus>(topics::VAULT_STATUS, qos)
+        .topic::<VaultStatus>(topics::VAULT_STATUS).ok()?
+        .reader()
+        .qos(qos)
+        .build()
         .ok()?;
 
     tracing::info!("DDS readers created successfully on domain 42");

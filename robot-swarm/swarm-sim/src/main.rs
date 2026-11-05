@@ -364,10 +364,22 @@ async fn main() -> Result<()> {
 
     let qos = QoS::best_effort();
 
-    let robot_writer = participant.create_writer::<Robot>(topics::ROBOT, qos.clone())?;
-    let swarm_state_writer = participant.create_writer::<SwarmState>(topics::SWARM_STATE, qos.clone())?;
-    let obstacle_writer = participant.create_writer::<Obstacle>(topics::OBSTACLE, qos.clone())?;
-    let waypoint_writer = participant.create_writer::<Waypoint>(topics::WAYPOINT, qos)?;
+    let robot_writer = participant.topic::<Robot>(topics::ROBOT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let swarm_state_writer = participant.topic::<SwarmState>(topics::SWARM_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let obstacle_writer = participant.topic::<Obstacle>(topics::OBSTACLE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let waypoint_writer = participant.topic::<Waypoint>(topics::WAYPOINT)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     log::info!("DDS participant ready");
 

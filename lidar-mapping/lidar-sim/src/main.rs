@@ -340,10 +340,22 @@ async fn main() -> Result<()> {
 
     let qos = QoS::best_effort();
 
-    let pose_writer = participant.create_writer::<RobotPose>(topics::ROBOT_POSE, qos.clone())?;
-    let batch_writer = participant.create_writer::<LidarBatch>(topics::LIDAR_BATCH, qos.clone())?;
-    let map_batch_writer = participant.create_writer::<MapBatch>(topics::MAP_BATCH, qos.clone())?;
-    let wall_writer = participant.create_writer::<WallSegment>(topics::WALL, qos)?;
+    let pose_writer = participant.topic::<RobotPose>(topics::ROBOT_POSE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let batch_writer = participant.topic::<LidarBatch>(topics::LIDAR_BATCH)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let map_batch_writer = participant.topic::<MapBatch>(topics::MAP_BATCH)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let wall_writer = participant.topic::<WallSegment>(topics::WALL)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     log::info!("DDS participant ready");
 

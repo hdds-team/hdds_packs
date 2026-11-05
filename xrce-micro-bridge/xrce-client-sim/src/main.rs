@@ -163,7 +163,8 @@ fn main() -> anyhow::Result<()> {
 
     // Create writer for sensor data
     let sensor_writer = participant
-        .create_writer::<MicroSensorData>("xrce/sensors", QoS::default())
+        .topic::<MicroSensorData>("xrce/sensors")
+        .and_then(|t| t.writer().qos(QoS::default()).build())
         .expect("Failed to create sensor writer");
 
     tracing::info!("Writer created on topic 'xrce/sensors'");

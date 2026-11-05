@@ -320,25 +320,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     // --- Phase 4: Create writers with real TSN QoS per tier ---
-    let brake_writer = participant.create_writer::<BrakeCommand>(
-        "tsn/brake",
-        qos_for_tier(PriorityTier::CRITICAL),
-    )?;
+    let brake_writer = participant.topic::<BrakeCommand>("tsn/brake")?
+        .writer()
+        .qos(qos_for_tier(PriorityTier::CRITICAL))
+        .build()?;
 
-    let steering_writer = participant.create_writer::<SteeringCommand>(
-        "tsn/steering",
-        qos_for_tier(PriorityTier::CRITICAL),
-    )?;
+    let steering_writer = participant.topic::<SteeringCommand>("tsn/steering")?
+        .writer()
+        .qos(qos_for_tier(PriorityTier::CRITICAL))
+        .build()?;
 
-    let telemetry_writer = participant.create_writer::<VehicleTelemetry>(
-        "tsn/telemetry",
-        qos_for_tier(PriorityTier::HIGH),
-    )?;
+    let telemetry_writer = participant.topic::<VehicleTelemetry>("tsn/telemetry")?
+        .writer()
+        .qos(qos_for_tier(PriorityTier::HIGH))
+        .build()?;
 
-    let metrics_writer = participant.create_writer::<TsnMetrics>(
-        "tsn/metrics",
-        qos_for_tier(PriorityTier::LOW),
-    )?;
+    let metrics_writer = participant.topic::<TsnMetrics>("tsn/metrics")?
+        .writer()
+        .qos(qos_for_tier(PriorityTier::LOW))
+        .build()?;
 
     println!("Writers created with TSN-aware QoS:");
     println!("  tsn/brake     CRITICAL  reliable  deadline=1ms   transport_priority=100");

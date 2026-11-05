@@ -127,22 +127,27 @@ fn run_vehicle_service(
 
     // Service registration writer
     let reg_writer = participant
-        .create_writer::<ServiceRegistration>(topics::SERVICE_REGISTRY, qos.clone())
+        .topic::<ServiceRegistration>(topics::SERVICE_REGISTRY)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create service registry writer");
 
     // Request readers and reply writers
     let register_reader = participant
-        .create_reader::<RegisterVehicleRequest>(topics::REGISTER_VEHICLE_REQ, qos.clone())
+        .topic::<RegisterVehicleRequest>(topics::REGISTER_VEHICLE_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create RegisterVehicle request reader");
     let register_writer = participant
-        .create_writer::<RegisterVehicleReply>(topics::REGISTER_VEHICLE_REP, qos.clone())
+        .topic::<RegisterVehicleReply>(topics::REGISTER_VEHICLE_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create RegisterVehicle reply writer");
 
     let locate_reader = participant
-        .create_reader::<LocateVehicleRequest>(topics::LOCATE_VEHICLE_REQ, qos.clone())
+        .topic::<LocateVehicleRequest>(topics::LOCATE_VEHICLE_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create LocateVehicle request reader");
     let locate_writer = participant
-        .create_writer::<LocateVehicleReply>(topics::LOCATE_VEHICLE_REP, qos.clone())
+        .topic::<LocateVehicleReply>(topics::LOCATE_VEHICLE_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create LocateVehicle reply writer");
 
     info!("VehicleService started ({} vehicles loaded)", vehicles.lock().unwrap().len());
@@ -255,14 +260,17 @@ fn run_route_service(participant: Arc<Participant>) {
     let qos = QoS::default();
 
     let reg_writer = participant
-        .create_writer::<ServiceRegistration>(topics::SERVICE_REGISTRY, qos.clone())
+        .topic::<ServiceRegistration>(topics::SERVICE_REGISTRY)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create service registry writer");
 
     let route_reader = participant
-        .create_reader::<ComputeRouteRequest>(topics::COMPUTE_ROUTE_REQ, qos.clone())
+        .topic::<ComputeRouteRequest>(topics::COMPUTE_ROUTE_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create ComputeRoute request reader");
     let route_writer = participant
-        .create_writer::<ComputeRouteReply>(topics::COMPUTE_ROUTE_REP, qos.clone())
+        .topic::<ComputeRouteReply>(topics::COMPUTE_ROUTE_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create ComputeRoute reply writer");
 
     info!("RouteService started");
@@ -317,21 +325,26 @@ fn run_maintenance_service(
     let qos = QoS::default();
 
     let reg_writer = participant
-        .create_writer::<ServiceRegistration>(topics::SERVICE_REGISTRY, qos.clone())
+        .topic::<ServiceRegistration>(topics::SERVICE_REGISTRY)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create service registry writer");
 
     let create_reader = participant
-        .create_reader::<CreateTicketRequest>(topics::CREATE_TICKET_REQ, qos.clone())
+        .topic::<CreateTicketRequest>(topics::CREATE_TICKET_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create CreateTicket request reader");
     let create_writer = participant
-        .create_writer::<CreateTicketReply>(topics::CREATE_TICKET_REP, qos.clone())
+        .topic::<CreateTicketReply>(topics::CREATE_TICKET_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create CreateTicket reply writer");
 
     let status_reader = participant
-        .create_reader::<GetTicketStatusRequest>(topics::GET_TICKET_STATUS_REQ, qos.clone())
+        .topic::<GetTicketStatusRequest>(topics::GET_TICKET_STATUS_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create GetTicketStatus request reader");
     let status_writer = participant
-        .create_writer::<GetTicketStatusReply>(topics::GET_TICKET_STATUS_REP, qos.clone())
+        .topic::<GetTicketStatusReply>(topics::GET_TICKET_STATUS_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create GetTicketStatus reply writer");
 
     info!("MaintenanceService started");
@@ -439,14 +452,17 @@ fn run_alert_service(
     let qos = QoS::default();
 
     let reg_writer = participant
-        .create_writer::<ServiceRegistration>(topics::SERVICE_REGISTRY, qos.clone())
+        .topic::<ServiceRegistration>(topics::SERVICE_REGISTRY)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create service registry writer");
 
     let alert_reader = participant
-        .create_reader::<RaiseAlertRequest>(topics::RAISE_ALERT_REQ, qos.clone())
+        .topic::<RaiseAlertRequest>(topics::RAISE_ALERT_REQ)
+        .and_then(|t| t.reader().qos(qos.clone()).build())
         .expect("Failed to create RaiseAlert request reader");
     let alert_writer = participant
-        .create_writer::<RaiseAlertReply>(topics::RAISE_ALERT_REP, qos.clone())
+        .topic::<RaiseAlertReply>(topics::RAISE_ALERT_REP)
+        .and_then(|t| t.writer().qos(qos.clone()).build())
         .expect("Failed to create RaiseAlert reply writer");
 
     info!("AlertService started");

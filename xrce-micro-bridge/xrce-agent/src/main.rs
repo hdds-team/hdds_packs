@@ -127,10 +127,8 @@ fn dds_reader_loop(
     participant: Arc<Participant>,
     state: Arc<Mutex<AppState>>,
 ) {
-    let reader = match participant.create_reader::<MicroSensorData>(
-        "xrce/sensors",
-        QoS::default(),
-    ) {
+    let reader = match participant.topic::<MicroSensorData>("xrce/sensors")
+        .and_then(|t| t.reader().qos(QoS::default()).build()) {
         Ok(r) => r,
         Err(e) => {
             tracing::error!("Failed to create sensor reader: {}", e);
@@ -138,10 +136,8 @@ fn dds_reader_loop(
         }
     };
 
-    let cmd_writer = match participant.create_writer::<ActuatorCommand>(
-        "xrce/actuators",
-        QoS::default(),
-    ) {
+    let cmd_writer = match participant.topic::<ActuatorCommand>("xrce/actuators")
+        .and_then(|t| t.writer().qos(QoS::default()).build()) {
         Ok(w) => w,
         Err(e) => {
             tracing::error!("Failed to create actuator writer: {}", e);
@@ -149,10 +145,8 @@ fn dds_reader_loop(
         }
     };
 
-    let session_writer = match participant.create_writer::<XrceSessionInfo>(
-        "xrce/sessions",
-        QoS::default(),
-    ) {
+    let session_writer = match participant.topic::<XrceSessionInfo>("xrce/sessions")
+        .and_then(|t| t.writer().qos(QoS::default()).build()) {
         Ok(w) => w,
         Err(e) => {
             tracing::error!("Failed to create session writer: {}", e);

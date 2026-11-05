@@ -297,12 +297,30 @@ async fn main() -> Result<()> {
 
     let qos = QoS::best_effort();
 
-    let drone_writer = participant.create_writer::<Drone>(topics::DRONE, qos.clone())?;
-    let gate_writer = participant.create_writer::<Gate>(topics::GATE, qos.clone())?;
-    let pass_writer = participant.create_writer::<GatePass>(topics::GATE_PASS, qos.clone())?;
-    let state_writer = participant.create_writer::<RaceState>(topics::RACE_STATE, qos.clone())?;
-    let leaderboard_writer = participant.create_writer::<LeaderboardEntry>(topics::LEADERBOARD, qos.clone())?;
-    let input_reader = participant.create_reader::<DroneInput>(topics::INPUT, qos)?;
+    let drone_writer = participant.topic::<Drone>(topics::DRONE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let gate_writer = participant.topic::<Gate>(topics::GATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let pass_writer = participant.topic::<GatePass>(topics::GATE_PASS)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let state_writer = participant.topic::<RaceState>(topics::RACE_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let leaderboard_writer = participant.topic::<LeaderboardEntry>(topics::LEADERBOARD)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let input_reader = participant.topic::<DroneInput>(topics::INPUT)?
+        .reader()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant ready");
 

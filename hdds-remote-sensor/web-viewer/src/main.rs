@@ -211,11 +211,17 @@ async fn dds_subscriber_task(state: SharedState) -> Result<()> {
     let qos = hdds::QoS::default();
 
     let temp_reader = participant
-        .create_reader::<Temperature>("hdds_demo/remote_sensor/temperature", qos.clone())
+        .topic::<Temperature>("hdds_demo/remote_sensor/temperature")?
+        .reader()
+        .qos(qos.clone())
+        .build()
         .context("Failed to create temperature reader")?;
 
     let image_reader = participant
-        .create_reader::<ImageMeta>("hdds_demo/remote_sensor/image", qos)
+        .topic::<ImageMeta>("hdds_demo/remote_sensor/image")?
+        .reader()
+        .qos(qos)
+        .build()
         .context("Failed to create image reader")?;
 
     info!("HDDS subscriber ready");

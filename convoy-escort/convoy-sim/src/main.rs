@@ -155,10 +155,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let qos = QoS::best_effort().keep_last(10);
 
     // Create writers
-    let writer_gps = participant.create_writer::<VehicleGPS>(topics::VEHICLE_GPS, qos.clone())?;
-    let writer_state = participant.create_writer::<VehicleState>(topics::VEHICLE_STATE, qos.clone())?;
-    let writer_summary = participant.create_writer::<ConvoySummary>(topics::CONVOY_SUMMARY, qos.clone())?;
-    let writer_alert = participant.create_writer::<ConvoyAlert>(topics::CONVOY_ALERT, qos.clone())?;
+    let writer_gps = participant.topic::<VehicleGPS>(topics::VEHICLE_GPS)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let writer_state = participant.topic::<VehicleState>(topics::VEHICLE_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let writer_summary = participant.topic::<ConvoySummary>(topics::CONVOY_SUMMARY)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let writer_alert = participant.topic::<ConvoyAlert>(topics::CONVOY_ALERT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
     info!("[OK] DDS writers created");
 
     // Initialize convoy vehicles

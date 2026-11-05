@@ -135,11 +135,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create writers
     let heartbeat_writer =
-        participant.create_writer::<SiteHeartbeat>("wan/heartbeat", QoS::default())?;
+        participant.topic::<SiteHeartbeat>("wan/heartbeat")?
+            .writer()
+            .qos(QoS::default())
+            .build()?;
     let ice_writer =
-        participant.create_writer::<IceCandidate>("wan/ice_candidates", QoS::default())?;
+        participant.topic::<IceCandidate>("wan/ice_candidates")?
+            .writer()
+            .qos(QoS::default())
+            .build()?;
     let msg_writer =
-        participant.create_writer::<SiteMessage>("wan/messages", QoS::default())?;
+        participant.topic::<SiteMessage>("wan/messages")?
+            .writer()
+            .qos(QoS::default())
+            .build()?;
 
     // Publish ICE candidates once at startup
     let candidates = generate_ice_candidates(profile);

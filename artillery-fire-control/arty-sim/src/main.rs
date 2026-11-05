@@ -314,30 +314,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("DDS participant created on domain 0");
 
-    let battery_writer = participant.create_writer::<BatteryStatus>(
-        topics::BATTERY_STATUS,
-        QoS::reliable().transient_local(),
-    )?;
-    let mission_writer = participant.create_writer::<FireMission>(
-        topics::FIRE_MISSION,
-        QoS::reliable(),
-    )?;
-    let solution_writer = participant.create_writer::<BallisticSolution>(
-        topics::BALLISTIC_SOLUTION,
-        QoS::reliable(),
-    )?;
-    let round_writer = participant.create_writer::<RoundInFlight>(
-        topics::ROUND_IN_FLIGHT,
-        QoS::best_effort(),
-    )?;
-    let impact_writer = participant.create_writer::<ImpactObservation>(
-        topics::IMPACT_OBSERVATION,
-        QoS::reliable(),
-    )?;
-    let meteo_writer = participant.create_writer::<MeteoData>(
-        topics::METEO_DATA,
-        QoS::best_effort(),
-    )?;
+    let battery_writer = participant.topic::<BatteryStatus>(topics::BATTERY_STATUS)?
+        .writer()
+        .qos(QoS::reliable().transient_local())
+        .build()?;
+    let mission_writer = participant.topic::<FireMission>(topics::FIRE_MISSION)?
+        .writer()
+        .qos(QoS::reliable())
+        .build()?;
+    let solution_writer = participant.topic::<BallisticSolution>(topics::BALLISTIC_SOLUTION)?
+        .writer()
+        .qos(QoS::reliable())
+        .build()?;
+    let round_writer = participant.topic::<RoundInFlight>(topics::ROUND_IN_FLIGHT)?
+        .writer()
+        .qos(QoS::best_effort())
+        .build()?;
+    let impact_writer = participant.topic::<ImpactObservation>(topics::IMPACT_OBSERVATION)?
+        .writer()
+        .qos(QoS::reliable())
+        .build()?;
+    let meteo_writer = participant.topic::<MeteoData>(topics::METEO_DATA)?
+        .writer()
+        .qos(QoS::best_effort())
+        .build()?;
 
     info!("6 writers created (battery, mission, solution, round, impact, meteo)");
     println!();

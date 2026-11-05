@@ -339,14 +339,29 @@ impl DdsWriters {
 
         Ok(Self {
             position: participant
-                .create_writer::<SatellitePosition>(topics::SAT_POSITION, best_effort.clone())?,
+                .topic::<SatellitePosition>(topics::SAT_POSITION)?
+                .writer()
+                .qos(best_effort.clone())
+                .build()?,
             station: participant
-                .create_writer::<GroundStation>(topics::GROUND_STATION, best_effort.clone())?,
+                .topic::<GroundStation>(topics::GROUND_STATION)?
+                .writer()
+                .qos(best_effort.clone())
+                .build()?,
             pass: participant
-                .create_writer::<PassPrediction>(topics::PASS_PREDICTION, reliable.clone())?,
+                .topic::<PassPrediction>(topics::PASS_PREDICTION)?
+                .writer()
+                .qos(reliable.clone())
+                .build()?,
             telemetry: participant
-                .create_writer::<TelemetryFrame>(topics::TELEMETRY_FRAME, best_effort)?,
-            alert: participant.create_writer::<OrbitalAlert>(topics::ORBITAL_ALERT, reliable)?,
+                .topic::<TelemetryFrame>(topics::TELEMETRY_FRAME)?
+                .writer()
+                .qos(best_effort)
+                .build()?,
+            alert: participant.topic::<OrbitalAlert>(topics::ORBITAL_ALERT)?
+                .writer()
+                .qos(reliable)
+                .build()?,
         })
     }
 }

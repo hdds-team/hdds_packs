@@ -207,11 +207,26 @@ async fn main() -> Result<()> {
     let qos = QoS::best_effort();
 
     // Create writers
-    let machine_writer = participant.create_writer::<Machine>(TOPIC_MACHINE, qos.clone())?;
-    let conveyor_writer = participant.create_writer::<Conveyor>(TOPIC_CONVEYOR, qos.clone())?;
-    let product_writer = participant.create_writer::<Product>(TOPIC_PRODUCT, qos.clone())?;
-    let alert_writer = participant.create_writer::<Alert>(TOPIC_ALERT, qos.clone())?;
-    let state_writer = participant.create_writer::<FactoryState>(TOPIC_FACTORY_STATE, qos)?;
+    let machine_writer = participant.topic::<Machine>(TOPIC_MACHINE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let conveyor_writer = participant.topic::<Conveyor>(TOPIC_CONVEYOR)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let product_writer = participant.topic::<Product>(TOPIC_PRODUCT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let alert_writer = participant.topic::<Alert>(TOPIC_ALERT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let state_writer = participant.topic::<FactoryState>(TOPIC_FACTORY_STATE)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     // Create factory layout
     let mut layout = FactoryLayout::create_production_line();

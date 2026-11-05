@@ -101,11 +101,20 @@ fn main() -> Result<()> {
 
     // Create writers with the loaded QoS
     let sensor_writer =
-        participant.create_writer::<SensorFeed>(topics::SENSOR_FEED, active_qos.clone())?;
+        participant.topic::<SensorFeed>(topics::SENSOR_FEED)?
+            .writer()
+            .qos(active_qos.clone())
+            .build()?;
     let snapshot_writer =
-        participant.create_writer::<QosSnapshot>(topics::QOS_SNAPSHOT, active_qos.clone())?;
+        participant.topic::<QosSnapshot>(topics::QOS_SNAPSHOT)?
+            .writer()
+            .qos(active_qos.clone())
+            .build()?;
     let metrics_writer =
-        participant.create_writer::<MetricsDelta>(topics::METRICS_DELTA, active_qos.clone())?;
+        participant.topic::<MetricsDelta>(topics::METRICS_DELTA)?
+            .writer()
+            .qos(active_qos.clone())
+            .build()?;
 
     info!("Writers created on topics:");
     info!("  {} (SensorFeed)", topics::SENSOR_FEED);

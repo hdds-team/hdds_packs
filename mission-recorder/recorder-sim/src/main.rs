@@ -139,8 +139,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()?;
 
     let qos = QoS::best_effort();
-    let event_writer = participant.create_writer::<MissionEvent>(topics::MISSION_EVENT, qos.clone())?;
-    let status_writer = participant.create_writer::<MissionStatus>(topics::MISSION_STATUS, qos)?;
+    let event_writer = participant.topic::<MissionEvent>(topics::MISSION_EVENT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let status_writer = participant.topic::<MissionStatus>(topics::MISSION_STATUS)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant created, writers ready");
 

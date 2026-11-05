@@ -48,9 +48,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create writers
     let metric_writer =
-        participant.create_writer::<WorkloadMetric>(topics::WORKLOAD_METRIC, qos.clone())?;
+        participant.topic::<WorkloadMetric>(topics::WORKLOAD_METRIC)?
+            .writer()
+            .qos(qos.clone())
+            .build()?;
     let discovery_writer =
-        participant.create_writer::<DiscoveryEvent>(topics::DISCOVERY_EVENT, qos)?;
+        participant.topic::<DiscoveryEvent>(topics::DISCOVERY_EVENT)?
+            .writer()
+            .qos(qos)
+            .build()?;
 
     // Generate a fake participant GUID
     let participant_guid = format!(

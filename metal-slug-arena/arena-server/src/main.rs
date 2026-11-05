@@ -174,13 +174,34 @@ async fn main() -> Result<()> {
 
     let qos = QoS::best_effort();
 
-    let player_writer = participant.create_writer::<Player>(topics::PLAYER, qos.clone())?;
-    let proj_writer = participant.create_writer::<Projectile>(topics::PROJECTILE, qos.clone())?;
-    let explosion_writer = participant.create_writer::<Explosion>(topics::EXPLOSION, qos.clone())?;
-    let powerup_writer = participant.create_writer::<PowerUp>(topics::POWERUP, qos.clone())?;
-    let kill_writer = participant.create_writer::<KillEvent>(topics::KILL, qos.clone())?;
-    let state_writer = participant.create_writer::<GameState>(topics::GAME_STATE, qos.clone())?;
-    let input_reader = participant.create_reader::<PlayerInput>(topics::INPUT, qos)?;
+    let player_writer = participant.topic::<Player>(topics::PLAYER)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let proj_writer = participant.topic::<Projectile>(topics::PROJECTILE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let explosion_writer = participant.topic::<Explosion>(topics::EXPLOSION)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let powerup_writer = participant.topic::<PowerUp>(topics::POWERUP)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let kill_writer = participant.topic::<KillEvent>(topics::KILL)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let state_writer = participant.topic::<GameState>(topics::GAME_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let input_reader = participant.topic::<PlayerInput>(topics::INPUT)?
+        .reader()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant ready");
 

@@ -140,7 +140,8 @@ impl AppState {
 /// Background thread: reads all TSN topics and updates AppState.
 fn dds_reader_loop(participant: Arc<Participant>, state: Arc<Mutex<AppState>>) {
     // Create readers for all topics
-    let brake_reader = match participant.create_reader::<BrakeCommand>("tsn/brake", QoS::reliable())
+    let brake_reader = match participant.topic::<BrakeCommand>("tsn/brake")
+        .and_then(|t| t.reader().qos(QoS::reliable()).build())
     {
         Ok(r) => r,
         Err(e) => {
@@ -150,7 +151,8 @@ fn dds_reader_loop(participant: Arc<Participant>, state: Arc<Mutex<AppState>>) {
     };
 
     let steering_reader =
-        match participant.create_reader::<SteeringCommand>("tsn/steering", QoS::reliable()) {
+        match participant.topic::<SteeringCommand>("tsn/steering")
+            .and_then(|t| t.reader().qos(QoS::reliable()).build()) {
             Ok(r) => r,
             Err(e) => {
                 tracing::error!("Failed to create steering reader: {}", e);
@@ -159,7 +161,8 @@ fn dds_reader_loop(participant: Arc<Participant>, state: Arc<Mutex<AppState>>) {
         };
 
     let telemetry_reader =
-        match participant.create_reader::<VehicleTelemetry>("tsn/telemetry", QoS::reliable()) {
+        match participant.topic::<VehicleTelemetry>("tsn/telemetry")
+            .and_then(|t| t.reader().qos(QoS::reliable()).build()) {
             Ok(r) => r,
             Err(e) => {
                 tracing::error!("Failed to create telemetry reader: {}", e);
@@ -168,7 +171,8 @@ fn dds_reader_loop(participant: Arc<Participant>, state: Arc<Mutex<AppState>>) {
         };
 
     let metrics_reader =
-        match participant.create_reader::<TsnMetrics>("tsn/metrics", QoS::default()) {
+        match participant.topic::<TsnMetrics>("tsn/metrics")
+            .and_then(|t| t.reader().qos(QoS::default()).build()) {
             Ok(r) => r,
             Err(e) => {
                 tracing::error!("Failed to create metrics reader: {}", e);

@@ -517,13 +517,34 @@ async fn main() -> Result<()> {
     let qos = QoS::default();
 
     // Create DataWriters for each topic
-    let player_writer = participant.create_writer::<Player>(topics::PLAYER, qos.clone())?;
-    let alien_writer = participant.create_writer::<Alien>(topics::ALIEN, qos.clone())?;
-    let bullet_writer = participant.create_writer::<Bullet>(topics::BULLET, qos.clone())?;
-    let explosion_writer = participant.create_writer::<Explosion>(topics::EXPLOSION, qos.clone())?;
-    let powerup_writer = participant.create_writer::<PowerUp>(topics::POWERUP, qos.clone())?;
-    let game_state_writer = participant.create_writer::<GameState>(topics::GAME_STATE, qos.clone())?;
-    let kill_event_writer = participant.create_writer::<KillEvent>(topics::KILL_EVENT, qos)?;
+    let player_writer = participant.topic::<Player>(topics::PLAYER)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let alien_writer = participant.topic::<Alien>(topics::ALIEN)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let bullet_writer = participant.topic::<Bullet>(topics::BULLET)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let explosion_writer = participant.topic::<Explosion>(topics::EXPLOSION)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let powerup_writer = participant.topic::<PowerUp>(topics::POWERUP)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let game_state_writer = participant.topic::<GameState>(topics::GAME_STATE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let kill_event_writer = participant.topic::<KillEvent>(topics::KILL_EVENT)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     log::info!("[DDS] Writers created for all topics");
 

@@ -108,11 +108,20 @@ fn main() -> Result<()> {
 
     let qos = QoS::default();
     let sensor_reader =
-        participant.create_reader::<SensorFeed>(topics::SENSOR_FEED, qos.clone())?;
+        participant.topic::<SensorFeed>(topics::SENSOR_FEED)?
+            .reader()
+            .qos(qos.clone())
+            .build()?;
     let snapshot_reader =
-        participant.create_reader::<QosSnapshot>(topics::QOS_SNAPSHOT, qos.clone())?;
+        participant.topic::<QosSnapshot>(topics::QOS_SNAPSHOT)?
+            .reader()
+            .qos(qos.clone())
+            .build()?;
     let metrics_reader =
-        participant.create_reader::<MetricsDelta>(topics::METRICS_DELTA, qos)?;
+        participant.topic::<MetricsDelta>(topics::METRICS_DELTA)?
+            .reader()
+            .qos(qos)
+            .build()?;
 
     info!("DDS readers created");
 

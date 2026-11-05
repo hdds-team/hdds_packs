@@ -428,11 +428,17 @@ async fn dds_publisher_task(
     let qos = hdds::QoS::default();
 
     let temp_writer = participant
-        .create_writer::<Temperature>("hdds_demo/remote_sensor/temperature", qos.clone())
+        .topic::<Temperature>("hdds_demo/remote_sensor/temperature")?
+        .writer()
+        .qos(qos.clone())
+        .build()
         .context("Failed to create temperature writer")?;
 
     let image_writer = participant
-        .create_writer::<ImageMeta>("hdds_demo/remote_sensor/image", qos)
+        .topic::<ImageMeta>("hdds_demo/remote_sensor/image")?
+        .writer()
+        .qos(qos)
+        .build()
         .context("Failed to create image writer")?;
 
     info!("HDDS publisher ready (temperature + images via DDS)");

@@ -232,10 +232,16 @@ impl AdminApp {
 
         let qos = hdds::QoS::default();
         let audit_reader = participant
-            .create_reader::<AuditLogEntry>(topics::AUDIT_LOG, qos.clone())
+            .topic::<AuditLogEntry>(topics::AUDIT_LOG).ok()?
+            .reader()
+            .qos(qos.clone())
+            .build()
             .ok()?;
         let permission_writer = participant
-            .create_writer::<PermissionChange>(topics::PERMISSION_CHANGE, qos)
+            .topic::<PermissionChange>(topics::PERMISSION_CHANGE).ok()?
+            .writer()
+            .qos(qos)
+            .build()
             .ok()?;
 
         Some((participant, audit_reader, permission_writer))

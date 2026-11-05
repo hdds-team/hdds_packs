@@ -240,11 +240,26 @@ async fn main() -> Result<()> {
     let qos = QoS::best_effort();
 
     // Create writers
-    let train_writer = participant.create_writer::<Train>(topics::TRAIN, qos.clone())?;
-    let signal_writer = participant.create_writer::<Signal>(topics::SIGNAL, qos.clone())?;
-    let segment_writer = participant.create_writer::<TrackSegment>(topics::TRACK_SEGMENT, qos.clone())?;
-    let station_writer = participant.create_writer::<Station>(topics::STATION, qos.clone())?;
-    let network_writer = participant.create_writer::<NetworkState>(topics::NETWORK_STATE, qos)?;
+    let train_writer = participant.topic::<Train>(topics::TRAIN)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let signal_writer = participant.topic::<Signal>(topics::SIGNAL)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let segment_writer = participant.topic::<TrackSegment>(topics::TRACK_SEGMENT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let station_writer = participant.topic::<Station>(topics::STATION)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let network_writer = participant.topic::<NetworkState>(topics::NETWORK_STATE)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     // Create track layout
     let mut layout = TrackLayout::create_oval_layout();

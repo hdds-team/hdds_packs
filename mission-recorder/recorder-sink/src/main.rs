@@ -103,8 +103,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build()?;
 
     let qos = QoS::best_effort();
-    let event_reader = participant.create_reader::<MissionEvent>(topics::MISSION_EVENT, qos.clone())?;
-    let status_reader = participant.create_reader::<MissionStatus>(topics::MISSION_STATUS, qos)?;
+    let event_reader = participant.topic::<MissionEvent>(topics::MISSION_EVENT)?
+        .reader()
+        .qos(qos.clone())
+        .build()?;
+    let status_reader = participant.topic::<MissionStatus>(topics::MISSION_STATUS)?
+        .reader()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant created, readers ready");
 

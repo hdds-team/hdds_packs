@@ -783,16 +783,46 @@ impl DdsWriters {
         let qos = QoS::best_effort();
 
         Ok(Self {
-            ship: participant.create_writer::<Ship>(topics::SHIP, qos.clone())?,
-            convoy_status: participant.create_writer::<ConvoyStatus>(topics::CONVOY_STATUS, qos.clone())?,
-            submarine: participant.create_writer::<Submarine>(topics::SUBMARINE, qos.clone())?,
-            sonar_ping: participant.create_writer::<SonarPing>(topics::SONAR_PING, qos.clone())?,
-            sonar_contact: participant.create_writer::<SonarContact>(topics::SONAR_CONTACT, qos.clone())?,
-            torpedo: participant.create_writer::<Torpedo>(topics::TORPEDO, qos.clone())?,
-            depth_charge: participant.create_writer::<DepthCharge>(topics::DEPTH_CHARGE, qos.clone())?,
-            explosion: participant.create_writer::<Explosion>(topics::EXPLOSION, qos.clone())?,
-            combat_event: participant.create_writer::<CombatEvent>(topics::COMBAT_EVENT, qos.clone())?,
-            sea_state: participant.create_writer::<SeaState>(topics::SEA_STATE, qos)?,
+            ship: participant.topic::<Ship>(topics::SHIP)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            convoy_status: participant.topic::<ConvoyStatus>(topics::CONVOY_STATUS)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            submarine: participant.topic::<Submarine>(topics::SUBMARINE)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            sonar_ping: participant.topic::<SonarPing>(topics::SONAR_PING)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            sonar_contact: participant.topic::<SonarContact>(topics::SONAR_CONTACT)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            torpedo: participant.topic::<Torpedo>(topics::TORPEDO)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            depth_charge: participant.topic::<DepthCharge>(topics::DEPTH_CHARGE)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            explosion: participant.topic::<Explosion>(topics::EXPLOSION)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            combat_event: participant.topic::<CombatEvent>(topics::COMBAT_EVENT)?
+                .writer()
+                .qos(qos.clone())
+                .build()?,
+            sea_state: participant.topic::<SeaState>(topics::SEA_STATE)?
+                .writer()
+                .qos(qos)
+                .build()?,
         })
     }
 

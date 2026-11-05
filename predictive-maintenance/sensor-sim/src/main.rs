@@ -214,10 +214,22 @@ async fn main() -> Result<()> {
     let qos = QoS::best_effort();
 
     // Create writers
-    let sensor_writer = participant.create_writer::<SensorReading>(topics::SENSOR_READING, qos.clone())?;
-    let machine_writer = participant.create_writer::<MachineStatus>(topics::MACHINE_STATUS, qos.clone())?;
-    let alert_writer = participant.create_writer::<Alert>(topics::ALERT, qos.clone())?;
-    let prediction_writer = participant.create_writer::<MaintenancePrediction>(topics::PREDICTION, qos)?;
+    let sensor_writer = participant.topic::<SensorReading>(topics::SENSOR_READING)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let machine_writer = participant.topic::<MachineStatus>(topics::MACHINE_STATUS)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let alert_writer = participant.topic::<Alert>(topics::ALERT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let prediction_writer = participant.topic::<MaintenancePrediction>(topics::PREDICTION)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant ready");
 

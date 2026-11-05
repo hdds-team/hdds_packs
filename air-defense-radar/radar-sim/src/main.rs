@@ -182,12 +182,30 @@ async fn main() -> Result<()> {
     let qos = QoS::best_effort();
 
     // Create writers
-    let sweep_writer = participant.create_writer::<RadarSweep>(topics::RADAR_SWEEP, qos.clone())?;
-    let track_writer = participant.create_writer::<AircraftTrack>(topics::AIRCRAFT_TRACK, qos.clone())?;
-    let site_writer = participant.create_writer::<SamSite>(topics::SAM_SITE, qos.clone())?;
-    let engagement_writer = participant.create_writer::<Engagement>(topics::ENGAGEMENT, qos.clone())?;
-    let result_writer = participant.create_writer::<EngagementResult>(topics::ENGAGEMENT_RESULT, qos.clone())?;
-    let alert_writer = participant.create_writer::<RadarAlert>(topics::RADAR_ALERT, qos)?;
+    let sweep_writer = participant.topic::<RadarSweep>(topics::RADAR_SWEEP)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let track_writer = participant.topic::<AircraftTrack>(topics::AIRCRAFT_TRACK)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let site_writer = participant.topic::<SamSite>(topics::SAM_SITE)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let engagement_writer = participant.topic::<Engagement>(topics::ENGAGEMENT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let result_writer = participant.topic::<EngagementResult>(topics::ENGAGEMENT_RESULT)?
+        .writer()
+        .qos(qos.clone())
+        .build()?;
+    let alert_writer = participant.topic::<RadarAlert>(topics::RADAR_ALERT)?
+        .writer()
+        .qos(qos)
+        .build()?;
 
     info!("DDS participant ready");
     info!("  Radar range: {} km", RADAR_RANGE_KM);
