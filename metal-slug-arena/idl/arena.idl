@@ -22,21 +22,21 @@ module arena {
     /* Weapon types */
     enum WeaponType {
         PISTOL,         // Default, unlimited ammo
-        HEAVY_MG,       // "H" - Heavy Machine Gun
-        ROCKET,         // "R" - Rocket Launcher
-        SHOTGUN,        // "S" - Shotgun
+        WEAPON_HEAVY_MG,       // "H" - Heavy Machine Gun
+        WEAPON_ROCKET,         // "R" - Rocket Launcher
+        WEAPON_SHOTGUN,        // "S" - Shotgun
         LASER,          // "L" - Laser
         FLAME,          // "F" - Flamethrower
-        GRENADE         // Throwable
+        WEAPON_GRENADE         // Throwable
     };
 
     /* Power-up types */
     enum PowerUpType {
         HEALTH,
-        HEAVY_MG,
-        ROCKET,
-        SHOTGUN,
-        GRENADE,
+        POWERUP_HEAVY_MG,
+        POWERUP_ROCKET,
+        POWERUP_SHOTGUN,
+        POWERUP_GRENADE,
         SHIELD,
         SPEED
     };

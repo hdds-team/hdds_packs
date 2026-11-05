@@ -8,7 +8,7 @@
 enum MissionStatus {
     PENDING    = 0,
     COMPUTING  = 1,
-    FIRING     = 2,
+    MISSION_FIRING     = 2,
     ADJUSTING  = 3,
     COMPLETE   = 4,
     CANCELLED  = 5
@@ -26,7 +26,7 @@ enum RoundType {
 enum BatteryState {
     READY     = 0,
     LOADING   = 1,
-    FIRING    = 2,
+    BATTERY_FIRING    = 2,
     COOLDOWN  = 3,
     OFFLINE   = 4
 };

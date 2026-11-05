@@ -233,7 +233,7 @@ fn run_vehicle_service(
                         1 => VehicleState::EN_ROUTE,
                         2 => VehicleState::LOADING,
                         3 => VehicleState::MAINTENANCE,
-                        4 => VehicleState::EMERGENCY,
+                        4 => VehicleState::VEHICLE_EMERGENCY,
                         _ => unreachable!(),
                     };
                     if vehicle.state == VehicleState::IDLE {

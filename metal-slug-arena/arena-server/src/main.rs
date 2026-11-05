@@ -48,12 +48,12 @@ fn timestamp_us() -> u64 {
 fn weapon_name(w: WeaponType) -> &'static str {
     match w {
         WeaponType::PISTOL => "Pistol",
-        WeaponType::HEAVY_MG => "Heavy MG",
-        WeaponType::ROCKET => "Rocket",
-        WeaponType::SHOTGUN => "Shotgun",
+        WeaponType::WEAPON_HEAVY_MG => "Heavy MG",
+        WeaponType::WEAPON_ROCKET => "Rocket",
+        WeaponType::WEAPON_SHOTGUN => "Shotgun",
         WeaponType::LASER => "Laser",
         WeaponType::FLAME => "Flame",
-        WeaponType::GRENADE => "Grenade",
+        WeaponType::WEAPON_GRENADE => "Grenade",
     }
 }
 
@@ -204,7 +204,7 @@ async fn main() -> Result<()> {
     // Spawn power-ups
     let positions = [(100.0, 420.0), (400.0, 370.0), (700.0, 420.0), (200.0, 270.0), (600.0, 270.0), (400.0, 170.0)];
     for (x, y) in positions {
-        let pt = [PowerUpType::HEALTH, PowerUpType::HEAVY_MG, PowerUpType::ROCKET, PowerUpType::SHOTGUN, PowerUpType::GRENADE][rng.gen_range(0..5)];
+        let pt = [PowerUpType::HEALTH, PowerUpType::POWERUP_HEAVY_MG, PowerUpType::POWERUP_ROCKET, PowerUpType::POWERUP_SHOTGUN, PowerUpType::POWERUP_GRENADE][rng.gen_range(0..5)];
         powerups.push(PowerUpState {
             powerup: PowerUp { powerup_id: next_powerup_id, powerup_type: pt, x, y, active: true, timestamp_us: timestamp_us() },
             respawn_timer: 0.0,
@@ -319,9 +319,9 @@ async fn main() -> Result<()> {
                     }
 
                     let (cooldown, speed, damage) = match weapon {
-                        WeaponType::HEAVY_MG => (0.08, 800.0, 10),
-                        WeaponType::ROCKET => (0.8, 400.0, 50),
-                        WeaponType::SHOTGUN => (0.5, 500.0, 25),
+                        WeaponType::WEAPON_HEAVY_MG => (0.08, 800.0, 10),
+                        WeaponType::WEAPON_ROCKET => (0.8, 400.0, 50),
+                        WeaponType::WEAPON_SHOTGUN => (0.5, 500.0, 25),
                         WeaponType::LASER => (0.1, 1200.0, 12),
                         WeaponType::FLAME => (0.05, 300.0, 5),
                         _ => (0.3, 600.0, 15),
@@ -332,9 +332,9 @@ async fn main() -> Result<()> {
                     let sx = state.player.x + PLAYER_WIDTH / 2.0 + dir * 20.0;
                     let sy = state.player.y + PLAYER_HEIGHT / 2.0 - 5.0;
 
-                    let pellets = if weapon == WeaponType::SHOTGUN { 5 } else { 1 };
+                    let pellets = if weapon == WeaponType::WEAPON_SHOTGUN { 5 } else { 1 };
                     for i in 0..pellets {
-                        let spread = if weapon == WeaponType::SHOTGUN { (i as f32 - 2.0) * 0.15 } else { 0.0 };
+                        let spread = if weapon == WeaponType::WEAPON_SHOTGUN { (i as f32 - 2.0) * 0.15 } else { 0.0 };
                         new_projectiles.push(Projectile {
                             projectile_id: next_projectile_id,
                             owner_id: *id,
@@ -374,7 +374,7 @@ async fn main() -> Result<()> {
             let pstate = projectiles.get_mut(&proj_id).unwrap();
             pstate.proj.x += pstate.proj.vx * dt;
             pstate.proj.y += pstate.proj.vy * dt;
-            if pstate.proj.weapon == WeaponType::ROCKET {
+            if pstate.proj.weapon == WeaponType::WEAPON_ROCKET {
                 pstate.proj.vy += GRAVITY * 0.3 * dt;
             }
             pstate.lifetime -= dt;
@@ -385,7 +385,7 @@ async fn main() -> Result<()> {
             }
 
             // Platform collision for rockets
-            if pstate.proj.weapon == WeaponType::ROCKET {
+            if pstate.proj.weapon == WeaponType::WEAPON_ROCKET {
                 for &(px, py, pw, ph) in PLATFORMS {
                     if pstate.proj.x >= px && pstate.proj.x <= px + pw && pstate.proj.y >= py && pstate.proj.y <= py + ph {
                         pstate.proj.active = false;
@@ -454,7 +454,7 @@ async fn main() -> Result<()> {
                 powerup.respawn_timer -= dt;
                 if powerup.respawn_timer <= 0.0 {
                     powerup.powerup.active = true;
-                    powerup.powerup.powerup_type = [PowerUpType::HEALTH, PowerUpType::HEAVY_MG, PowerUpType::ROCKET, PowerUpType::SHOTGUN, PowerUpType::GRENADE][rng.gen_range(0..5)];
+                    powerup.powerup.powerup_type = [PowerUpType::HEALTH, PowerUpType::POWERUP_HEAVY_MG, PowerUpType::POWERUP_ROCKET, PowerUpType::POWERUP_SHOTGUN, PowerUpType::POWERUP_GRENADE][rng.gen_range(0..5)];
                     powerup.powerup.timestamp_us = timestamp_us();
                 }
             }
@@ -470,10 +470,10 @@ async fn main() -> Result<()> {
                 if (dx * dx + dy * dy).sqrt() < 30.0 {
                     match powerup.powerup.powerup_type {
                         PowerUpType::HEALTH => { psim.player.health = MAX_HEALTH; }
-                        PowerUpType::HEAVY_MG => { psim.player.weapon = WeaponType::HEAVY_MG; psim.player.ammo = 100; }
-                        PowerUpType::ROCKET => { psim.player.weapon = WeaponType::ROCKET; psim.player.ammo = 10; }
-                        PowerUpType::SHOTGUN => { psim.player.weapon = WeaponType::SHOTGUN; psim.player.ammo = 20; }
-                        PowerUpType::GRENADE => { psim.player.weapon = WeaponType::GRENADE; psim.player.ammo = 5; }
+                        PowerUpType::POWERUP_HEAVY_MG => { psim.player.weapon = WeaponType::WEAPON_HEAVY_MG; psim.player.ammo = 100; }
+                        PowerUpType::POWERUP_ROCKET => { psim.player.weapon = WeaponType::WEAPON_ROCKET; psim.player.ammo = 10; }
+                        PowerUpType::POWERUP_SHOTGUN => { psim.player.weapon = WeaponType::WEAPON_SHOTGUN; psim.player.ammo = 20; }
+                        PowerUpType::POWERUP_GRENADE => { psim.player.weapon = WeaponType::WEAPON_GRENADE; psim.player.ammo = 5; }
                         _ => {}
                     }
                     powerup.powerup.active = false;

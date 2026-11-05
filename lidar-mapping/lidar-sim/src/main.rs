@@ -33,7 +33,7 @@ mod control_mode {
     use super::ControlMode;
     pub const MANUAL: ControlMode = ControlMode::MANUAL;
     pub const EXPLORE: ControlMode = ControlMode::EXPLORE;
-    pub const WAYPOINT: ControlMode = ControlMode::WAYPOINT;
+    pub const WAYPOINT: ControlMode = ControlMode::MODE_WAYPOINT;
 }
 
 mod occupancy {

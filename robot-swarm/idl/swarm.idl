@@ -8,7 +8,7 @@ module swarm {
 
     /* Robot operational state */
     enum RobotState {
-        IDLE,
+        ROBOT_IDLE,
         MOVING,
         ROTATING,
         AVOIDING,
@@ -18,7 +18,7 @@ module swarm {
 
     /* Swarm behavior modes */
     enum SwarmMode {
-        IDLE,
+        SWARM_IDLE,
         FLOCK,              // Boids-like flocking
         FORMATION,          // Hold formation pattern
         FOLLOW_LEADER,      // Follow designated leader

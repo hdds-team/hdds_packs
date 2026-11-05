@@ -21,16 +21,16 @@ module maintenance {
     enum MachineState {
         STOPPED,
         RUNNING,
-        WARNING,
-        CRITICAL,
+        MACHINE_WARNING,
+        MACHINE_CRITICAL,
         MAINTENANCE
     };
 
     /* Alert severity levels */
     enum AlertSeverity {
         INFO,
-        WARNING,
-        CRITICAL
+        ALERT_WARNING,
+        ALERT_CRITICAL
     };
 
     /* Individual sensor reading (published at ~10Hz per sensor) */

@@ -11,17 +11,17 @@ module f1tenth {
     enum RacePhase {
         WAITING,
         COUNTDOWN,
-        RACING,
-        FINISHED
+        PHASE_RACING,
+        PHASE_FINISHED
     };
 
     /* Car operational state */
     enum CarState {
         IDLE,
         READY,
-        RACING,
+        CAR_RACING,
         CRASHED,
-        FINISHED
+        CAR_FINISHED
     };
 
     /* Car telemetry - published at ~60Hz per car */

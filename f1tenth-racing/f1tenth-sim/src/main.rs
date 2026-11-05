@@ -228,7 +228,7 @@ impl CarPhysics {
     }
 
     fn start_race(&mut self) {
-        self.car.state = CarState::RACING;
+        self.car.state = CarState::CAR_RACING;
         let now = Instant::now();
         self.lap_start = now;
         self.sector_start = now;
@@ -236,7 +236,7 @@ impl CarPhysics {
     }
 
     fn update(&mut self, dt: f32, track: &TrackDef, racing: bool) {
-        if self.car.state != CarState::RACING || !racing {
+        if self.car.state != CarState::CAR_RACING || !racing {
             self.car.timestamp_us = timestamp_us();
             return;
         }
@@ -386,7 +386,7 @@ impl CarPhysics {
             self.sector_start = now;
 
             if self.car.lap >= TOTAL_LAPS {
-                self.car.state = CarState::FINISHED;
+                self.car.state = CarState::CAR_FINISHED;
             }
 
             return Some(LapEvent {
@@ -515,7 +515,7 @@ async fn main() -> Result<()> {
                     if elapsed_secs < 3 {
                         race_state.countdown = 3 - elapsed_secs as u8;
                     } else {
-                        race_state.phase = RacePhase::RACING;
+                        race_state.phase = RacePhase::PHASE_RACING;
                         race_state.countdown = 0;
                         race_start = Some(now);
                         for car in &mut cars {
@@ -525,12 +525,12 @@ async fn main() -> Result<()> {
                     }
                 }
             }
-            RacePhase::RACING => {
+            RacePhase::PHASE_RACING => {
                 if let Some(start) = race_start {
                     race_state.elapsed_ms = start.elapsed().as_millis() as u32;
                 }
-                if cars.iter().all(|c| c.car.state == CarState::FINISHED) {
-                    race_state.phase = RacePhase::FINISHED;
+                if cars.iter().all(|c| c.car.state == CarState::CAR_FINISHED) {
+                    race_state.phase = RacePhase::PHASE_FINISHED;
                     info!("CHECKERED FLAG!");
                     for car in &cars {
                         info!("  P{} {} - {:.1}s (best lap: {:.3}s)",
@@ -540,7 +540,7 @@ async fn main() -> Result<()> {
                     }
                 }
             }
-            RacePhase::FINISHED => {
+            RacePhase::PHASE_FINISHED => {
                 // Keep publishing for 10 seconds then exit
                 if race_start.map(|s| s.elapsed().as_secs() > 30).unwrap_or(false) {
                     info!("Race complete. Shutting down.");
@@ -550,7 +550,7 @@ async fn main() -> Result<()> {
             _ => {}
         }
 
-        let racing = race_state.phase == RacePhase::RACING;
+        let racing = race_state.phase == RacePhase::PHASE_RACING;
 
         // --- Update physics ---
         for car in &mut cars {
@@ -576,7 +576,7 @@ async fn main() -> Result<()> {
         // then racing cars by laps + progress (higher = better)
         let mut rankings: Vec<(usize, u64)> = cars.iter().enumerate()
             .map(|(i, c)| {
-                let score = if c.car.state == CarState::FINISHED {
+                let score = if c.car.state == CarState::CAR_FINISHED {
                     // Finished cars get highest priority, ordered by finish time
                     // Lower time = higher score (invert so sort descending works)
                     u64::MAX - c.car.total_time_ms as u64

@@ -48,10 +48,10 @@ Topic naming: `rpc/{Service}/{Method}/Request` and `.../Reply`
 
 ## RPC Services
 
-- **VehicleService**: 10 seeded vehicles around Paris, position drift simulation, 5 states (IDLE/EN_ROUTE/LOADING/MAINTENANCE/EMERGENCY)
+- **VehicleService**: 10 seeded vehicles around Paris, position drift simulation, 5 states (IDLE/EN_ROUTE/LOADING/MAINTENANCE/VEHICLE_EMERGENCY)
 - **RouteService**: Haversine great-circle distance, ETA with toll avoidance factor (1.3x)
 - **MaintenanceService**: Ticket FSM (OPEN -> IN_PROGRESS -> RESOLVED -> CLOSED)
-- **AlertService**: Severity levels (INFO/WARNING/CRITICAL/EMERGENCY), auto-ack after 30s
+- **AlertService**: Severity levels (INFO/WARNING/CRITICAL/ALERT_EMERGENCY), auto-ack after 30s
 
 ## GTK4 Explorer (3 tabs)
 

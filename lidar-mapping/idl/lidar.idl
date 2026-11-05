@@ -11,7 +11,7 @@ module lidar {
     enum ControlMode {
         MANUAL,
         EXPLORE,
-        WAYPOINT
+        MODE_WAYPOINT
     };
 
     /* Cell occupancy values (FREE=0, UNKNOWN=1, OCCUPIED=2)

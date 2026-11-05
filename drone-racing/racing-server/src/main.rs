@@ -131,7 +131,7 @@ impl DronePhysics {
     }
 
     fn update(&mut self, dt: f32, racing: bool) {
-        if self.drone.state == DroneState::CRASHED || self.drone.state == DroneState::FINISHED {
+        if self.drone.state == DroneState::CRASHED || self.drone.state == DroneState::DRONE_FINISHED {
             return;
         }
 
@@ -222,7 +222,7 @@ impl DronePhysics {
     }
 
     fn check_gate(&mut self, gates: &[Gate]) -> Option<GatePass> {
-        if self.drone.state != DroneState::RACING {
+        if self.drone.state != DroneState::DRONE_RACING {
             return None;
         }
 
@@ -262,7 +262,7 @@ impl DronePhysics {
 
                 // Check if finished race
                 if self.drone.lap >= TOTAL_LAPS {
-                    self.drone.state = DroneState::FINISHED;
+                    self.drone.state = DroneState::DRONE_FINISHED;
                 }
             }
 
@@ -273,7 +273,7 @@ impl DronePhysics {
     }
 
     fn start_race(&mut self) {
-        self.drone.state = DroneState::RACING;
+        self.drone.state = DroneState::DRONE_RACING;
         self.lap_start_time = Instant::now();
         self.race_start_time = Some(Instant::now());
     }
@@ -398,7 +398,7 @@ async fn main() -> Result<()> {
                             race_state.countdown = 3 - elapsed as u8;
                         } else {
                             // Start race!
-                            race_state.phase = RacePhase::RACING;
+                            race_state.phase = RacePhase::PHASE_RACING;
                             race_state.countdown = 0;
                             race_start = Some(now);
 
@@ -410,14 +410,14 @@ async fn main() -> Result<()> {
                     }
                 }
             }
-            RacePhase::RACING => {
+            RacePhase::PHASE_RACING => {
                 if let Some(start) = race_start {
                     race_state.elapsed_ms = start.elapsed().as_millis() as u32;
                 }
 
                 // Check if all drones finished
-                if drones.values().all(|d| d.drone.state == DroneState::FINISHED) {
-                    race_state.phase = RacePhase::FINISHED;
+                if drones.values().all(|d| d.drone.state == DroneState::DRONE_FINISHED) {
+                    race_state.phase = RacePhase::PHASE_FINISHED;
                     info!("RACE FINISHED!");
                 }
             }
@@ -425,7 +425,7 @@ async fn main() -> Result<()> {
         }
 
         // Update drones
-        let racing = race_state.phase == RacePhase::RACING;
+        let racing = race_state.phase == RacePhase::PHASE_RACING;
         for drone in drones.values_mut() {
             drone.update(dt, racing);
 

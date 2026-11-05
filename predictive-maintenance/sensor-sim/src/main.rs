@@ -112,9 +112,9 @@ impl Machine {
             self.status = if self.health_score > 80.0 {
                 MachineState::RUNNING
             } else if self.health_score > 50.0 {
-                MachineState::WARNING
+                MachineState::MACHINE_WARNING
             } else {
-                MachineState::CRITICAL
+                MachineState::MACHINE_CRITICAL
             };
         }
 
@@ -278,9 +278,9 @@ async fn main() -> Result<()> {
 
                 if threshold_exceeded && can_alert {
                     let severity = if value > sensor.max_threshold || value < sensor.min_threshold {
-                        AlertSeverity::CRITICAL
+                        AlertSeverity::ALERT_CRITICAL
                     } else {
-                        AlertSeverity::WARNING
+                        AlertSeverity::ALERT_WARNING
                     };
 
                     let (alert_type, threshold) = if value > sensor.max_threshold * 0.9 {

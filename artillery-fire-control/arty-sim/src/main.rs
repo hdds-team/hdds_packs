@@ -104,7 +104,7 @@ impl Battery {
         self.rounds_remaining = self.rounds_remaining.saturating_sub(1);
         self.rounds_fired += 1;
         self.barrel_temp += 8.0;
-        self.state = BatteryState::FIRING;
+        self.state = BatteryState::BATTERY_FIRING;
         self.cooldown_ticks = 30; // 3 seconds at 10Hz
     }
 }
@@ -536,10 +536,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         az, el, tof, range
                     );
 
-                    mission.status = MissionStatus::FIRING;
+                    mission.status = MissionStatus::MISSION_FIRING;
                     mission.delay_ticks = 10; // 1 second before first round
                 }
-                MissionStatus::FIRING => {
+                MissionStatus::MISSION_FIRING => {
                     if mission.rounds_fired >= mission.rounds_requested {
                         // All rounds fired, wait for last impact
                         mission.delay_ticks = 30;

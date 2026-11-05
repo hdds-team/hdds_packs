@@ -10,17 +10,17 @@ module racing {
     enum RacePhase {
         WAITING,
         COUNTDOWN,
-        RACING,
-        FINISHED
+        PHASE_RACING,
+        PHASE_FINISHED
     };
 
     /* Drone operational state */
     enum DroneState {
         IDLE,
         READY,
-        RACING,
+        DRONE_RACING,
         CRASHED,
-        FINISHED
+        DRONE_FINISHED
     };
 
     /* Drone state - position, rotation, velocity (published at ~30Hz) */

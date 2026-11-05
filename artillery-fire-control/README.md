@@ -57,7 +57,7 @@ Then open http://localhost:5173 in your browser.
 New target                                     Target destroyed
     |                                               |
     v                                               v
-PENDING --> COMPUTING --> FIRING --> ADJUSTING --> COMPLETE
+PENDING --> COMPUTING --> MISSION_FIRING --> ADJUSTING --> COMPLETE
                (2s)      (rounds     (3s FO        ^
                           in air)    observes)      |
                                         |           |

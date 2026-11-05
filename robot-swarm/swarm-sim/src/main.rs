@@ -70,7 +70,7 @@ impl SimRobot {
                 vx: 0.0,
                 vy: 0.0,
                 omega: 0.0,
-                state: RobotState::IDLE,
+                state: RobotState::ROBOT_IDLE,
                 battery: rand::thread_rng().gen_range(70..100),
                 front_dist: SENSOR_RANGE,
                 left_dist: SENSOR_RANGE,
@@ -653,7 +653,7 @@ async fn main() -> Result<()> {
                     RobotState::MOVING
                 }
             } else {
-                RobotState::IDLE
+                RobotState::ROBOT_IDLE
             };
 
             // Simulate battery drain

@@ -28,7 +28,7 @@ enum VehicleState {
     EN_ROUTE,
     LOADING,
     MAINTENANCE,
-    EMERGENCY
+    VEHICLE_EMERGENCY
 };
 
 enum TicketStatus {
@@ -42,7 +42,7 @@ enum AlertSeverity {
     INFO,
     WARNING,
     CRITICAL,
-    EMERGENCY
+    ALERT_EMERGENCY
 };
 
 // ============================================================================
