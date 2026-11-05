@@ -22,6 +22,19 @@ hdds-remote-sensor/archives/
 # Hand-written (not generated) type modules: keep tracked
 !air-defense-radar/radar-types/src/lib.rs
 !naval-convoy/naval-types/src/lib.rs
+# Hand-written wrappers (include! the generated.rs next to them): keep tracked
+!artillery-fire-control/arty-types/src/lib.rs
+!cloud-k8s/cloud-types/src/lib.rs
+!convoy-escort/convoy-types/src/lib.rs
+!hot-reload-cockpit/cockpit-types/src/lib.rs
+!fort-knox-security/knox-types/src/lib.rs
+!mission-recorder/recorder-types/src/lib.rs
+!nat-wan-topology/wan-types/src/lib.rs
+!rpc-service-mesh/fleet-types/src/lib.rs
+!satellite-ground-station/sat-types/src/lib.rs
+!tsn-automotive/tsn-types/src/lib.rs
+!uds-fleet-diag/diag-types/src/lib.rs
+!xrce-micro-bridge/xrce-types/src/lib.rs
 **/*-types/src/mod.rs
 **/*-viewer/src/types.ts
 sentinel-home/sentinel-types/python/
@@ -41,8 +54,13 @@ WIP_ROS2.md
 
 # --- Demos excluded (WIP / separate repos) ---
 sentinel-home/
-sentinel-demo/
-uds-fleet-diag/
+# sentinel-demo: only its hand-written types wrapper is tracked (meshes and the rest stay out)
+sentinel-demo/*
+!sentinel-demo/sentinel-types/
+sentinel-demo/sentinel-types/*
+!sentinel-demo/sentinel-types/src/
+sentinel-demo/sentinel-types/src/*
+!sentinel-demo/sentinel-types/src/lib.rs
 
 # --- Binary artifacts ---
 *.a
