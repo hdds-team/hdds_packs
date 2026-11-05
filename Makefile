@@ -41,7 +41,6 @@ CODEGEN_TARGETS = \
 	gen-rpc \
 	gen-satellite \
 	gen-sentinel-demo \
-	gen-sentinel-home \
 	gen-smart-factory \
 	gen-space-invaders \
 	gen-tsn \
@@ -104,9 +103,6 @@ gen-satellite:
 gen-sentinel-demo:
 	@$(call GEN,sentinel-demo/idl/sentinel.idl,sentinel-demo/sentinel-types/src/generated.rs)
 
-gen-sentinel-home:
-	@$(call GEN,sentinel-home/idl/security.idl,sentinel-home/sentinel-types/rust/src/lib.rs)
-
 gen-smart-factory:
 	@$(call GEN,smart-factory/idl/factory.idl,smart-factory/factory-types/src/lib.rs)
 
@@ -146,7 +142,6 @@ DEMOS = \
 	rpc-service-mesh \
 	satellite-ground-station \
 	sentinel-demo \
-	sentinel-home \
 	smart-factory \
 	space-invaders \
 	tsn-automotive \
