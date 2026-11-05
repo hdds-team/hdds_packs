@@ -1,0 +1,149 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2025-2026 HUDS Team / naskel.com
+//
+// HUDS Diagnostic DDS Types
+// Maps HUDS internal types to DDS-publishable topics.
+//
+// Generate: hddsgen gen rust idl/huds_diag.idl -o huds-dds-types/src/generated.rs
+
+// ============================================================
+//  Enumerations
+// ============================================================
+
+/// UDS diagnostic session type (ISO 14229 0x10)
+enum DiagSession {
+    DEFAULT     = 0,
+    PROGRAMMING = 1,
+    EXTENDED    = 2
+};
+
+/// Diagnostic severity from AI engine
+enum AlertSeverity {
+    OK       = 0,
+    WARNING  = 1,
+    ALERT_ERROR    = 2,
+    CRITICAL = 3
+};
+
+/// ECU operational state
+enum EcuState {
+    OFFLINE     = 0,
+    IDLE        = 1,
+    DIAGNOSING  = 2,
+    FLASHING    = 3,
+    ECU_ERROR       = 4
+};
+
+// ============================================================
+//  ECU Health (1 Hz, RELIABLE + TRANSIENT_LOCAL)
+// ============================================================
+
+/// Aggregate health status for a single ECU.
+/// Published at 1 Hz by the bridge for each connected ECU.
+@topic
+struct EcuHealth {
+    @key string ecu_id;
+    EcuState state;
+    DiagSession session;
+
+    // Stack stats (from uds-core::StackStats)
+    uint64_t rx_total;
+    uint64_t rx_dropped;
+    uint64_t tx_total;
+    uint64_t tx_deferred;
+    uint32_t p2_violations;
+    uint32_t bus_load_pct;
+
+    // Server stats (from uds-server::ServerStats)
+    uint64_t requests_handled;
+    uint64_t responses_sent;
+    uint64_t server_errors;
+
+    int64_t timestamp_ns;
+};
+
+// ============================================================
+//  P2 Latency (10 Hz, BEST_EFFORT)
+// ============================================================
+
+/// Real-time P2 latency measurements.
+/// High frequency, best-effort delivery.
+@topic
+struct P2Latency {
+    @key string ecu_id;
+    uint64_t last_p2_us;
+    uint64_t min_p2_us;
+    uint64_t max_p2_us;
+    uint64_t avg_p2_us;
+    uint64_t samples;
+    int64_t timestamp_ns;
+};
+
+// ============================================================
+//  Transfer Progress (per-block, RELIABLE)
+// ============================================================
+
+/// Firmware transfer progress for active flash operations.
+/// Published for each block during a TransferData (0x36) session.
+@topic
+struct TransferProgress {
+    @key string ecu_id;
+    uint32_t blocks_sent;
+    uint32_t total_blocks;
+    uint8_t progress_pct;
+    uint32_t total_retries;
+    uint32_t blocks_with_many_retries;
+    uint32_t max_backoff_reached;
+    uint64_t elapsed_ms;
+    uint64_t bytes_transferred;
+    int64_t timestamp_ns;
+};
+
+// ============================================================
+//  Diagnostic Alert (event-driven, RELIABLE + KEEP_ALL)
+// ============================================================
+
+/// AI diagnostic alert from the rules/LLM engine.
+/// Published on anomaly detection, never dropped (KEEP_ALL).
+@topic
+struct DiagAlert {
+    @key string ecu_id;
+    uint32_t alert_seq;
+    AlertSeverity severity;
+    string summary;
+    string engine;
+    uint64_t analysis_time_ms;
+    int64_t timestamp_ns;
+};
+
+// ============================================================
+//  Fleet Stats (1 Hz, BEST_EFFORT)
+// ============================================================
+
+/// Aggregated fleet-level statistics.
+/// One instance per bridge, summarizes all connected ECUs.
+@topic
+struct FleetStats {
+    @key string bridge_id;
+    uint32_t ecus_online;
+    uint32_t ecus_flashing;
+    uint32_t ecus_error;
+    uint64_t total_requests;
+    uint64_t total_errors;
+    uint64_t total_bytes_transferred;
+    double avg_bus_load_pct;
+    int64_t timestamp_ns;
+};
+
+// ============================================================
+//  Session Change Event (event-driven, RELIABLE)
+// ============================================================
+
+/// Emitted when an ECU changes diagnostic session.
+@topic
+struct SessionChange {
+    @key string ecu_id;
+    DiagSession previous_session;
+    DiagSession new_session;
+    int64_t timestamp_ns;
+};

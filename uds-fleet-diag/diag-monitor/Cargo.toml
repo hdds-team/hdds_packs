@@ -1,0 +1,10 @@
+[package]
+name = "diag-monitor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hdds = { workspace = true }
+diag-types = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
