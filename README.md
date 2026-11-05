@@ -1,6 +1,6 @@
 # HDDS Demos
 
-Showcase of **[HDDS](https://github.com/anthropics/hdds)** (High-performance DDS) capabilities through 26 self-contained demonstration projects. Each demo includes a Rust simulator/publisher, IDL type definitions, and most include a web viewer (Vite + Three.js/Canvas).
+Showcase of **[HDDS](https://github.com/anthropics/hdds)** (High-performance DDS) capabilities through 24 self-contained demonstration projects. Each demo includes a Rust simulator/publisher, IDL type definitions, and most include a web viewer (Vite + Three.js/Canvas).
 
 All demos use DDS domain 99.
 
@@ -58,7 +58,7 @@ cd air-defense-radar/radar-viewer && npm install && npm run dev
 
 ## Build Info
 
-Each demo compiles independently. Full build of all 26 demos:
+Each demo compiles independently. Full build of all 24 demos:
 
 - **Source**: ~2.5 MB (284 files)
 - **Build artifacts**: ~57 GB (incremental, all demos)
@@ -95,7 +95,7 @@ demo-name/
 | Target | Description |
 |--------|-------------|
 | `make gen` | Regenerate all Rust types from IDL via hddsgen |
-| `make build` | Build all 26 demos (reports OK/FAIL count) |
+| `make build` | Build all 24 demos (reports OK/FAIL count) |
 | `make gen-build` | Regenerate + build |
 | `make clean` | Remove all `target/` directories |
 
