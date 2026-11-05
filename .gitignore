@@ -19,6 +19,9 @@ hdds-remote-sensor/archives/
 # --- Generated code (regenerable via `make gen`) ---
 **/generated.rs
 **/*-types/src/lib.rs
+# Hand-written (not generated) type modules: keep tracked
+!air-defense-radar/radar-types/src/lib.rs
+!naval-convoy/naval-types/src/lib.rs
 **/*-types/src/mod.rs
 **/*-viewer/src/types.ts
 sentinel-home/sentinel-types/python/
