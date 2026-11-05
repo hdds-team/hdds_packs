@@ -4,7 +4,7 @@
 TARGET := aarch64-unknown-linux-gnu
 GLIBC_VERSION := 2.36
 BINARY := hdds-pi-gateway
-PI_HOST ?= naskel@192.168.1.125
+PI_HOST ?= pi@raspberrypi.local
 PI_PATH ?= ~/$(BINARY)
 
 .PHONY: all build release deploy clean help
