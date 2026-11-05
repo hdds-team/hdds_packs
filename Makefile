@@ -12,6 +12,13 @@
 
 HDDSGEN ?= /projects/public/hdds_gen/target/release/hddsgen
 
+# One generated file from its IDL. Creates the output directory, skips the demo when its
+# IDL is absent (untracked demo trees), and leaves the file untouched when the content is
+# unchanged so cargo does not rebuild for nothing.
+define GEN
+if [ -f $(1) ]; then mkdir -p $(dir $(2)) && $(HDDSGEN) gen rust $(1) -o $(2).tmp >/dev/null && { cmp -s $(2).tmp $(2) && rm -f $(2).tmp || mv $(2).tmp $(2); } && echo "Generated: $(2)"; else echo "Skipped (no IDL): $(1)"; fi
+endef
+
 # ---- IDL Code Generation ----
 # Format: hddsgen gen rust <idl> -o <output>
 # Manual types (air-defense-radar, naval-convoy) use #[derive(DDS)] - no codegen needed
@@ -47,73 +54,73 @@ gen: $(CODEGEN_TARGETS)
 	@echo "=== All types regenerated ==="
 
 gen-artillery:
-	$(HDDSGEN) gen rust artillery-fire-control/idl/artillery.idl -o artillery-fire-control/arty-types/src/generated.rs
+	@$(call GEN,artillery-fire-control/idl/artillery.idl,artillery-fire-control/arty-types/src/generated.rs)
 
 gen-cloud:
-	$(HDDSGEN) gen rust cloud-k8s/idl/cloud_native.idl -o cloud-k8s/cloud-types/src/generated.rs
+	@$(call GEN,cloud-k8s/idl/cloud_native.idl,cloud-k8s/cloud-types/src/generated.rs)
 
 gen-convoy:
-	$(HDDSGEN) gen rust convoy-escort/idl/convoy.idl -o convoy-escort/convoy-types/src/generated.rs
+	@$(call GEN,convoy-escort/idl/convoy.idl,convoy-escort/convoy-types/src/generated.rs)
 
 gen-drone:
-	$(HDDSGEN) gen rust drone-racing/idl/racing.idl -o drone-racing/racing-types/src/lib.rs
+	@$(call GEN,drone-racing/idl/racing.idl,drone-racing/racing-types/src/lib.rs)
 
 gen-f1tenth:
-	$(HDDSGEN) gen rust f1tenth-racing/idl/f1tenth.idl -o f1tenth-racing/f1tenth-types/src/lib.rs
+	@$(call GEN,f1tenth-racing/idl/f1tenth.idl,f1tenth-racing/f1tenth-types/src/lib.rs)
 
 gen-fort-knox:
-	$(HDDSGEN) gen rust fort-knox-security/idl/fort_knox.idl -o fort-knox-security/knox-types/src/generated.rs
+	@$(call GEN,fort-knox-security/idl/fort_knox.idl,fort-knox-security/knox-types/src/generated.rs)
 
 gen-hot-reload:
-	$(HDDSGEN) gen rust hot-reload-cockpit/idl/cockpit.idl -o hot-reload-cockpit/cockpit-types/src/generated.rs
+	@$(call GEN,hot-reload-cockpit/idl/cockpit.idl,hot-reload-cockpit/cockpit-types/src/generated.rs)
 
 gen-lidar:
-	$(HDDSGEN) gen rust lidar-mapping/idl/lidar.idl -o lidar-mapping/lidar-types/src/lib.rs
+	@$(call GEN,lidar-mapping/idl/lidar.idl,lidar-mapping/lidar-types/src/lib.rs)
 
 gen-metal-slug:
-	$(HDDSGEN) gen rust metal-slug-arena/idl/arena.idl -o metal-slug-arena/arena-types/src/lib.rs
+	@$(call GEN,metal-slug-arena/idl/arena.idl,metal-slug-arena/arena-types/src/lib.rs)
 
 gen-mission:
-	$(HDDSGEN) gen rust mission-recorder/idl/mission.idl -o mission-recorder/recorder-types/src/generated.rs
+	@$(call GEN,mission-recorder/idl/mission.idl,mission-recorder/recorder-types/src/generated.rs)
 
 gen-nat-wan:
-	$(HDDSGEN) gen rust nat-wan-topology/idl/wan_link.idl -o nat-wan-topology/wan-types/src/generated.rs
+	@$(call GEN,nat-wan-topology/idl/wan_link.idl,nat-wan-topology/wan-types/src/generated.rs)
 
 gen-predictive:
-	$(HDDSGEN) gen rust predictive-maintenance/idl/maintenance.idl -o predictive-maintenance/sensor-types/src/lib.rs
+	@$(call GEN,predictive-maintenance/idl/maintenance.idl,predictive-maintenance/sensor-types/src/lib.rs)
 
 gen-railway:
-	$(HDDSGEN) gen rust railway-network/idl/railway.idl -o railway-network/railway-types/src/lib.rs
+	@$(call GEN,railway-network/idl/railway.idl,railway-network/railway-types/src/lib.rs)
 
 gen-robot-swarm:
-	$(HDDSGEN) gen rust robot-swarm/idl/swarm.idl -o robot-swarm/swarm-types/src/lib.rs
+	@$(call GEN,robot-swarm/idl/swarm.idl,robot-swarm/swarm-types/src/lib.rs)
 
 gen-rpc:
-	$(HDDSGEN) gen rust rpc-service-mesh/idl/service_mesh.idl -o rpc-service-mesh/fleet-types/src/generated.rs
+	@$(call GEN,rpc-service-mesh/idl/service_mesh.idl,rpc-service-mesh/fleet-types/src/generated.rs)
 
 gen-satellite:
-	$(HDDSGEN) gen rust satellite-ground-station/idl/satellite.idl -o satellite-ground-station/sat-types/src/generated.rs
+	@$(call GEN,satellite-ground-station/idl/satellite.idl,satellite-ground-station/sat-types/src/generated.rs)
 
 gen-sentinel-demo:
-	$(HDDSGEN) gen rust sentinel-demo/idl/sentinel.idl -o sentinel-demo/sentinel-types/src/generated.rs
+	@$(call GEN,sentinel-demo/idl/sentinel.idl,sentinel-demo/sentinel-types/src/generated.rs)
 
 gen-sentinel-home:
-	$(HDDSGEN) gen rust sentinel-home/idl/security.idl -o sentinel-home/sentinel-types/rust/src/lib.rs
+	@$(call GEN,sentinel-home/idl/security.idl,sentinel-home/sentinel-types/rust/src/lib.rs)
 
 gen-smart-factory:
-	$(HDDSGEN) gen rust smart-factory/idl/factory.idl -o smart-factory/factory-types/src/lib.rs
+	@$(call GEN,smart-factory/idl/factory.idl,smart-factory/factory-types/src/lib.rs)
 
 gen-space-invaders:
-	$(HDDSGEN) gen rust space-invaders/idl/invaders.idl -o space-invaders/invaders-types/src/lib.rs
+	@$(call GEN,space-invaders/idl/invaders.idl,space-invaders/invaders-types/src/lib.rs)
 
 gen-tsn:
-	$(HDDSGEN) gen rust tsn-automotive/idl/tsn_vehicle.idl -o tsn-automotive/tsn-types/src/generated.rs
+	@$(call GEN,tsn-automotive/idl/tsn_vehicle.idl,tsn-automotive/tsn-types/src/generated.rs)
 
 gen-uds:
-	$(HDDSGEN) gen rust uds-fleet-diag/idl/huds_diag.idl -o uds-fleet-diag/diag-types/src/generated.rs
+	@$(call GEN,uds-fleet-diag/idl/huds_diag.idl,uds-fleet-diag/diag-types/src/generated.rs)
 
 gen-xrce:
-	$(HDDSGEN) gen rust xrce-micro-bridge/idl/xrce_bridge.idl -o xrce-micro-bridge/xrce-types/src/generated.rs
+	@$(call GEN,xrce-micro-bridge/idl/xrce_bridge.idl,xrce-micro-bridge/xrce-types/src/generated.rs)
 
 
 # ---- Build all demos ----
@@ -146,7 +153,7 @@ DEMOS = \
 	uds-fleet-diag \
 	xrce-micro-bridge
 
-build:
+build: gen
 	@ok=0; fail=0; \
 	for d in $(DEMOS); do \
 		if [ -f $$d/Cargo.toml ]; then \
