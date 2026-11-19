@@ -12,6 +12,9 @@ use hdds::{Participant, QoS, TransportMode};
 use rand::Rng;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 #[derive(Parser)]
 #[command(name = "cloud-worker", about = "Simulated K8s pod worker for HDDS demo")]
 struct Args {
@@ -40,7 +43,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create DDS participant
     let participant = Participant::builder(&format!("cloud_worker_{}", args.pod_name))
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

@@ -25,7 +25,7 @@ if [ ! -f "lib/hdds-micro/libhdds_micro_c.a" ]; then
     echo "ERROR: libhdds_micro_c.a not found in lib/hdds-micro/"
     echo ""
     echo "Build it with:"
-    echo "  cd /projects/public/hdds"
+    echo "  cd \"\${HDDS_SRC:-../hdds}\""
     echo "  cargo +esp build --release -p hdds-micro-c --target xtensa-esp32-espidf -Zbuild-std=std,panic_abort"
     echo ""
     echo "Then copy:"

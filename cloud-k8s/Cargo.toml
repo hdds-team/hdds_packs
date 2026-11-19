@@ -3,7 +3,7 @@ resolver = "2"
 members = ["cloud-types", "cloud-worker", "cloud-monitor"]
 
 [workspace.dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds" }
+hdds = "1.5.0"
 cloud-types = { path = "cloud-types" }
 tokio = { version = "1.43", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }

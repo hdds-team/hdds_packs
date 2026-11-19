@@ -11,6 +11,9 @@ use std::collections::HashMap;
 use std::f32::consts::PI;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 const TICK_RATE: u64 = 60;
 const TICK_MS: u64 = 1000 / TICK_RATE;
 const TOTAL_LAPS: u8 = 3;
@@ -291,7 +294,7 @@ async fn main() -> Result<()> {
     info!("==========================================");
 
     let participant = Participant::builder("racing_server")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

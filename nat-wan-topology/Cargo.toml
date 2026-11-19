@@ -3,7 +3,7 @@ resolver = "2"
 members = ["wan-types", "wan-site", "wan-topology"]
 
 [workspace.dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds" }
+hdds = "1.5.0"
 wan-types = { path = "wan-types" }
 tokio = { version = "1.43", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }

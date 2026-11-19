@@ -17,6 +17,9 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// Sensor definitions: (id, base_value, amplitude, noise_scale)
 const SENSORS: &[(&str, f64, f64, f64)] = &[
     ("airspeed", 250.0, 20.0, 2.0),
@@ -33,12 +36,17 @@ const SNAPSHOT_INTERVAL: Duration = Duration::from_secs(1);
 
 /// Default QoS profile path (relative to working directory)
 fn default_qos_path() -> PathBuf {
-    // Try relative path first, then absolute
-    let relative = PathBuf::from("qos-profiles/default.yaml");
-    if relative.exists() {
-        return relative;
+    if let Some(from_env) = std::env::var_os("HDDS_QOS_PROFILE") {
+        return PathBuf::from(from_env);
     }
-    PathBuf::from("/projects/public/demos/hot-reload-cockpit/qos-profiles/default.yaml")
+    // Run from the demo directory, or from one of its member crates.
+    for candidate in ["qos-profiles/default.yaml", "../qos-profiles/default.yaml"] {
+        let path = PathBuf::from(candidate);
+        if path.exists() {
+            return path;
+        }
+    }
+    PathBuf::from("qos-profiles/default.yaml")
 }
 
 fn main() -> Result<()> {
@@ -93,7 +101,7 @@ fn main() -> Result<()> {
 
     // -- Create DDS participant --
     let participant = Participant::builder("cockpit-sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

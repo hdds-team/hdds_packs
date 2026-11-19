@@ -3,8 +3,8 @@ resolver = "2"
 members = ["recorder-types", "recorder-sim", "recorder-sink", "recorder-replay"]
 
 [workspace.dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds" }
-hdds-influx-sink = { path = "/projects/public/hdds/crates/hdds-influx-sink" }
+hdds = "1.5.0"
+hdds-influx-sink = "0.1.0"
 recorder-types = { path = "recorder-types" }
 tokio = { version = "1.43", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }

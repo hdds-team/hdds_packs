@@ -3,7 +3,7 @@ resolver = "2"
 members = ["arty-types", "arty-sim"]
 
 [workspace.dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds" }
+hdds = "1.5.0"
 arty-types = { path = "arty-types" }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

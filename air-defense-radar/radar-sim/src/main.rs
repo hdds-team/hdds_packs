@@ -14,6 +14,9 @@ use rand::Rng;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // Simulation constants
 const RADAR_RANGE_KM: f32 = 200.0;      // Radar detection range
 const SWEEP_RPM: f32 = 15.0;            // Rotations per minute
@@ -175,7 +178,7 @@ async fn main() -> Result<()> {
 
     // Create DDS participant
     let participant = Participant::builder("radar_simulator")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

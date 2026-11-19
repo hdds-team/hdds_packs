@@ -32,6 +32,9 @@ use std::collections::HashMap;
 use std::io::stdout;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// State for a single pod in the monitor
 #[derive(Debug, Clone)]
 struct PodState {
@@ -388,7 +391,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create DDS participant (for receiving real DDS data if workers are running)
     let _participant = Participant::builder("cloud_monitor")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

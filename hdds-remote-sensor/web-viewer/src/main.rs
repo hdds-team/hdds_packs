@@ -42,7 +42,8 @@ struct ImageMeta {
 // CONFIGURATION
 // =============================================================================
 
-const DDS_DOMAIN: u32 = 0;
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DDS_DOMAIN: u32 = 99;
 
 fn get_web_port() -> u16 {
     std::env::var("WEB_PORT")

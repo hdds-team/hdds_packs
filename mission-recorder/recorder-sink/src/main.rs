@@ -17,6 +17,9 @@ use std::path::PathBuf;
 use std::time::{Duration, Instant};
 use tracing::{info, warn};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
@@ -98,7 +101,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // DDS setup
     // -------------------------------------------------------------------------
     let participant = Participant::builder("mission_sink")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

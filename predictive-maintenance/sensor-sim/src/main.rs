@@ -14,6 +14,9 @@ use sensor_types::maintenance::*;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 const SIM_TICK_MS: u64 = 200; // 5 Hz update rate
 
 fn timestamp_us() -> u64 {
@@ -207,7 +210,7 @@ async fn main() -> Result<()> {
 
     // Create DDS participant
     let participant = Participant::builder("pm_simulator")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

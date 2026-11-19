@@ -11,6 +11,9 @@ use hdds::{Participant, QoS, TransportMode};
 use railway_types::railway::*;
 use rand::Rng;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// Topic names for DDS
 mod topics {
     pub const TRAIN: &str = "railway/train";
@@ -233,7 +236,7 @@ async fn main() -> Result<()> {
 
     // Create DDS participant
     let participant = Participant::builder("railway_sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

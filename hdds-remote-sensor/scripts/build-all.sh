@@ -26,7 +26,7 @@ fail() { echo -e "${RED}[FAIL]${NC} $1"; }
 echo ""
 echo "=== 1. HDDS-Micro C SDK (ESP32) ==="
 if command -v cargo +esp &> /dev/null; then
-    cd /projects/public/hdds
+    cd "${HDDS_SRC:-../hdds}"
     if cargo +esp build --release -p hdds-micro-c \
         --target xtensa-esp32-espidf \
         -Zbuild-std=std,panic_abort 2>/dev/null; then

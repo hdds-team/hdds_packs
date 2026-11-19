@@ -13,6 +13,9 @@ use rand::Rng;
 use std::f32::consts::PI;
 use swarm_types::swarm::*;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 const TICK_RATE_HZ: u64 = 30;
 const NUM_ROBOTS: usize = 12;
 
@@ -358,7 +361,7 @@ async fn main() -> Result<()> {
     log::info!("==========================================");
 
     let participant = Participant::builder("swarm_sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

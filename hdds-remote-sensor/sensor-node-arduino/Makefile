@@ -13,7 +13,13 @@
 #   make all    - Full rebuild + flash
 
 # Paths
-HDDS_ROOT := $(realpath ../../../hdds)
+# The firmware links the HDDS C SDK, which is built from an hdds checkout: there
+# is no package to depend on here. No default is guessed, for two reasons. A
+# guessed relative path only resolves in one directory layout, and an
+# unresolvable one expands to nothing, which turns the clean rule below into a
+# path at the root of the filesystem.
+HDDS_SRC ?=
+HDDS_ROOT := $(if $(strip $(HDDS_SRC)),$(abspath $(HDDS_SRC)),)
 HDDS_MICRO_C := $(HDDS_ROOT)/crates/hdds-micro-c
 LIB_DIR := lib/hdds-micro
 ESP_TOOLCHAIN := $(HOME)/.rustup/toolchains/esp
@@ -22,13 +28,20 @@ LIBCLANG_PATH := $(ESP_TOOLCHAIN)/xtensa-esp32-elf-clang/esp-18.1.2_20240912/esp
 # Check if ESP toolchain is available
 ESP_AVAILABLE := $(shell test -x "$(ESP_TOOLCHAIN)/bin/cargo" && echo yes || echo no)
 
-.PHONY: all lib build flash monitor clean check-esp help
+.PHONY: all lib build flash monitor clean check-esp help require-hdds-src
 
 # Default target: build library and Arduino project
 default: lib build
 
 # Full workflow: clean, rebuild lib, rebuild Arduino, flash
 all: clean lib build flash
+
+require-hdds-src:
+	@if [ -z "$(HDDS_ROOT)" ]; then \
+		echo "HDDS_SRC is not set. Point it at an hdds checkout, for instance:"; \
+		echo "  make HDDS_SRC=/path/to/hdds lib"; \
+		exit 1; \
+	fi
 
 check-esp:
 ifeq ($(ESP_AVAILABLE),no)
@@ -38,7 +51,7 @@ ifeq ($(ESP_AVAILABLE),no)
 endif
 
 # Build the hdds-micro-c static library for ESP32
-lib: check-esp
+lib: check-esp require-hdds-src
 	@echo "=== Building hdds-micro-c for ESP32 ==="
 	cd $(HDDS_ROOT) && \
 		RUSTUP_TOOLCHAIN=esp \
@@ -72,13 +85,14 @@ clean:
 	@echo "Cleaned Arduino build"
 
 # Full clean including library
-cleanall: clean
-	rm -rf $(HDDS_ROOT)/target/xtensa-esp32-espidf
+cleanall: clean require-hdds-src
+	@if [ -n "$(HDDS_ROOT)" ]; then rm -rf "$(HDDS_ROOT)/target/xtensa-esp32-espidf"; \
+	else echo "HDDS_SRC is not set, nothing to clean in the library build"; fi
 	@echo "Cleaned library build"
 
 # Show current status
 status:
-	@echo "HDDS Root: $(HDDS_ROOT)"
+	@echo "HDDS Root: $(if $(HDDS_ROOT),$(HDDS_ROOT),(HDDS_SRC not set))"
 	@echo "ESP Toolchain: $(ESP_TOOLCHAIN)"
 	@echo "ESP Available: $(ESP_AVAILABLE)"
 	@ls -la $(LIB_DIR)/libhdds_micro_c.a 2>/dev/null || echo "Library not built"

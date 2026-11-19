@@ -13,6 +13,9 @@ use rand::Rng;
 use std::f32::consts::PI;
 use std::time::UNIX_EPOCH;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // Simulation constants
 const LIDAR_RANGE: f32 = 500.0;
 const LIDAR_RAYS: usize = 360;
@@ -334,7 +337,7 @@ async fn main() -> Result<()> {
     log::info!("==========================================");
 
     let participant = Participant::builder("lidar_sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

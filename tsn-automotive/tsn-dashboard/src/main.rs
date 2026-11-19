@@ -27,6 +27,9 @@ use ratatui::widgets::{Bar, BarChart, BarGroup, Block, Borders, Cell, Paragraph,
 use hdds::{Participant, QoS, TransportMode};
 use tsn_types::*;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // Shared application state
 // ---------------------------------------------------------------------------
@@ -754,7 +757,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create DDS participant
     // Participant::builder().build() returns Arc<Participant>
     let participant = Participant::builder("tsn-dashboard")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

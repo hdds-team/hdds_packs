@@ -3,7 +3,7 @@ resolver = "2"
 members = ["cockpit-types", "cockpit-sim", "cockpit-panel"]
 
 [workspace.dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds", features = ["qos-loaders"] }
+hdds = { version = "1.5.0", features = ["qos-loaders"] }
 cockpit-types = { path = "cockpit-types" }
 tokio = { version = "1.43", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }

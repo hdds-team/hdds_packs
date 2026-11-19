@@ -1,6 +1,6 @@
 # HDDS Demos
 
-Showcase of **[HDDS](https://github.com/anthropics/hdds)** (High-performance DDS) capabilities through 24 self-contained demonstration projects. Each demo includes a Rust simulator/publisher, IDL type definitions, and most include a web viewer (Vite + Three.js/Canvas).
+Showcase of **[HDDS](https://github.com/hdds-team/hdds)** (High-performance DDS) capabilities through 24 self-contained demonstration projects. Each demo includes a Rust simulator/publisher, IDL type definitions, and most include a web viewer (Vite + Three.js/Canvas).
 
 All demos use DDS domain 99.
 

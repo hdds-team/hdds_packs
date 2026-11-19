@@ -7,7 +7,7 @@ description = "HDDS Remote Sensor - Pi Zero 2 W Gateway with full HDDS"
 
 [dependencies]
 # Full HDDS stack with QUIC transport!
-hdds = { path = "../../../hdds/crates/hdds", features = ["quic"] }
+hdds = { version = "1.5.0", features = ["quic"] }
 
 # Serial port for HC-12 (serial2 doesn't need libudev!)
 serial2 = "0.2"

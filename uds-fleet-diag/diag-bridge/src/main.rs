@@ -24,6 +24,9 @@ use hdds::{Participant, QoS, TransportMode};
 use rand::Rng;
 use tracing::info;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 //  Simulated ECU state (mirrors HUDS uds-core/uds-server/uds-client types)
 // ---------------------------------------------------------------------------
@@ -165,7 +168,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     let participant = Participant::builder("diag-bridge")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

@@ -13,7 +13,7 @@ authors = ["naskel"]
 
 [workspace.dependencies]
 # HDDS
-hdds = { path = "/projects/public/hdds/crates/hdds" }
+hdds = "1.5.0"
 
 # Internal
 naval-types = { path = "naval-types" }

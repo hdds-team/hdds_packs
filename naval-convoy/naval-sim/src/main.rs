@@ -12,6 +12,9 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
@@ -893,7 +896,7 @@ async fn main() -> Result<()> {
 
     // Create HDDS DDS participant
     let participant = Participant::builder("naval_convoy_sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

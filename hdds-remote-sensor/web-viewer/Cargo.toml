@@ -7,7 +7,7 @@ authors = ["naskel.com"]
 license = "Apache-2.0 OR MIT"
 
 [dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds", features = ["quic"] }
+hdds = { version = "1.5.0", features = ["quic"] }
 tokio = { version = "1", features = ["full"] }
 axum = "0.7"
 tower-http = { version = "0.5", features = ["fs", "cors"] }

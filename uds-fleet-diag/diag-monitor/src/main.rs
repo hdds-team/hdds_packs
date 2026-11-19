@@ -16,6 +16,9 @@ use diag_types::*;
 use hdds::{Participant, QoS, TransportMode};
 use tracing::info;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt()
         .with_env_filter(
@@ -31,7 +34,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     let participant = Participant::builder("diag-monitor")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

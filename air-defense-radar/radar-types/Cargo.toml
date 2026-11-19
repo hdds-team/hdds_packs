@@ -5,5 +5,5 @@ edition = "2021"
 description = "DDS types for Air Defense Radar demo"
 
 [dependencies]
-hdds = { path = "/projects/public/hdds/crates/hdds" }
+hdds = "1.5.0"
 serde = { version = "1", features = ["derive"] }

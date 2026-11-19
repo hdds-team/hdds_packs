@@ -10,7 +10,7 @@
 #   - hddsgen binary (set HDDSGEN env var or build from hdds_gen repo)
 #   - Rust toolchain
 
-HDDSGEN ?= /projects/public/hdds_gen/target/release/hddsgen
+HDDSGEN ?= hddsgen
 
 # One generated file from its IDL. Creates the output directory, skips the demo when its
 # IDL is absent (untracked demo trees), and leaves the file untouched when the content is
@@ -47,7 +47,10 @@ CODEGEN_TARGETS = \
 	gen-uds \
 	gen-xrce
 
-.PHONY: gen gen-build build clean $(CODEGEN_TARGETS)
+.PHONY: check gen gen-build build clean $(CODEGEN_TARGETS)
+
+check:
+	@python3 scripts/check-no-external-paths.py .
 
 gen: $(CODEGEN_TARGETS)
 	@echo "=== All types regenerated ==="
@@ -148,12 +151,14 @@ DEMOS = \
 	uds-fleet-diag \
 	xrce-micro-bridge
 
-build: gen
+# The generated code is committed, so a build needs no generator. Run `make gen`
+# to refresh it after changing an IDL file.
+build:
 	@ok=0; fail=0; \
 	for d in $(DEMOS); do \
 		if [ -f $$d/Cargo.toml ]; then \
 			printf "  Building %-30s" "$$d..."; \
-			if cargo build --manifest-path $$d/Cargo.toml 2>/dev/null; then \
+			if cargo build --manifest-path $$d/Cargo.toml; then \
 				echo " OK"; \
 				ok=$$((ok + 1)); \
 			else \

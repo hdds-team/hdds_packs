@@ -120,7 +120,8 @@ enum DdsMessage {
 const SERIAL_PORT: &str = "/dev/serial0";  // HC-12 via GPIO14(TX)/GPIO15(RX)
 const SERIAL_BAUD: u32 = 9600;
 const WEB_PORT: u16 = 8080;
-const DDS_DOMAIN: u32 = 0;
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DDS_DOMAIN: u32 = 99;
 const IMAGE_DIR: &str = "/tmp/hdds-images";  // Where received images are saved
 
 // Static peer for unicast DDS (server IP:port)

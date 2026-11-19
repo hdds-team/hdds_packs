@@ -18,6 +18,9 @@ use hdds::transport::tsn::{TsnConfig, TsnProbe, TxTimePolicy, qos_to_tsn, QosHin
 use rand::Rng;
 use tsn_types::*;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// Get current timestamp in nanoseconds since Unix epoch.
 fn now_ns() -> i64 {
     SystemTime::now()
@@ -311,7 +314,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // --- Phase 3: Create DDS participant ---
     let participant = Participant::builder("tsn-ecu-sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

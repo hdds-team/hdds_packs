@@ -22,6 +22,9 @@ use rand::Rng;
 use sat_types::*;
 use tracing::info;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // =============================================================================
 // CONSTANTS
 // =============================================================================
@@ -386,7 +389,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create HDDS DDS participant
     let participant = Participant::builder("sat-sim")
-        .domain_id(0)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 
