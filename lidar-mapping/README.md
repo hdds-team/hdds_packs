@@ -53,6 +53,13 @@ http://localhost:5173/?demo=1
 | `MapBatch` | MapBatch | Occupancy grid updates |
 | `WallSegment` | WallSegment | Environment walls |
 
+**The web viewer cannot show the scans yet.** `LidarBatch` and `MapBatch` each
+carry a `sequence<>` member, and the `hdds-ws` bridge delivers those samples to
+the browser as opaque bytes: measured 584 of 584 and 1 of 1 over one run, while
+`RobotPose`, which has no sequence, decodes every time. So the robot moves on
+screen and the map stays empty. A native DDS reader using the generated type
+decodes them normally; this is a limit of the bridge's dynamic decoding.
+
 ## Controls
 
 - **Mouse drag**: Pan view (when not following robot)
