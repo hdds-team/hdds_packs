@@ -17,6 +17,9 @@ use std::f64::consts::PI;
 use std::time::{Duration, Instant};
 use tracing::{info, debug};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// Topic names
 mod topics {
     pub const VEHICLE_GPS: &str = "convoy/vehicle/gps";
@@ -147,6 +150,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create DDS participant
     let participant = Participant::builder("convoy_sim")
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
     info!("[OK] DDS participant created");

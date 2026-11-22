@@ -315,13 +315,20 @@ fn main() -> anyhow::Result<()> {
         .with_writer(std::io::stderr)
         .init();
 
-    // Create the real XRCE agent instance (demonstrates the hdds-xrce API)
+    // Create the real XRCE agent instance (demonstrates the hdds-xrce API).
+    // The agent refuses to start with neither an accepted client key nor an
+    // explicit open admission, which is the right default for a deployment and
+    // made this binary panic on startup. No XRCE client connects in this demo:
+    // the dashboard reads DDS samples published by xrce-client-sim. A real
+    // deployment lists the keys of its micro-clients in accepted_client_keys
+    // instead of opening admission.
     let xrce_config = XrceAgentConfig {
         udp_port: 2019,
         max_clients: cli.max_clients,
         session_timeout_ms: 30_000,
         heartbeat_period_ms: 200,
         max_message_size: 512,
+        open_admission: true,
         ..XrceAgentConfig::default()
     };
 

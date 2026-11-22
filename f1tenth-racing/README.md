@@ -52,9 +52,10 @@ cd f1tenth-viewer && npm install && npm run dev
 #    (or http://localhost:5173?demo for offline demo mode)
 ```
 
-L'ordre compte : le pont resout le type d'un topic au moment ou il cree son
-lecteur, c'est-a-dire quand le navigateur s'abonne. Si rien ne publie a cet
-instant, les echantillons arrivent en octets opaques pour toute la session.
+L'ordre compte : le pont resout le type d'un topic a partir des endpoints
+presents quand il cree son lecteur, c'est-a-dire quand le navigateur s'abonne.
+Si rien ne publie a cet instant, les premiers echantillons arrivent en octets
+opaques jusqu'a ce que le type soit decouvert.
 
 Pour observer les topics depuis le terminal :
 

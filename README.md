@@ -62,9 +62,10 @@ cd air-defense-radar/radar-viewer && npm install && npm run dev
 ```
 
 The order of the last two steps matters. The bridge resolves a topic's type
-when it creates its reader, which happens when the browser subscribes: if
-nothing is publishing at that moment, the samples reach the browser as opaque
-bytes for the rest of the session. Start the simulator first.
+from the endpoints present when it creates its reader, which happens when the
+browser subscribes: if nothing is publishing at that moment, the first samples
+reach the browser as opaque bytes until the type is discovered. Starting the
+simulator first avoids that blind window.
 
 ## Build Info
 
