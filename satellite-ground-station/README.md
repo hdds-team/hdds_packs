@@ -57,7 +57,7 @@ Canvas 2D equirectangular map projection with:
 
 - Rust toolchain
 - Node.js 18+
-- [hdds-ws](../../tools/hdds-ws) WebSocket bridge running on port 9090
+- [hdds-ws](https://github.com/hdds-team/hdds/tree/master/tools/hdds-ws) WebSocket bridge running on port 9090
 
 ### Run
 

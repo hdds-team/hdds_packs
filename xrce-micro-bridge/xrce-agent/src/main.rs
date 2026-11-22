@@ -35,6 +35,9 @@ use xrce_types::{ActuatorCommand, MicroSensorData, XrceSessionInfo};
 
 use clap::Parser;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
@@ -43,7 +46,7 @@ use clap::Parser;
 #[command(name = "xrce-agent", about = "HDDS XRCE Agent with TUI monitor")]
 struct Cli {
     /// DDS domain ID
-    #[arg(long, default_value_t = 0)]
+    #[arg(long, default_value_t = DOMAIN_ID)]
     domain_id: u32,
 
     /// Maximum XRCE clients

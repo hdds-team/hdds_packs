@@ -22,7 +22,7 @@ f1tenth-sim (Rust)          hdds-ws (bridge)          f1tenth-viewer (Three.js)
 ```
 
 Le sim ne sait rien du viewer et vice-versa. Tout passe par DDS.
-On peut brancher un 2e viewer, un logger, un `hddsctl sub` sans rien changer au sim.
+On peut brancher un 2e viewer, un logger, un `hdds-topic-echo` sans rien changer au sim.
 
 ## Topics DDS
 
@@ -43,7 +43,7 @@ Debit total : ~240 msg/s en course (4 cars x 60Hz).
 cargo build --release -p f1tenth-sim
 
 # 2. Start hdds-ws bridge (domain 99)
-hdds-ws --domain-id 99 --port 9090
+hdds-ws --domain 99 --port 9090
 
 # 3. Start the viewer
 cd f1tenth-viewer && npm install && npm run dev
@@ -58,8 +58,8 @@ cargo run --release -p f1tenth-sim
 Pour observer les topics depuis le terminal :
 
 ```bash
-hddsctl sub f1tenth/car --domain-id 99
-hddsctl sub f1tenth/lap_event --domain-id 99
+hdds-topic-echo f1tenth/car --domain 99
+hdds-topic-echo f1tenth/lap_event --domain 99
 ```
 
 ## Sim : modele physique

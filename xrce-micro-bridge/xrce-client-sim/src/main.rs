@@ -23,6 +23,9 @@ use xrce_types::MicroSensorData;
 use clap::Parser;
 use rand::Rng;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // CLI
 // ---------------------------------------------------------------------------
@@ -34,7 +37,7 @@ use rand::Rng;
 )]
 struct Cli {
     /// DDS domain ID (must match agent)
-    #[arg(long, default_value_t = 0)]
+    #[arg(long, default_value_t = DOMAIN_ID)]
     domain_id: u32,
 
     /// Publish rate in Hz per client

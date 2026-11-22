@@ -15,7 +15,7 @@ HDDS demonstration showing a tactical artillery fire control system with:
 cargo run -p arty-sim
 
 # Terminal 2: Start the WebSocket bridge
-hdds-ws --port 9090
+hdds-ws --domain 99 --port 9090
 
 # Terminal 3: Start the viewer (dev server)
 cd arty-viewer && npm run dev

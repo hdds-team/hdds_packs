@@ -39,7 +39,7 @@ cargo build --release
 
 ```bash
 # From hdds repo
-hdds-ws --port 9090
+hdds-ws --domain 99 --port 9090
 ```
 
 ### 3. Start the convoy simulator
