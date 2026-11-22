@@ -33,10 +33,14 @@ http://localhost:5173/?demo=1
 
 ## Controls
 
-**Not wired to the server yet.** The viewer reads the keys but publishes
-nothing, so `arena-server` waits on `arena/PlayerInput` with no writer and the
-players are driven by the server. Sending input needs a typed publish path
-through the bridge, which today encodes only a single string member.
+**Not wired to the server yet**, and two things stand in the way. The viewer
+reads the keys but publishes nothing, so `arena-server` waits on
+`arena/PlayerInput` with no writer. And the server would overwrite such a
+sample anyway: the four players are bots with ids from 1000 up, and the AI
+sets their inputs again on every tick, right after reading the topic. Playing
+for real means the server accepting a human player, which is a design choice
+rather than a missing line. `space-invaders` shows the wiring itself: the
+viewer encodes the input sample and hands it over in a `_raw` field.
 
 | Key | Action |
 |-----|--------|
