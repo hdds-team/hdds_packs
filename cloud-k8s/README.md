@@ -7,19 +7,21 @@ HDDS demonstration showing Kubernetes-style cluster monitoring with:
 - Cross-site communication with relay detection
 - TUI dashboard (ratatui)
 
-**What is live and what is not.** `cloud-worker` publishes for real:
-`WorkloadMetric` and `DiscoveryEvent` go on the wire. `cloud-monitor` joins the
-domain but creates no reader, so everything it draws, the pod grid included, is
-generated inside the dashboard. Two of the four topics below,
-`cloud/scaling_decision` and `cloud/cross_site_message`, are declared in the
-IDL and published by nobody. Wiring the dashboard to the worker topics is open
-work.
+**What is live and what is not.** `cloud-worker` publishes `WorkloadMetric` and
+`DiscoveryEvent`, and `cloud-monitor` reads both: the pod grid shows the pods
+the workers announce, with their own node names and metrics. Started alone, the
+dashboard keeps simulating three pods so the demo shows something; the first
+real sample retires them and the discovery log says so. Two of the four topics
+below, `cloud/scaling_decision` and `cloud/cross_site_message`, are declared in
+the IDL and published by nobody: the scaling decisions and cross-site figures
+are still the dashboard's own.
 
 The join and leave events are published once each, so the worker offers them
-with TRANSIENT_LOCAL durability for readers that connect in between. A reader
-only receives that history if it REQUESTS the same durability, which a native
-DDS reader can do; the `hdds-ws` bridge creates its readers with default QoS,
-so a browser still misses a join it was not there for.
+with TRANSIENT_LOCAL durability and the dashboard's discovery reader REQUESTS
+it: start the worker first and the dashboard still shows the join it missed,
+because durability only applies when both sides ask for it. A browser does not
+get that history, since the `hdds-ws` bridge creates its readers with default
+QoS.
 
 ## Quick Start
 
@@ -38,12 +40,12 @@ Dashboard controls: `q` quit, `+` scale up, `-` scale down.
 ## Architecture
 
 ```
-+--------------+   no reader yet   +-----------------+
-| cloud-worker | :...............> |  cloud-monitor  |
++--------------+      DDS UDP      +-----------------+
+| cloud-worker | ----------------> |  cloud-monitor  |
 | (pod sim x3) |                   | (TUI dashboard) |
 +--------------+                   +-----------------+
       |                                   |
-      | Publishes on DDS:                 | Generates locally:
+      | Publishes on DDS:                 | Reads both, and generates:
       |-- WorkloadMetric (2 Hz)          |-- ScalingDecision (8s)
       +-- DiscoveryEvent (on join/leave) +-- CrossSiteMessage (3-8s)
 ```

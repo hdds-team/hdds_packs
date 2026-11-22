@@ -130,6 +130,9 @@ struct App {
     sim_tick_count: u64,
     next_decision_id: u32,
     running: bool,
+    /// True once a worker sample has been received: the dashboard then shows
+    /// what the workers publish instead of its own simulation.
+    live: bool,
 }
 
 impl App {
@@ -147,6 +150,7 @@ impl App {
             sim_tick_count: 0,
             next_decision_id: 1,
             running: true,
+            live: false,
         }
     }
 
@@ -192,8 +196,78 @@ impl App {
         }
     }
 
+    /// Take a metric sample from a worker as the truth for that pod.
+    fn apply_metric(&mut self, m: &WorkloadMetric) {
+        if !self.live {
+            // The first real sample retires the pods this dashboard invented
+            // for a standalone run.
+            self.live = true;
+            self.pods.clear();
+            self.discovery_log.push(DiscoveryLogEntry {
+                timestamp: Instant::now(),
+                message: "[dds] live workers found, simulation stopped".to_string(),
+                is_join: true,
+            });
+        }
+        let status = if m.cpu_percent > 80.0 {
+            PodStatus::Critical
+        } else if m.cpu_percent > 50.0 {
+            PodStatus::HighLoad
+        } else {
+            PodStatus::Running
+        };
+        let known = self.pods.contains_key(&m.pod_name);
+        let pod = self.pods.entry(m.pod_name.clone()).or_insert_with(|| PodState {
+            pod_name: m.pod_name.clone(),
+            namespace: m.namespace.clone(),
+            node_name: m.node_name.clone(),
+            cpu_percent: m.cpu_percent,
+            memory_mb: m.memory_mb,
+            active_connections: m.active_connections,
+            messages_per_second: m.messages_per_second,
+            last_seen: Instant::now(),
+            status: status.clone(),
+        });
+        pod.namespace = m.namespace.clone();
+        pod.node_name = m.node_name.clone();
+        pod.cpu_percent = m.cpu_percent;
+        pod.memory_mb = m.memory_mb;
+        pod.active_connections = m.active_connections;
+        pod.messages_per_second = m.messages_per_second;
+        pod.last_seen = Instant::now();
+        pod.status = status;
+        if !known {
+            let name = m.pod_name.clone();
+            let node = m.node_name.clone();
+            self.discovery_log.push(DiscoveryLogEntry {
+                timestamp: Instant::now(),
+                message: format!("[dds] {} publishing on {}", name, node),
+                is_join: true,
+            });
+        }
+    }
+
+    /// Log a discovery event as the worker announced it. The event carries a
+    /// participant GUID rather than a pod name, so the pod table is driven by
+    /// the metric samples above.
+    fn apply_discovery(&mut self, e: &DiscoveryEvent) {
+        self.discovery_log.push(DiscoveryLogEntry {
+            timestamp: Instant::now(),
+            message: format!(
+                "[{}] {} {}",
+                e.discovery_method,
+                e.event_id,
+                if e.joined { "joined" } else { "left" }
+            ),
+            is_join: e.joined,
+        });
+    }
+
     /// Simulate metric updates for all pods
     fn simulate_tick(&mut self) {
+        if self.live {
+            return;
+        }
         let now = Instant::now();
         if now.duration_since(self.last_sim_tick) < Duration::from_millis(500) {
             return;
@@ -390,17 +464,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .init();
 
     // Create DDS participant (for receiving real DDS data if workers are running)
-    let _participant = Participant::builder("cloud_monitor")
+    let participant = Participant::builder("cloud_monitor")
         .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 
     let _qos = QoS::default();
 
-    // Note: In a real deployment, we would create readers here:
-    //   let metric_reader = participant.create_reader::<WorkloadMetric>(...);
-    //   let discovery_reader = participant.create_reader::<DiscoveryEvent>(...);
-    // For this demo, we simulate the data internally.
+    // Readers on the worker topics. The dashboard falls back to its own
+    // simulation when neither can be created, so it still shows something on a
+    // machine where DDS cannot start.
+    let metric_reader = match participant.topic::<WorkloadMetric>(topics::WORKLOAD_METRIC) {
+        Ok(topic) => topic.reader().qos(QoS::default()).build().ok(),
+        Err(_) => None,
+    };
+
+    // The join event is published once, so this reader must REQUEST the
+    // durability the worker offers to receive one it missed.
+    let mut discovery_qos = QoS::default();
+    discovery_qos.durability = hdds::qos::Durability::TransientLocal;
+    let discovery_reader = match participant.topic::<DiscoveryEvent>(topics::DISCOVERY_EVENT) {
+        Ok(topic) => topic.reader().qos(discovery_qos).build().ok(),
+        Err(_) => None,
+    };
 
     // Setup terminal
     enable_raw_mode()?;
@@ -465,7 +551,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
 
-        // Simulate
+        // Take whatever the workers published since the last pass.
+        if let Some(reader) = &metric_reader {
+            while let Ok(Some(metric)) = reader.take() {
+                app.apply_metric(&metric);
+            }
+        }
+        if let Some(reader) = &discovery_reader {
+            while let Ok(Some(event)) = reader.take() {
+                app.apply_discovery(&event);
+            }
+        }
+
+        // Simulate, unless live samples are arriving
         app.simulate_tick();
 
         // Draw
