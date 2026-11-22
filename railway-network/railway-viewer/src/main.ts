@@ -192,7 +192,7 @@ function handleWsMessage(msg: any) {
             console.log(`[WS] Subscribed to ${msg.topic}`);
             break;
         case 'data':
-            handleDdsData(msg.topic, msg.sample);
+            handleDdsData(msg.topic, fromWire(msg.topic, msg.sample));
             break;
         case 'error':
             console.error(`[WS] DDS error [${msg.code}]: ${msg.message}`);
@@ -522,3 +522,42 @@ function startDemoMode() {
 
 // Start
 document.addEventListener('DOMContentLoaded', init);
+
+
+// --- wire form of the enum fields -------------------------------------------
+// The hdds-ws bridge delivers a field declared as an IDL enum as its label,
+// while the code above works on the ordinals of that enum. The table is keyed
+// by topic too, because the same field name carries a different enum depending
+// on the topic. A field that already holds a number is left alone, and the
+// viewer's own demo-mode samples never pass through here.
+const WIRE_ENUMS: Record<string, Record<string, string[]>> = {
+    'railway/train': {
+        state: [
+            'TRAIN_STOPPED',
+            'TRAIN_ACCELERATING',
+            'TRAIN_CRUISING',
+            'TRAIN_BRAKING',
+            'TRAIN_AT_STATION',
+        ],
+    },
+    'railway/signal': {
+        state: [
+            'SIGNAL_RED',
+            'SIGNAL_YELLOW',
+            'SIGNAL_GREEN',
+        ],
+    },
+};
+
+function fromWire(topic: string, sample: unknown): unknown {
+    const fields = WIRE_ENUMS[topic];
+    if (!fields || !sample || typeof sample !== 'object') return sample;
+    const record = sample as Record<string, unknown>;
+    for (const [field, labels] of Object.entries(fields)) {
+        const value = record[field];
+        if (typeof value !== 'string') continue;
+        const ordinal = labels.indexOf(value);
+        if (ordinal >= 0) record[field] = ordinal;
+    }
+    return sample;
+}

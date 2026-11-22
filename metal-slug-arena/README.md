@@ -33,6 +33,11 @@ http://localhost:5173/?demo=1
 
 ## Controls
 
+**Not wired to the server yet.** The viewer reads the keys but publishes
+nothing, so `arena-server` waits on `arena/PlayerInput` with no writer and the
+players are driven by the server. Sending input needs a typed publish path
+through the bridge, which today encodes only a single string member.
+
 | Key | Action |
 |-----|--------|
 | Arrow Left / A | Move left |

@@ -217,7 +217,7 @@ function handleWsMessage(msg: any) {
             console.log(`[WS] Subscribed to ${msg.topic}`);
             break;
         case 'data':
-            handleDdsData(msg.topic, msg.sample);
+            handleDdsData(msg.topic, fromWire(msg.topic, msg.sample));
             break;
         case 'error':
             console.error(`[WS] DDS error [${msg.code}]: ${msg.message}`);
@@ -598,3 +598,69 @@ function startDemoMode() {
 
 // Start
 document.addEventListener('DOMContentLoaded', init);
+
+
+// --- wire form of the enum fields -------------------------------------------
+// The hdds-ws bridge delivers a field declared as an IDL enum as its label,
+// while the code above works on the ordinals of that enum. The table is keyed
+// by topic too, because the same field name carries a different enum depending
+// on the topic. A field that already holds a number is left alone, and the
+// viewer's own demo-mode samples never pass through here.
+const WIRE_ENUMS: Record<string, Record<string, string[]>> = {
+    'factory/machine': {
+        state: [
+            'STATE_IDLE',
+            'STATE_WORKING',
+            'STATE_BLOCKED',
+            'STATE_STARVED',
+            'STATE_MAINTENANCE',
+            'STATE_FAULT',
+        ],
+        machine_type: [
+            'MACHINE_CNC',
+            'MACHINE_WELDER',
+            'MACHINE_ASSEMBLER',
+            'MACHINE_PAINTER',
+            'MACHINE_INSPECTOR',
+            'MACHINE_PACKAGER',
+        ],
+    },
+    'factory/conveyor': {
+        state: [
+            'CONVEYOR_RUNNING',
+            'CONVEYOR_STOPPED',
+            'CONVEYOR_JAM',
+        ],
+    },
+    'factory/alert': {
+        severity: [
+            'ALERT_INFO',
+            'ALERT_WARNING',
+            'ALERT_CRITICAL',
+        ],
+    },
+    'factory/product': {
+        product_type: [
+            'PRODUCT_RAW',
+            'PRODUCT_MACHINED',
+            'PRODUCT_WELDED',
+            'PRODUCT_ASSEMBLED',
+            'PRODUCT_PAINTED',
+            'PRODUCT_INSPECTED',
+            'PRODUCT_PACKAGED',
+        ],
+    },
+};
+
+function fromWire(topic: string, sample: unknown): unknown {
+    const fields = WIRE_ENUMS[topic];
+    if (!fields || !sample || typeof sample !== 'object') return sample;
+    const record = sample as Record<string, unknown>;
+    for (const [field, labels] of Object.entries(fields)) {
+        const value = record[field];
+        if (typeof value !== 'string') continue;
+        const ordinal = labels.indexOf(value);
+        if (ordinal >= 0) record[field] = ordinal;
+    }
+    return sample;
+}

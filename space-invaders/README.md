@@ -32,6 +32,13 @@ http://localhost:5173/?demo=1
 
 ## Controls
 
+**These drive the ship in demo mode only.** Against the live simulator the
+viewer publishes its keys to `invaders/player_input`, but `invaders-sim`
+creates no reader for that topic, so the ship is flown by the simulation and
+the keys change nothing. The IDL already declares the `PlayerInput` type;
+wiring it end to end also needs a typed publish path through the bridge, which
+today encodes only a single string member.
+
 | Key | Action |
 |-----|--------|
 | ← → | Move left/right |
