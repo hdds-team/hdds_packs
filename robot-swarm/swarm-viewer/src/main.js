@@ -9,6 +9,15 @@
  * - Real-time status panel
  */
 
+// Topic names, mirroring the `topics` module of swarm-types: the viewer
+// subscribes by DDS topic name, not by type name.
+const TOPIC = {
+    ROBOT: 'swarm/robot',
+    SWARM_STATE: 'swarm/state',
+    OBSTACLE: 'swarm/obstacle',
+    WAYPOINT: 'swarm/waypoint',
+};
+
 // Constants
 const ARENA_WIDTH = 500;
 const ARENA_HEIGHT = 500;
@@ -256,7 +265,7 @@ function resizeCanvas() {
 function connectWebSocket() {
     const statusEl = document.getElementById('connection-status');
     const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
-    const TOPICS = ['Robot', 'SwarmState', 'Obstacle', 'Waypoint'];
+    const TOPICS = Object.values(TOPIC);
 
     ws = new WebSocket(HDDS_WS_URL);
 
@@ -313,16 +322,16 @@ function handleMessage(msg) {
     const { topic, data } = msg;
 
     switch (topic) {
-        case 'Robot':
+        case TOPIC.ROBOT:
             robots.set(data.robot_id, data);
             break;
-        case 'SwarmState':
+        case TOPIC.SWARM_STATE:
             swarmState = data;
             break;
-        case 'Obstacle':
+        case TOPIC.OBSTACLE:
             obstacles.set(data.obstacle_id, data);
             break;
-        case 'Waypoint':
+        case TOPIC.WAYPOINT:
             waypoints.set(data.waypoint_id, data);
             break;
     }

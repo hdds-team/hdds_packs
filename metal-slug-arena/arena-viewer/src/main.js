@@ -12,7 +12,17 @@
 // Configuration
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
 const DEMO_MODE = new URLSearchParams(window.location.search).has('demo');
-const TOPICS = ['Player', 'Projectile', 'Explosion', 'PowerUp', 'Kill', 'GameState'];
+// Topic names, mirroring the `topics` module of arena-types: the viewer
+// subscribes by DDS topic name, not by type name.
+const TOPIC = {
+    PLAYER: 'arena/Player',
+    PROJECTILE: 'arena/Projectile',
+    EXPLOSION: 'arena/Explosion',
+    POWERUP: 'arena/PowerUp',
+    KILL: 'arena/KillEvent',
+    GAME_STATE: 'arena/GameState',
+};
+const TOPICS = Object.values(TOPIC);
 
 // Game constants
 const ARENA_WIDTH = 800;
@@ -222,7 +232,7 @@ function handleMessage(msg) {
     const { topic, data } = msg;
 
     switch (topic) {
-        case 'Player':
+        case TOPIC.PLAYER:
             players.set(data.player_id, data);
             if (localPlayerId === null || data.player_id === localPlayerId) {
                 if (localPlayerId === null) localPlayerId = data.player_id;
@@ -231,7 +241,7 @@ function handleMessage(msg) {
             }
             break;
 
-        case 'Projectile':
+        case TOPIC.PROJECTILE:
             if (data.active === 1) {
                 projectiles.set(data.projectile_id, data);
             } else {
@@ -239,7 +249,7 @@ function handleMessage(msg) {
             }
             break;
 
-        case 'Explosion':
+        case TOPIC.EXPLOSION:
             explosions.push({
                 ...data,
                 frame: 0,
@@ -247,7 +257,7 @@ function handleMessage(msg) {
             });
             break;
 
-        case 'PowerUp':
+        case TOPIC.POWERUP:
             if (data.active === 1) {
                 powerups.set(data.powerup_id, data);
             } else {
@@ -255,11 +265,11 @@ function handleMessage(msg) {
             }
             break;
 
-        case 'Kill':
+        case TOPIC.KILL:
             addKillFeed(data);
             break;
 
-        case 'GameState':
+        case TOPIC.GAME_STATE:
             gameState = data;
             updateHUD();
             break;

@@ -11,7 +11,17 @@ import { EffectsManager } from './effects.js';
 // Configuration
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
 const DEMO_MODE = new URLSearchParams(window.location.search).has('demo');
-const TOPICS = ['RadarSweep', 'AircraftTrack', 'SamSite', 'Engagement', 'EngagementResult', 'RadarAlert'];
+// Topic names, mirroring the `topics` module of radar-types: the viewer
+// subscribes by DDS topic name, not by type name.
+const TOPIC = {
+    SWEEP: 'radar/sweep',
+    TRACK: 'radar/tracks',
+    SAM_SITE: 'radar/sam_sites',
+    ENGAGEMENT: 'radar/engagements',
+    ENGAGEMENT_RESULT: 'radar/engagement_results',
+    ALERT: 'radar/alerts',
+};
+const TOPICS = Object.values(TOPIC);
 
 // Global state
 let radarScope = null;
@@ -139,26 +149,26 @@ function handleMessage(msg) {
     const { topic, data } = msg;
 
     switch (topic) {
-        case 'RadarSweep':
+        case TOPIC.SWEEP:
             radarScope.setSweepAngle(data.azimuth_deg);
             sweepAngleEl.textContent = `${Math.round(data.azimuth_deg).toString().padStart(3, '0')}°`;
             break;
 
-        case 'AircraftTrack':
+        case TOPIC.TRACK:
             trackManager.updateTrack(data);
             updateStats();
             break;
 
-        case 'SamSite':
+        case TOPIC.SAM_SITE:
             updateSamSite(data);
             break;
 
-        case 'Engagement':
+        case TOPIC.ENGAGEMENT:
             effectsManager.updateEngagement(data);
             updateStats();
             break;
 
-        case 'EngagementResult':
+        case TOPIC.ENGAGEMENT_RESULT:
             if (data.success === 1) {
                 effectsManager.createExplosion(
                     trackManager.getTrackPosition(data.track_id)
@@ -170,7 +180,7 @@ function handleMessage(msg) {
                      data.success === 1 ? 'critical' : 'warning');
             break;
 
-        case 'RadarAlert':
+        case TOPIC.ALERT:
             addAlert(data.message, getPriorityClass(data.priority));
             break;
     }
@@ -312,12 +322,12 @@ function startDemoMode() {
     setInterval(() => {
         // Update sweep
         sweepAngle = (sweepAngle + 9) % 360; // 90°/s at 10Hz
-        handleMessage({ topic: 'RadarSweep', data: { azimuth_deg: sweepAngle } });
+        handleMessage({ topic: TOPIC.SWEEP, data: { azimuth_deg: sweepAngle } });
 
         // Update tracks
         for (const track of demoTracks) {
             updateDemoTrack(track);
-            handleMessage({ topic: 'AircraftTrack', data: track });
+            handleMessage({ topic: TOPIC.TRACK, data: track });
         }
 
         // Spawn new tracks occasionally

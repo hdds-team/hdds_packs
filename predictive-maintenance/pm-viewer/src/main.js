@@ -7,7 +7,15 @@
 // Configuration
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
 const DEMO_MODE = new URLSearchParams(window.location.search).has('demo');
-const TOPICS = ['SensorReading', 'MachineStatus', 'Alert', 'Prediction'];
+// Topic names, mirroring the `topics` module of sensor-types: the viewer
+// subscribes by DDS topic name, not by type name.
+const TOPIC = {
+    SENSOR_READING: 'rt/maintenance/SensorReading',
+    MACHINE_STATUS: 'rt/maintenance/MachineStatus',
+    ALERT: 'rt/maintenance/Alert',
+    PREDICTION: 'rt/maintenance/MaintenancePrediction',
+};
+const TOPICS = Object.values(TOPIC);
 
 // Sensor type mappings
 const SENSOR_TYPES = {
@@ -137,16 +145,16 @@ function handleMessage(msg) {
     const { topic, data } = msg;
 
     switch (topic) {
-        case 'SensorReading':
+        case TOPIC.SENSOR_READING:
             updateSensor(data);
             break;
-        case 'MachineStatus':
+        case TOPIC.MACHINE_STATUS:
             updateMachine(data);
             break;
-        case 'Alert':
+        case TOPIC.ALERT:
             addAlert(data);
             break;
-        case 'Prediction':
+        case TOPIC.PREDICTION:
             updatePrediction(data);
             break;
     }
@@ -429,12 +437,12 @@ function startDemoMode() {
     ];
 
     // Initialize
-    demoMachines.forEach(m => handleMessage({ topic: 'MachineStatus', data: m }));
-    demoSensors.forEach(s => handleMessage({ topic: 'SensorReading', data: s }));
+    demoMachines.forEach(m => handleMessage({ topic: TOPIC.MACHINE_STATUS, data: m }));
+    demoSensors.forEach(s => handleMessage({ topic: TOPIC.SENSOR_READING, data: s }));
 
     // Demo prediction
     handleMessage({
-        topic: 'Prediction',
+        topic: TOPIC.PREDICTION,
         data: {
             prediction_id: 1,
             machine_id: 3,
@@ -447,7 +455,7 @@ function startDemoMode() {
 
     // Demo alert
     handleMessage({
-        topic: 'Alert',
+        topic: TOPIC.ALERT,
         data: {
             alert_id: 1,
             machine_id: 3,
@@ -465,7 +473,7 @@ function startDemoMode() {
             const range = sensor.max_threshold - sensor.min_threshold;
             const noise = (Math.random() - 0.5) * range * 0.05;
             sensor.value = Math.max(sensor.min_threshold, Math.min(sensor.max_threshold, sensor.value + noise));
-            handleMessage({ topic: 'SensorReading', data: { ...sensor } });
+            handleMessage({ topic: TOPIC.SENSOR_READING, data: { ...sensor } });
         }
 
         // Update machine health
@@ -474,7 +482,7 @@ function startDemoMode() {
                 machine.health_score = Math.max(50, machine.health_score - 0.1);
             }
             machine.operating_hours += 0.01;
-            handleMessage({ topic: 'MachineStatus', data: { ...machine } });
+            handleMessage({ topic: TOPIC.MACHINE_STATUS, data: { ...machine } });
         }
 
         // Random alerts
@@ -482,7 +490,7 @@ function startDemoMode() {
             const sensor = demoSensors[Math.floor(Math.random() * demoSensors.length)];
             const machine = demoMachines.find(m => m.machine_id === sensor.machine_id);
             handleMessage({
-                topic: 'Alert',
+                topic: TOPIC.ALERT,
                 data: {
                     alert_id: Date.now(),
                     machine_id: sensor.machine_id,

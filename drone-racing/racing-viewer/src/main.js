@@ -9,7 +9,15 @@ import * as THREE from 'three';
 // Configuration
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
 const DEMO_MODE = new URLSearchParams(window.location.search).has('demo');
-const TOPICS = ['Drone', 'Gate', 'RaceState', 'Lap', 'Collision'];
+// Topic names, mirroring the `topics` module of racing-types.
+const TOPIC = {
+    DRONE: 'Drone',
+    GATE: 'Gate',
+    RACE_STATE: 'RaceState',
+    GATE_PASS: 'GatePass',
+    LEADERBOARD: 'LeaderboardEntry',
+};
+const TOPICS = Object.values(TOPIC);
 
 // State
 let ws = null;
@@ -316,7 +324,7 @@ function handleMessage(msg) {
     const { topic, data } = msg;
 
     switch (topic) {
-        case 'Drone':
+        case TOPIC.DRONE:
             drones.set(data.drone_id, data);
             updateDroneObject(data);
             if (followDroneId === null) {
@@ -324,7 +332,7 @@ function handleMessage(msg) {
             }
             break;
 
-        case 'Gate':
+        case TOPIC.GATE:
             gates.set(data.gate_id, data);
             if (!gateObjects[data.gate_id]) {
                 const obj = createGateObject(data);
@@ -333,16 +341,16 @@ function handleMessage(msg) {
             }
             break;
 
-        case 'RaceState':
+        case TOPIC.RACE_STATE:
             raceState = data;
             updateRaceUI();
             break;
 
-        case 'GatePass':
+        case TOPIC.GATE_PASS:
             showGatePass(data);
             break;
 
-        case 'Leaderboard':
+        case TOPIC.LEADERBOARD:
             updateLeaderboard(data);
             break;
     }
@@ -585,7 +593,7 @@ function startDemoMode() {
         { gate_id: 9, x: -80, y: 10, z: 100, rotation: Math.PI * 1.8, width: 20, height: 15, is_start_finish: 0 },
     ];
 
-    gatePositions.forEach(g => handleMessage({ topic: 'Gate', data: g }));
+    gatePositions.forEach(g => handleMessage({ topic: TOPIC.GATE, data: g }));
 
     // Create demo drones
     const demoDrones = [
@@ -601,7 +609,7 @@ function startDemoMode() {
         d.current_gate = 0;
         d.best_lap_ms = 0;
         d.total_time_ms = 0;
-        handleMessage({ topic: 'Drone', data: d });
+        handleMessage({ topic: TOPIC.DRONE, data: d });
     });
 
     raceState = { phase: 2, countdown: 0, total_laps: 3, elapsed_ms: 0 };
@@ -643,7 +651,7 @@ function startDemoMode() {
                 if (drone.current_gate === 0) drone.lap++;
             }
 
-            handleMessage({ topic: 'Drone', data: { ...drone } });
+            handleMessage({ topic: TOPIC.DRONE, data: { ...drone } });
         }
 
         updateRaceUI();
