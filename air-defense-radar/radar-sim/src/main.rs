@@ -26,6 +26,7 @@ const SIM_TICK_MS: u64 = 100;           // Simulation tick rate (10 Hz)
 const MIN_AIRCRAFT: usize = 5;
 const MAX_AIRCRAFT: usize = 12;
 const SPAWN_INTERVAL_S: f32 = 8.0;      // New aircraft spawn interval
+const SITE_PUBLISH_INTERVAL_S: f32 = 2.0; // SAM site refresh, for readers that join later
 
 /// Simulated aircraft state
 struct Aircraft {
@@ -240,6 +241,7 @@ async fn main() -> Result<()> {
         site_writer.write(&site_state.site)?;
     }
     info!("Published {} SAM sites", sam_sites.len());
+    let mut last_site_publish = Instant::now();
 
     // Spawn initial aircraft
     for _ in 0..rng.gen_range(MIN_AIRCRAFT..MAX_AIRCRAFT) {
@@ -256,6 +258,17 @@ async fn main() -> Result<()> {
         let now = Instant::now();
         let dt = now.duration_since(last_tick).as_secs_f32();
         last_tick = now;
+
+        // The sites never move, but a reader only receives what is written
+        // after it matched, and matching takes longer than the startup write
+        // above. Without this, a viewer started at any time sees no site at
+        // all.
+        if now.duration_since(last_site_publish).as_secs_f32() > SITE_PUBLISH_INTERVAL_S {
+            for site_state in &sam_sites {
+                site_writer.write(&site_state.site)?;
+            }
+            last_site_publish = now;
+        }
 
         // Update sweep angle
         sweep_angle = (sweep_angle + SWEEP_RATE * dt) % 360.0;
