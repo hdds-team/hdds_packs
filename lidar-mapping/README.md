@@ -48,10 +48,10 @@ http://localhost:5173/?demo=1
 
 | Topic | Type | Description |
 |-------|------|-------------|
-| `lidar/pose` | RobotPose | Robot position and velocity |
-| `lidar/batch` | LidarBatch | Batched LiDAR readings |
-| `lidar/map_batch` | MapBatch | Occupancy grid updates |
-| `lidar/wall` | WallSegment | Environment walls |
+| `RobotPose` | RobotPose | Robot position and velocity |
+| `LidarBatch` | LidarBatch | Batched LiDAR readings |
+| `MapBatch` | MapBatch | Occupancy grid updates |
+| `WallSegment` | WallSegment | Environment walls |
 
 ## Controls
 

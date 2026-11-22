@@ -63,13 +63,13 @@ through the bridge, which today encodes only a single string member.
 
 | Topic | Description | Direction |
 |-------|-------------|-----------|
-| `arena/players` | Player positions and states | Server → Client |
-| `arena/inputs` | Player keyboard inputs | Client → Server |
-| `arena/projectiles` | Bullets and rockets | Server → Client |
-| `arena/explosions` | Explosion effects | Server → Client |
-| `arena/powerups` | Power-up locations | Server → Client |
-| `arena/kills` | Kill events | Server → Client |
-| `arena/state` | Game state (score, time) | Server → Client |
+| `arena/Player` | Player positions and states | Server → Client |
+| `arena/PlayerInput` | Player keyboard inputs, nothing publishes them yet | Client → Server |
+| `arena/Projectile` | Bullets and rockets | Server → Client |
+| `arena/Explosion` | Explosion effects | Server → Client |
+| `arena/PowerUp` | Power-up locations | Server → Client |
+| `arena/KillEvent` | Kill events | Server → Client |
+| `arena/GameState` | Game state (score, time) | Server → Client |
 
 ## Weapons
 

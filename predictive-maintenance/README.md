@@ -45,10 +45,10 @@ http://localhost:5173/?demo=1
 
 | Topic | Description | Rate |
 |-------|-------------|------|
-| `pm/sensors` | Individual sensor readings | 5 Hz per sensor |
-| `pm/machines` | Machine health status | 5 Hz per machine |
-| `pm/alerts` | Threshold violations and anomalies | On event |
-| `pm/predictions` | Maintenance predictions | Every 10s (if degrading) |
+| `rt/maintenance/SensorReading` | Individual sensor readings | 5 Hz per sensor |
+| `rt/maintenance/MachineStatus` | Machine health status | 5 Hz per machine |
+| `rt/maintenance/Alert` | Threshold violations and anomalies | On event |
+| `rt/maintenance/MaintenancePrediction` | Maintenance predictions | Every 10s (if degrading) |
 
 ## Simulated Machines
 

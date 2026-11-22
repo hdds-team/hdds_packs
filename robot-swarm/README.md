@@ -53,12 +53,13 @@ http://localhost:5173/?demo=1
 
 | Topic | Type | Description |
 |-------|------|-------------|
-| `swarm/robots` | Robot | Individual robot state (position, velocity, sensors) |
-| `swarm/swarm_cmd` | SwarmCommand | Commands to the swarm (mode, formation, target) |
-| `swarm/robot_cmd` | RobotCommand | Commands to individual robots |
+| `swarm/robot` | Robot | Individual robot state (position, velocity, sensors) |
 | `swarm/state` | SwarmState | Aggregate swarm state (centroid, spread) |
-| `swarm/obstacles` | Obstacle | Static obstacles in the arena |
-| `swarm/waypoints` | Waypoint | Patrol waypoints |
+| `swarm/obstacle` | Obstacle | Static obstacles in the arena |
+| `swarm/waypoint` | Waypoint | Patrol waypoints |
+
+The IDL also declares `SwarmCommand` and `RobotCommand`, which no
+endpoint publishes or reads: there is no command topic in this demo.
 
 ## Swarm Modes
 

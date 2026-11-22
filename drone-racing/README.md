@@ -49,12 +49,12 @@ http://localhost:5173/?demo=1
 
 | Topic | Description | Direction |
 |-------|-------------|-----------|
-| `race/drones` | Drone positions & state | Server → Client |
-| `race/inputs` | Player inputs | Client → Server |
-| `race/gates` | Gate positions | Server → Client |
-| `race/gate_pass` | Gate pass events | Server → Client |
-| `race/state` | Race state (countdown, etc.) | Server → Client |
-| `race/leaderboard` | Leaderboard updates | Server → Client |
+| `Drone` | Drone positions & state | Server → Client |
+| `DroneInput` | Player inputs, nothing publishes them yet | Client → Server |
+| `Gate` | Gate positions | Server → Client |
+| `GatePass` | Gate pass events | Server → Client |
+| `RaceState` | Race state (countdown, etc.) | Server → Client |
+| `LeaderboardEntry` | Leaderboard updates | Server → Client |
 
 ## Controls (Future)
 
