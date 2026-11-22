@@ -18,7 +18,7 @@ cargo run -p arty-sim
 hdds-ws --domain 99 --port 9090
 
 # Terminal 3: Start the viewer (dev server)
-cd arty-viewer && npm run dev
+cd arty-viewer && npm install && npm run dev
 ```
 
 Then open http://localhost:5173 in your browser.

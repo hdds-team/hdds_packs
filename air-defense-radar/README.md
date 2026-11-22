@@ -16,7 +16,7 @@ cargo run -p radar-sim
 hdds-ws --domain 99 --port 9090
 
 # Terminal 3: Start the viewer (dev server)
-cd radar-viewer && npm run dev
+cd radar-viewer && npm install && npm run dev
 ```
 
 Then open http://localhost:5173 in your browser.

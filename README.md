@@ -8,19 +8,19 @@ All demos use DDS domain 99.
 
 | Demo | Description | Viewer |
 |------|-------------|--------|
-| [air-defense-radar](air-defense-radar/) | Real-time radar tracking with threat classification and engagement zones | Web (Three.js) |
+| [air-defense-radar](air-defense-radar/) | Real-time radar tracking with threat classification and engagement zones | Web (Canvas) |
 | [artillery-fire-control](artillery-fire-control/) | Fire mission coordination with ballistic trajectory computation | Web (Canvas) |
-| [cloud-k8s](cloud-k8s/) | Kubernetes pod metrics streaming via DDS — no polling, no Prometheus | Console |
+| [cloud-k8s](cloud-k8s/) | Kubernetes pod metrics streaming via DDS — no polling, no Prometheus | Console (TUI) |
 | [convoy-escort](convoy-escort/) | VIP convoy protection with real-time GPS and tactical alerts | Web (Three.js) |
-| [drone-racing](drone-racing/) | 6 autonomous drones racing through gates at 60 Hz | Web (Canvas) |
-| [f1tenth-racing](f1tenth-racing/) | Bicycle-physics autonomous cars with adaptive AI driving | Web (Canvas) |
-| [fort-knox-security](fort-knox-security/) | DDS security dashboard — permissions, certs, audit logs in real time | Console (TUI) |
+| [drone-racing](drone-racing/) | 6 autonomous drones racing through gates at 60 Hz | Web (Three.js) |
+| [f1tenth-racing](f1tenth-racing/) | Bicycle-physics autonomous cars with adaptive AI driving | Web (Three.js) |
+| [fort-knox-security](fort-knox-security/) | DDS security dashboard — permissions, certs, audit logs in real time | Desktop (egui + GTK4) |
 | [hdds-remote-sensor](hdds-remote-sensor/) | ESP32 + Raspberry Pi decentralized sensor over HC-12 radio | Web |
-| [hot-reload-cockpit](hot-reload-cockpit/) | Live QoS policy tuning with sliders — no restarts | Console (TUI) |
+| [hot-reload-cockpit](hot-reload-cockpit/) | Live QoS policy tuning with sliders — no restarts | Desktop (FLTK) |
 | [lidar-mapping](lidar-mapping/) | Robot SLAM — autonomous maze exploration and occupancy grid mapping | Web (Canvas) |
 | [metal-slug-arena](metal-slug-arena/) | 2D platformer deathmatch synchronized via DDS pub/sub | Web (Canvas) |
 | [mission-recorder](mission-recorder/) | Record, replay and analyze all DDS traffic from a session | Console (TUI) |
-| [nat-wan-topology](nat-wan-topology/) | DDS connectivity through NAT and firewalls with ICE | Console (TUI) |
+| [nat-wan-topology](nat-wan-topology/) | DDS connectivity through NAT and firewalls with ICE | Desktop (egui) |
 | [naval-convoy](naval-convoy/) | Merchant ships escorted against submarines — sonar, torpedoes, depth charges | Web (Three.js) |
 | [predictive-maintenance](predictive-maintenance/) | Industrial equipment degradation detection with anomaly scoring | Web (Canvas) |
 | [railway-network](railway-network/) | Independent train processes coordinated by DDS signaling | Web (Canvas) |
@@ -41,6 +41,13 @@ All demos use DDS domain 99.
 # - Node.js 18+ (for web viewers)
 # - hddsgen, only to regenerate types after editing an IDL file: the
 #   generated Rust is committed, so a clone builds without it
+#
+# Three demos build a desktop window and need system libraries, which is
+# what `make build` fails on first if they are missing:
+# - GTK4 development files: fort-knox-security, rpc-service-mesh
+# - FLTK development files: hot-reload-cockpit
+# - an X11 or Wayland development stack for egui: fort-knox-security,
+#   nat-wan-topology
 
 # 1. Build all demos
 make build

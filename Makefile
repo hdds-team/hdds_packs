@@ -132,7 +132,8 @@ DEMOS = \
 	drone-racing \
 	f1tenth-racing \
 	fort-knox-security \
-	hdds-remote-sensor \
+	hdds-remote-sensor/pi-gateway \
+	hdds-remote-sensor/web-viewer \
 	hot-reload-cockpit \
 	lidar-mapping \
 	metal-slug-arena \
@@ -154,20 +155,26 @@ DEMOS = \
 # The generated code is committed, so a build needs no generator. Run `make gen`
 # to refresh it after changing an IDL file.
 build:
-	@ok=0; fail=0; \
+	@ok=0; fail=0; skip=0; skipped=""; \
 	for d in $(DEMOS); do \
 		if [ -f $$d/Cargo.toml ]; then \
 			printf "  Building %-30s" "$$d..."; \
-			if cargo build --manifest-path $$d/Cargo.toml; then \
+			if cargo build --locked --manifest-path $$d/Cargo.toml; then \
 				echo " OK"; \
 				ok=$$((ok + 1)); \
 			else \
 				echo " FAIL"; \
 				fail=$$((fail + 1)); \
 			fi; \
+		else \
+			skip=$$((skip + 1)); \
+			skipped="$$skipped $$d"; \
 		fi; \
 	done; \
-	echo "=== $$ok OK, $$fail FAIL ==="
+	echo "=== $$ok OK, $$fail FAIL, $$skip skipped ==="; \
+	if [ $$skip -gt 0 ]; then \
+		echo "    no root Cargo.toml, nothing attempted:$$skipped"; \
+	fi
 
 gen-build: gen build
 
