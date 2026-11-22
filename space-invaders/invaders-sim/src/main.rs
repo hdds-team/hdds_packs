@@ -35,6 +35,7 @@ mod topics {
     pub const POWERUP: &str = "invaders/powerup";
     pub const GAME_STATE: &str = "invaders/game_state";
     pub const KILL_EVENT: &str = "invaders/kill_event";
+    pub const PLAYER_INPUT: &str = "invaders/player_input";
 }
 
 /// Current time in microseconds
@@ -519,6 +520,15 @@ async fn main() -> Result<()> {
     // Create QoS for reliable delivery
     let qos = QoS::default();
 
+    // The viewer publishes keyboard state on this topic. Without a reader the
+    // ship cannot be steered: the samples go nowhere and handle_input below
+    // never runs.
+    let input_reader = participant
+        .topic::<PlayerInput>(topics::PLAYER_INPUT)?
+        .reader()
+        .qos(qos.clone())
+        .build()?;
+
     // Create DataWriters for each topic
     let player_writer = participant.topic::<Player>(topics::PLAYER)?
         .writer()
@@ -575,6 +585,17 @@ async fn main() -> Result<()> {
             }
         } else {
             wave_clear_timer = 0.0;
+        }
+
+        // Drain the input queue; the last sample of this tick wins.
+        while let Ok(Some(input)) = input_reader.take() {
+            log::debug!(
+                "[INPUT] player {} move_x={} fire={}",
+                input.player_id,
+                input.move_x,
+                input.fire
+            );
+            game.handle_input(input.move_x, input.fire);
         }
 
         game.update(dt);

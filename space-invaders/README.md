@@ -32,18 +32,20 @@ http://localhost:5173/?demo=1
 
 ## Controls
 
-**These drive the ship in demo mode only.** Against the live simulator the
-viewer publishes its keys to `invaders/player_input`, but `invaders-sim`
-creates no reader for that topic, so the ship is flown by the simulation and
-the keys change nothing. The IDL already declares the `PlayerInput` type;
-wiring it end to end also needs a typed publish path through the bridge, which
-today encodes only a single string member.
-
 | Key | Action |
 |-----|--------|
 | ← → | Move left/right |
 | SPACE | Fire |
-| R | Restart game |
+| R | Restart the offline demo |
+
+The arrows and SPACE drive the ship against the live simulator: the viewer
+publishes a `PlayerInput` sample on `invaders/player_input` at 60 Hz and
+`invaders-sim` reads it. The viewer encodes that sample itself, because the
+bridge's JSON publish path writes a single string member, which a typed reader
+cannot decode; it hands the bytes over in a `_raw` field instead.
+
+`R` restarts the offline demo only. `PlayerInput` carries a direction and a
+fire flag, so there is nothing on the wire to ask the simulator for a restart.
 
 ## Architecture
 

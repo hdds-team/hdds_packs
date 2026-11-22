@@ -9,6 +9,8 @@ const GAME_HEIGHT = 600;
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
 const SUBSCRIBE_TOPICS = ['invaders/player', 'invaders/alien', 'invaders/bullet', 'invaders/explosion', 'invaders/powerup', 'invaders/game_state', 'invaders/kill_event'];
 const INPUT_TOPIC = 'invaders/player_input';
+// One player in this demo; the simulator keys its Player sample on this id.
+const PLAYER_ID = 1;
 
 // Types matching IDL
 interface Player {
@@ -288,6 +290,30 @@ function updateOverlays() {
 }
 
 // Send input to server via hdds-ws publish
+// PlayerInput on the wire: XCDR1 little-endian, members in IDL order with
+// natural alignment, no header.
+//
+//   uint32  player_id     offset 0
+//   int8    move_x        offset 4
+//   boolean fire          offset 5
+//   (two padding bytes, so the next member starts on 8)
+//   uint64  timestamp_us  offset 8
+//
+// The bridge's JSON publish path encodes a single string member, which a typed
+// reader cannot decode, so the sample is encoded here and handed over as the
+// base64 bytes of a `_raw` field, which the bridge passes through unchanged.
+function encodePlayerInput(playerId: number, moveX: number, fire: boolean): string {
+    const buffer = new ArrayBuffer(16);
+    const view = new DataView(buffer);
+    view.setUint32(0, playerId, true);
+    view.setInt8(4, moveX);
+    view.setUint8(5, fire ? 1 : 0);
+    view.setBigUint64(8, BigInt(Date.now()) * 1000n, true);
+    let binary = '';
+    for (const byte of new Uint8Array(buffer)) binary += String.fromCharCode(byte);
+    return btoa(binary);
+}
+
 function sendInput() {
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
 
@@ -300,18 +326,15 @@ function sendInput() {
     ws.send(JSON.stringify({
         type: 'publish',
         topic: INPUT_TOPIC,
-        data: { move: moveX, fire }
+        data: { _raw: encodePlayerInput(PLAYER_ID, moveX, fire) }
     }));
 }
 
+// Restarting the live game is not wired: PlayerInput carries a direction and a
+// fire flag, nothing else, and the simulator exposes no restart. The key still
+// restarts the offline demo.
 function sendRestart() {
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-            type: 'publish',
-            topic: INPUT_TOPIC,
-            data: { restart: true }
-        }));
-    } else if (demoMode) {
+    if (demoMode) {
         initDemoState();
     }
 }
