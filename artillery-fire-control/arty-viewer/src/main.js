@@ -104,7 +104,7 @@ function updateWsIndicator() {
 function handleMessage(msg) {
   if (msg.type !== 'data') return;
   const topic = msg.topic;
-  const data = msg.sample;
+  const data = fromWire(msg.sample);
 
   if (!topic || !data) return;
 
@@ -596,3 +596,27 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+// --- wire form of the enum fields -------------------------------------------
+// The hdds-ws bridge delivers a field declared as an IDL enum as its label,
+// while the code above works on the ordinals of that enum. Incoming samples
+// are converted once, here; a field that already carries a number is left
+// alone, and so are the viewer's own demo-mode samples, which never pass
+// through this function.
+const WIRE_ENUMS = {
+    state: ['READY', 'LOADING', 'BATTERY_FIRING', 'COOLDOWN', 'OFFLINE'],
+    status: ['PENDING', 'COMPUTING', 'MISSION_FIRING', 'ADJUSTING', 'COMPLETE', 'CANCELLED'],
+    round_type: ['HE', 'SMOKE', 'ILLUM', 'WP'],
+};
+
+function fromWire(sample) {
+    if (!sample || typeof sample !== 'object') return sample;
+    for (const [field, labels] of Object.entries(WIRE_ENUMS)) {
+        const value = sample[field];
+        if (typeof value !== 'string') continue;
+        const ordinal = labels.indexOf(value);
+        if (ordinal >= 0) sample[field] = ordinal;
+    }
+    return sample;
+}

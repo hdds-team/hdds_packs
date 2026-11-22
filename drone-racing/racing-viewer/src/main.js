@@ -309,7 +309,7 @@ function handleWsMessage(msg) {
             console.log(`[WS] Subscribed to ${msg.topic}`);
             break;
         case 'data':
-            handleMessage({ topic: msg.topic, data: msg.sample });
+            handleMessage({ topic: msg.topic, data: fromWire(msg.sample) });
             break;
         case 'error':
             console.error(`[WS] DDS error [${msg.code}]: ${msg.message}`);
@@ -660,3 +660,26 @@ function startDemoMode() {
 
 // Start
 document.addEventListener('DOMContentLoaded', init);
+
+
+// --- wire form of the enum fields -------------------------------------------
+// The hdds-ws bridge delivers a field declared as an IDL enum as its label,
+// while the code above works on the ordinals of that enum. Incoming samples
+// are converted once, here; a field that already carries a number is left
+// alone, and so are the viewer's own demo-mode samples, which never pass
+// through this function.
+const WIRE_ENUMS = {
+    phase: ['WAITING', 'COUNTDOWN', 'PHASE_RACING', 'PHASE_FINISHED'],
+    state: ['IDLE', 'READY', 'DRONE_RACING', 'CRASHED', 'DRONE_FINISHED'],
+};
+
+function fromWire(sample) {
+    if (!sample || typeof sample !== 'object') return sample;
+    for (const [field, labels] of Object.entries(WIRE_ENUMS)) {
+        const value = sample[field];
+        if (typeof value !== 'string') continue;
+        const ordinal = labels.indexOf(value);
+        if (ordinal >= 0) sample[field] = ordinal;
+    }
+    return sample;
+}

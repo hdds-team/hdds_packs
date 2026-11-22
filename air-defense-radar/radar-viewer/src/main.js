@@ -134,7 +134,7 @@ function handleWsMessage(msg) {
             console.log(`[WS] Subscribed to ${msg.topic}`);
             break;
         case 'data':
-            handleMessage({ topic: msg.topic, data: msg.sample });
+            handleMessage({ topic: msg.topic, data: fromWire(msg.sample) });
             break;
         case 'error':
             console.error(`[WS] DDS error [${msg.code}]: ${msg.message}`);
@@ -379,3 +379,19 @@ function updateDemoTrack(track) {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', init);
+
+
+// --- wire form of the status field ------------------------------------------
+// AircraftTrack.status is a plain octet in the IDL, not an enum, so a sample
+// carries the number while this viewer compares the names the simulator
+// prints. Incoming samples are converted once, here; the viewer's own
+// demo-mode tracks already carry names and never pass through this function.
+const TRACK_STATUS_NAMES = ['Unknown', 'Friendly', 'Hostile', 'Neutral'];
+
+function fromWire(sample) {
+    if (!sample || typeof sample !== 'object') return sample;
+    if (typeof sample.status === 'number') {
+        sample.status = TRACK_STATUS_NAMES[sample.status] ?? 'Unknown';
+    }
+    return sample;
+}
