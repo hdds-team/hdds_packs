@@ -26,7 +26,7 @@ All demos use DDS domain 99.
 | [railway-network](railway-network/) | Independent train processes coordinated by DDS signaling | Web (Canvas) |
 | [robot-swarm](robot-swarm/) | 12 robots with boids, formations, and emergent behavior patterns | Web (Canvas) |
 | [rpc-service-mesh](rpc-service-mesh/) | DDS-RPC service discovery, health checks, and live invocation browser | GTK4 |
-| [satellite-ground-station](satellite-ground-station/) | 8 LEO satellites + 3 ground stations with orbital tracking | Web (Canvas) |
+| [satellite-ground-station](satellite-ground-station/) | 8 satellites in LEO, MEO and GEO + 3 ground stations with orbital tracking | Web (Canvas) |
 | [smart-factory](smart-factory/) | Industry 4.0 — AGVs, conveyors, and production lines without central control | Web (Canvas) |
 | [space-invaders](space-invaders/) | Classic arcade game — every event is a DDS topic | Web (Canvas) |
 | [tsn-automotive](tsn-automotive/) | Multi-priority ECU communication with TSN deterministic networking | Console (TUI) |

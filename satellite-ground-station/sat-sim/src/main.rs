@@ -283,11 +283,12 @@ fn compute_elevation(
     let r_e = EARTH_RADIUS_KM;
     let r_s = r_e + sat_alt_km;
 
-    // Elevation angle using law of cosines in the triangle
-    // (Earth center, station, satellite)
-    let cos_el = (r_s * central_angle.sin())
-        / ((r_s * r_s + r_e * r_e - 2.0 * r_s * r_e * central_angle.cos()).sqrt());
-    let el_rad = (PI / 2.0) - cos_el.acos();
+    // Elevation above the local horizon, negative when the satellite is below
+    // it. The law of sines gives only the absolute value, since cos is even,
+    // which made a satellite overhead report about 0 degrees and one below the
+    // horizon report 60: every station then "saw" every satellite from the
+    // first tick, and the pass logic never changed state again.
+    let el_rad = (central_angle.cos() - r_e / r_s).atan2(central_angle.sin());
 
     el_rad.to_degrees()
 }
