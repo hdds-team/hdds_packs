@@ -13,6 +13,7 @@
 
 use fleet_types::*;
 use gtk4::glib;
+use hdds::{Participant, QoS, TransportMode};
 use gtk4::prelude::*;
 use gtk4::{
     Application, ApplicationWindow, Box as GtkBox, Button, ComboBoxText, Label, ListStore,
@@ -47,6 +48,59 @@ struct MeshState {
     participant_count: u32,
     uptime_s: u64,
     rpc_calls: u64,
+    /// True once a registration has been received: the built-in service list
+    /// then steps aside and the tree shows what the services announce.
+    live: bool,
+}
+
+/// The methods each service exposes. The registration on the wire carries no
+/// API, so these come from the IDL this binary was built against.
+fn methods_of(service: &str) -> Vec<String> {
+    let names: &[&str] = match service {
+        "VehicleService" => &["RegisterVehicle", "LocateVehicle"],
+        "RouteService" => &["ComputeRoute"],
+        "MaintenanceService" => &["CreateTicket", "GetTicketStatus"],
+        "AlertService" => &["RaiseAlert"],
+        _ => &[],
+    };
+    names.iter().map(|m| (*m).to_string()).collect()
+}
+
+/// Reader on the service registry, with the participant kept alive: dropping
+/// it tears down discovery, and a reader alone does not hold it.
+struct Mesh {
+    participant: std::sync::Arc<Participant>,
+    registry: hdds::DataReader<ServiceRegistration>,
+}
+
+impl Mesh {
+    fn connect() -> Option<Self> {
+        let participant = Participant::builder("fleet-explorer")
+            .domain_id(DOMAIN_ID)
+            .with_transport(TransportMode::UdpMulticast)
+            .build()
+            .ok()?;
+        let registry = participant
+            .topic::<ServiceRegistration>(topics::SERVICE_REGISTRY)
+            .ok()?
+            .reader()
+            .qos(QoS::default())
+            .build()
+            .ok()?;
+        Some(Self {
+            participant,
+            registry,
+        })
+    }
+
+    /// Participants discovery knows about, this one included or not depending
+    /// on the stack: the figure is read, never assumed.
+    fn participant_count(&self) -> u32 {
+        self.participant
+            .discovery()
+            .map(|d| d.get_participants().len() as u32)
+            .unwrap_or(0)
+    }
 }
 
 impl MeshState {
@@ -109,7 +163,8 @@ impl MeshState {
 
         Self {
             services,
-            participant_count: 2,
+            participant_count: 0,
+            live: false,
             uptime_s: 0,
             rpc_calls: 0,
         }
@@ -191,6 +246,36 @@ impl MeshState {
 }
 
 /// Extract a simple string field from JSON (basic parser for demo).
+impl MeshState {
+    fn apply_registration(&mut self, reg: &ServiceRegistration) {
+        if !self.live {
+            // The first registration retires the built-in service list.
+            self.live = true;
+            self.services.clear();
+            eprintln!("[fleet-explorer] live registry found, built-in service list dropped");
+        }
+        eprintln!(
+            "[fleet-explorer] registration {} type={} healthy={}",
+            reg.service_name, reg.service_type, reg.healthy
+        );
+        let entry = self
+            .services
+            .entry(reg.service_name.clone())
+            .or_insert_with(|| ServiceInfo {
+                name: reg.service_name.clone(),
+                service_type: reg.service_type.clone(),
+                endpoint: reg.endpoint.clone(),
+                healthy: reg.healthy,
+                last_heartbeat_ns: reg.registered_ns,
+                methods: methods_of(&reg.service_name),
+            });
+        entry.service_type = reg.service_type.clone();
+        entry.endpoint = reg.endpoint.clone();
+        entry.healthy = reg.healthy;
+        entry.last_heartbeat_ns = reg.registered_ns;
+    }
+}
+
 fn extract_json_field(json: &str, field: &str) -> Option<String> {
     let parsed: serde_json::Value = serde_json::from_str(json).ok()?;
     parsed
@@ -276,6 +361,11 @@ fn main() {
 
 fn build_ui(app: &Application) {
     let state = Rc::new(RefCell::new(MeshState::new_simulated()));
+    let mesh = Rc::new(Mesh::connect());
+    match mesh.is_some() {
+        true => eprintln!("[fleet-explorer] reading {}", topics::SERVICE_REGISTRY),
+        false => eprintln!("[fleet-explorer] no DDS reader: showing the built-in service list"),
+    }
 
     // ========================================================================
     // Main window
@@ -344,7 +434,7 @@ fn build_ui(app: &Application) {
     status_bar.set_margin_top(4);
     status_bar.set_margin_bottom(4);
 
-    let participants_label = Label::new(Some("Participants: 2"));
+    let participants_label = Label::new(Some("Peers discovered: 0"));
     participants_label.add_css_class("dim-label");
     status_bar.append(&participants_label);
 
@@ -373,33 +463,50 @@ fn build_ui(app: &Application) {
     let svc_lbl = services_label.clone();
     let part_lbl = participants_label.clone();
 
+    let mesh_timer = mesh.clone();
     glib::timeout_add_local(std::time::Duration::from_secs(1), move || {
         let mut mesh = state_timer.borrow_mut();
         mesh.uptime_s += 1;
 
-        // Toggle health randomly for demo effect
-        if mesh.uptime_s % 15 == 0 {
+        // Take whatever the services announced since the last second.
+        if let Some(dds) = mesh_timer.as_ref() {
+            while let Ok(Some(reg)) = dds.registry.take() {
+                mesh.apply_registration(&reg);
+            }
+            if mesh.live {
+                let seen = dds.participant_count();
+                if seen != mesh.participant_count {
+                    eprintln!("[fleet-explorer] participants discovered: {}", seen);
+                    mesh.participant_count = seen;
+                }
+            }
+        }
+
+        // Toggle health randomly for demo effect, unless the services say
+        if !mesh.live && mesh.uptime_s % 15 == 0 {
             // Simulate a brief health blip on one service
             if let Some(svc) = mesh.services.get_mut("MaintenanceService") {
                 svc.healthy = !svc.healthy;
             }
-        } else if mesh.uptime_s % 15 == 2 {
+        } else if !mesh.live && mesh.uptime_s % 15 == 2 {
             if let Some(svc) = mesh.services.get_mut("MaintenanceService") {
                 svc.healthy = true;
             }
         }
 
-        // Update heartbeat timestamps
-        for svc in mesh.services.values_mut() {
-            if svc.healthy {
-                svc.last_heartbeat_ns = timestamp_ns();
+        // Update heartbeat timestamps, unless the registrations carry them
+        if !mesh.live {
+            for svc in mesh.services.values_mut() {
+                if svc.healthy {
+                    svc.last_heartbeat_ns = timestamp_ns();
+                }
             }
         }
 
         uptime_lbl.set_text(&format!("Uptime: {}s", mesh.uptime_s));
         rpc_lbl.set_text(&format!("RPC Calls: {}", mesh.rpc_calls));
         svc_lbl.set_text(&format!("Services: {}", mesh.services.len()));
-        part_lbl.set_text(&format!("Participants: {}", mesh.participant_count));
+        part_lbl.set_text(&format!("Peers discovered: {}", mesh.participant_count));
 
         glib::ControlFlow::Continue
     });

@@ -8,11 +8,17 @@ HDDS demonstration showing a DDS-RPC pattern for fleet management microservices:
 - GTK4 service browser with discovery, request editor, and mesh overview
 
 **What is live and what is not.** `fleet-services` runs the four services and
-their request/reply topics on DDS. `fleet-explorer` joins no domain at all: the
-service tree, the participant count and the topic table are fixed values, and
-the request editor builds its reply in the viewer process, so the time it
-reports is how long that took and not a round trip. Wiring the explorer to the
-registry and reply topics is open work.
+their request/reply topics on DDS. `fleet-explorer` reads `rpc/ServiceRegistry`,
+where each service publishes its registration every ten seconds: the service
+tree, their health and the peer count come from DDS, and the built-in list is
+dropped as soon as a registration arrives. Started alone, the explorer shows
+that built-in list so the window is not empty.
+
+Two things in it are still not live: the method names, because a registration
+carries a name, a type, an endpoint and a health flag but no API; and the
+request editor, which builds its reply in the viewer process, so the time it
+reports is how long that took and not a round trip. Sending real requests is
+open work.
 
 ## Quick Start
 
@@ -62,7 +68,7 @@ Topic naming: `rpc/{Service}/{Method}/Request` and `.../Reply`
 
 ## GTK4 Explorer (3 tabs)
 
-All three tabs render fixed values; see the note at the top of this file.
+The discovery tab follows the registry; the other two render fixed values. See the note at the top of this file.
 
 - **Service Discovery**: TreeView of services with health status, method listing
 - **RPC Test Panel**: Service/method selector, JSON request editor, send button, reply built in the viewer
