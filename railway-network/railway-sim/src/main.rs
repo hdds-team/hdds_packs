@@ -274,6 +274,8 @@ async fn main() -> Result<()> {
     for st in &layout.stations {
         let _ = station_writer.write(&st.station);
     }
+    const STATIC_REFRESH_S: f32 = 2.0;
+    let mut last_layout_publish = std::time::Instant::now();
 
     // Create trains
     let mut trains = vec![
@@ -297,6 +299,18 @@ async fn main() -> Result<()> {
         let now = std::time::Instant::now();
         let dt = (now - last_tick).as_secs_f32();
         last_tick = now;
+
+        // Static data, re-sent for readers that join later: a reader
+        // only receives what is written after discovery matched it.
+        if now.duration_since(last_layout_publish).as_secs_f32() > STATIC_REFRESH_S {
+            for seg in &layout.segments {
+                let _ = segment_writer.write(&seg.segment);
+            }
+            for st in &layout.stations {
+                let _ = station_writer.write(&st.station);
+            }
+            last_layout_publish = now;
+        }
 
         // Update signals (simple auto cycling)
         for sig in &mut layout.signals {

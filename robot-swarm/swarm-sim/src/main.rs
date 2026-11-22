@@ -457,6 +457,8 @@ async fn main() -> Result<()> {
     for wp in &waypoints {
         waypoint_writer.write(wp)?;
     }
+    const STATIC_REFRESH_S: f32 = 2.0;
+    let mut last_static_publish = std::time::Instant::now();
 
     // Swarm state
     let mut current_mode = SwarmMode::FLOCK;
@@ -473,6 +475,18 @@ async fn main() -> Result<()> {
 
     loop {
         let tick_start = std::time::Instant::now();
+
+        // Static data, re-sent for readers that join later: a reader
+        // only receives what is written after discovery matched it.
+        if tick_start.duration_since(last_static_publish).as_secs_f32() > STATIC_REFRESH_S {
+            for obs in &obstacles {
+                obstacle_writer.write(obs)?;
+            }
+            for wp in &waypoints {
+                waypoint_writer.write(wp)?;
+            }
+            last_static_publish = tick_start;
+        }
         let timestamp = timestamp_us();
 
         // Auto-cycle through modes for demo

@@ -38,32 +38,36 @@ All demos use DDS domain 99.
 ```bash
 # Prerequisites
 # - Rust toolchain (rustup.rs)
-# - hddsgen (built from hdds_gen repo)
 # - Node.js 18+ (for web viewers)
+# - hddsgen, only to regenerate types after editing an IDL file: the
+#   generated Rust is committed, so a clone builds without it
 
-# 1. Generate types from IDL
-make gen
-
-# 2. Build all demos
+# 1. Build all demos
 make build
 
-# 3. Run any demo (example: air-defense-radar)
+# 2. Run any demo (example: air-defense-radar)
 cd air-defense-radar
 cargo run --release -p radar-sim
 
-# 4. For web viewers, also start hdds-ws + the viewer
+# 3. For web viewers, start the bridge and the viewer AFTER the simulator
 hdds-ws --domain 99 --port 9090
 cd air-defense-radar/radar-viewer && npm install && npm run dev
 ```
+
+The order of the last two steps matters. The bridge resolves a topic's type
+when it creates its reader, which happens when the browser subscribes: if
+nothing is publishing at that moment, the samples reach the browser as opaque
+bytes for the rest of the session. Start the simulator first.
 
 ## Build Info
 
 Each demo compiles independently. Full build of all 24 demos:
 
-- **Source**: ~2.5 MB (284 files)
-- **Build artifacts**: ~57 GB (incremental, all demos)
-- **Release binaries**: ~150 MB total (31 binaries, 4-18 MB each)
-- **node_modules**: ~700 MB (for web viewers, `npm install`)
+- **Source**: 5.7 MB over 332 tracked files, generated Rust types included
+- **Binaries**: 36 packages carry a `main.rs`
+- **Build artifacts**: large. Six demos built in release, sharing one target
+  directory, already take 2.2 GB
+- **node_modules**: each web viewer installs its own, with `npm install`
 - **Build time**: depends on cache state; first full build is significant
 
 Individual demo binaries are typically 4-5 MB each (release mode).

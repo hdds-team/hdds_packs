@@ -335,6 +335,8 @@ async fn main() -> Result<()> {
     for gate in &gates {
         gate_writer.write(gate)?;
     }
+    const STATIC_REFRESH_S: f32 = 2.0;
+    let mut last_gate_publish = Instant::now();
 
     // Create AI drones
     let mut rng = rand::thread_rng();
@@ -372,6 +374,15 @@ async fn main() -> Result<()> {
         let now = Instant::now();
         let dt = now.duration_since(last_tick).as_secs_f32();
         last_tick = now;
+
+        // Static data, re-sent for readers that join later: a reader
+        // only receives what is written after discovery matched it.
+        if now.duration_since(last_gate_publish).as_secs_f32() > STATIC_REFRESH_S {
+            for gate in &gates {
+                gate_writer.write(gate)?;
+            }
+            last_gate_publish = now;
+        }
 
         // Process inputs
         while let Ok(Some(input)) = input_reader.take() {

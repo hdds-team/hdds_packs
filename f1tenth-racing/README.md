@@ -39,8 +39,8 @@ Debit total : ~240 msg/s en course (4 cars x 60Hz).
 ## Quick Start
 
 ```bash
-# 1. Build the sim
-cargo build --release -p f1tenth-sim
+# 1. Run the sim
+cargo run --release -p f1tenth-sim
 
 # 2. Start hdds-ws bridge (domain 99)
 hdds-ws --domain 99 --port 9090
@@ -48,12 +48,13 @@ hdds-ws --domain 99 --port 9090
 # 3. Start the viewer
 cd f1tenth-viewer && npm install && npm run dev
 
-# 4. Run the sim
-cargo run --release -p f1tenth-sim
-
-# 5. Open http://localhost:5173
+# 4. Open http://localhost:5173
 #    (or http://localhost:5173?demo for offline demo mode)
 ```
+
+L'ordre compte : le pont resout le type d'un topic au moment ou il cree son
+lecteur, c'est-a-dire quand le navigateur s'abonne. Si rien ne publie a cet
+instant, les echantillons arrivent en octets opaques pour toute la session.
 
 Pour observer les topics depuis le terminal :
 

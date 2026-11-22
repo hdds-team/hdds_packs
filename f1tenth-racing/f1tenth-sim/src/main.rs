@@ -475,15 +475,25 @@ async fn main() -> Result<()> {
     let track = TrackDef::generate_circuit();
     info!("Track: {} points, {:.1}m total length", track.points.len(), track.total_length);
 
-    // Publish track points
-    for (i, ((x, z), w)) in track.points.iter().zip(track.widths.iter()).enumerate() {
-        track_writer.write(&TrackPoint {
+    // Publish track points. Kept in a vector so the same samples can be
+    // re-sent for readers that join later.
+    let track_points: Vec<TrackPoint> = track
+        .points
+        .iter()
+        .zip(track.widths.iter())
+        .enumerate()
+        .map(|(i, ((x, z), w))| TrackPoint {
             index: i as u16,
             x: *x,
             z: *z,
             width: *w,
-        })?;
+        })
+        .collect();
+    for point in &track_points {
+        track_writer.write(point)?;
     }
+    const STATIC_REFRESH_S: f32 = 2.0;
+    let mut last_track_publish = Instant::now();
     info!("Track published ({} points)", track.points.len());
 
     // Create cars
@@ -521,6 +531,15 @@ async fn main() -> Result<()> {
         let now = Instant::now();
         let dt = now.duration_since(last_tick).as_secs_f32().min(0.05); // cap dt
         last_tick = now;
+
+        // Static data, re-sent for readers that join later: a reader
+        // only receives what is written after discovery matched it.
+        if now.duration_since(last_track_publish).as_secs_f32() > STATIC_REFRESH_S {
+            for point in &track_points {
+                track_writer.write(point)?;
+            }
+            last_track_publish = now;
+        }
 
         // --- Race phase management ---
         match race_state.phase {

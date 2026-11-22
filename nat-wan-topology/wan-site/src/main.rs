@@ -176,9 +176,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Determine if this site uses a relay (symmetric NAT often requires relay)
     let using_relay = profile.nat_type == "symmetric";
+    const STATIC_REFRESH_S: f32 = 2.0;
+    let mut last_candidate_publish = std::time::Instant::now();
 
     loop {
         let now_ns = start.elapsed().as_nanos() as i64;
+
+        // Static data, re-sent for readers that join later: a reader
+        // only receives what is written after discovery matched it.
+        let tick_now = std::time::Instant::now();
+        if tick_now.duration_since(last_candidate_publish).as_secs_f32() > STATIC_REFRESH_S {
+            for candidate in &candidates {
+                ice_writer.write(candidate)?;
+            }
+            last_candidate_publish = tick_now;
+        }
 
         // Publish heartbeat at 1 Hz
         let jitter: f64 = rng.gen_range(-2.0..2.0);
