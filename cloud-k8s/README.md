@@ -15,6 +15,12 @@ generated inside the dashboard. Two of the four topics below,
 IDL and published by nobody. Wiring the dashboard to the worker topics is open
 work.
 
+The join and leave events are published once each, so the worker offers them
+with TRANSIENT_LOCAL durability for readers that connect in between. A reader
+only receives that history if it REQUESTS the same durability, which a native
+DDS reader can do; the `hdds-ws` bridge creates its readers with default QoS,
+so a browser still misses a join it was not there for.
+
 ## Quick Start
 
 ```bash

@@ -49,16 +49,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let qos = QoS::default();
 
+    // The join and leave events are published once each, so a monitor that
+    // connects in between would never learn this pod exists: a reader only
+    // receives what is written after discovery matched it. Keeping them for
+    // late joiners is what TRANSIENT_LOCAL durability is for.
+    let mut discovery_qos = QoS::default();
+    discovery_qos.durability = hdds::qos::Durability::TransientLocal;
+
     // Create writers
     let metric_writer =
         participant.topic::<WorkloadMetric>(topics::WORKLOAD_METRIC)?
             .writer()
-            .qos(qos.clone())
+            .qos(qos)
             .build()?;
     let discovery_writer =
         participant.topic::<DiscoveryEvent>(topics::DISCOVERY_EVENT)?
             .writer()
-            .qos(qos)
+            .qos(discovery_qos)
             .build()?;
 
     // Generate a fake participant GUID
