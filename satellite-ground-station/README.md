@@ -81,7 +81,7 @@ satellite-ground-station/
   sat-types/src/
     lib.rs                   Topic constants + enum helpers
     generated.rs             hddsgen output (CDR2 encode/decode)
-  sat-sim/src/main.rs        Simulator (769 lines)
+  sat-sim/src/main.rs        Simulator
   sat-viewer/
     index.html               Dark-themed HUD layout
     src/main.js              Canvas 2D renderer + WebSocket client
