@@ -7,12 +7,13 @@ HDDS demonstration showing NAT traversal and WAN topology visualization with:
 - Real-time site heartbeats and inter-site messaging with latency
 - Topology viewer with connection state animation (egui)
 
-**What is live and what is not.** The DDS traffic in this demo is between the
-`wan-site` instances: they publish and subscribe to the three topics below.
-The `wan-topology` viewer is a presentation layer only. It draws a generated
-topology and subscribes to nothing, so running it alone shows a full picture
-and running it next to the sites shows the same one. Wiring it to the site
-topics is open work.
+**What is live and what is not.** `wan-topology` reads the three topics below:
+the site addresses, NAT types, round-trip times, ICE candidates and message
+counters come from the samples the `wan-site` instances publish. Started alone,
+the viewer keeps drawing its generated topology so the demo shows something;
+the first real sample retires it and the log says so. The ICE phase animation
+(Gathering, Checking, Connected) stays generated, because nothing on the wire
+carries it.
 
 ## Quick Start
 
@@ -35,8 +36,8 @@ cargo run --bin wan-site -- --site-name nyc
 +-----------+                  +-----------+                  +-----------+
       |                              |                              |
       +------------------------------+------------------------------+
-                                     :
-                                     :  no subscription yet
+                                     |
+                                     v
                               +--------------+
                               | wan-topology |
                               | (egui viewer)|
@@ -68,8 +69,8 @@ Gathering (0-2s) --> Checking (2-4s) --> Connected (4s+)
 
 ## Viewer Features
 
-These are drawn from data the viewer generates itself; it subscribes to none of
-the topics above.
+Fed by the topics above when the sites are running, and by the viewer's own
+generated topology when they are not.
 
 - **Topology Graph**: Sites as nodes, connections as color-coded lines
 - **Connection Types**: Green (direct P2P), Yellow (TURN relay), Red (failed)

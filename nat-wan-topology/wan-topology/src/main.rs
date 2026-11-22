@@ -12,6 +12,12 @@ use eframe::egui;
 use rand::Rng;
 use std::time::Instant;
 
+use hdds::{Participant, QoS, TransportMode};
+use wan_types::{IceCandidate, SiteHeartbeat, SiteMessage};
+
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // -- Data structures ----------------------------------------------------------
 
 /// ICE connection establishment phase
@@ -103,6 +109,56 @@ struct TopologyApp {
     tick: u64,
     /// Selected site index for detail panel
     selected_site: Option<usize>,
+    /// Readers on the site topics, absent when DDS could not start
+    dds: Option<Dds>,
+    /// True once a sample has been received: the generated topology then steps
+    /// aside and the window shows what the sites publish
+    live: bool,
+}
+
+/// Readers on the three topics the sites publish. The participant is kept
+/// here: dropping it tears down discovery, and the readers alone do not hold
+/// it alive.
+struct Dds {
+    _participant: std::sync::Arc<Participant>,
+    heartbeat: hdds::DataReader<SiteHeartbeat>,
+    message: hdds::DataReader<SiteMessage>,
+    candidate: hdds::DataReader<IceCandidate>,
+}
+
+impl Dds {
+    fn connect() -> Option<Self> {
+        let participant = Participant::builder("wan-topology")
+            .domain_id(DOMAIN_ID)
+            .with_transport(TransportMode::UdpMulticast)
+            .build()
+            .ok()?;
+        let qos = QoS::default();
+        Some(Self {
+            heartbeat: participant
+                .topic::<SiteHeartbeat>("wan/heartbeat")
+                .ok()?
+                .reader()
+                .qos(qos.clone())
+                .build()
+                .ok()?,
+            message: participant
+                .topic::<SiteMessage>("wan/messages")
+                .ok()?
+                .reader()
+                .qos(qos.clone())
+                .build()
+                .ok()?,
+            candidate: participant
+                .topic::<IceCandidate>("wan/ice_candidates")
+                .ok()?
+                .reader()
+                .qos(qos)
+                .build()
+                .ok()?,
+            _participant: participant,
+        })
+    }
 }
 
 impl TopologyApp {
@@ -256,7 +312,117 @@ impl TopologyApp {
             last_update: now,
             tick: 0,
             selected_site: None,
+            dds: {
+                let dds = Dds::connect();
+                match dds.is_some() {
+                    true => tracing::info!("DDS readers created on domain {}", DOMAIN_ID),
+                    false => tracing::warn!(
+                        "no DDS reader: showing the generated topology instead of live sites"
+                    ),
+                }
+                dds
+            },
+            live: false,
         }
+    }
+
+    /// Index of the site with this name, whatever the case the wire uses.
+    fn site_index(&self, name: &str) -> Option<usize> {
+        self.sites
+            .iter()
+            .position(|s| s.name.eq_ignore_ascii_case(name))
+    }
+
+    /// The first real sample retires the generated topology.
+    fn go_live(&mut self) {
+        if self.live {
+            return;
+        }
+        self.live = true;
+        for site in &mut self.sites {
+            site.candidates.clear();
+            site.heartbeat_count = 0;
+        }
+        for conn in &mut self.connections {
+            conn.message_count = 0;
+            conn.bytes_sent = 0;
+        }
+        tracing::info!("live sites found, generated topology stopped");
+    }
+
+    fn apply_heartbeat(&mut self, hb: &SiteHeartbeat) {
+        self.go_live();
+        if let Some(i) = self.site_index(&hb.site_name) {
+            let site = &mut self.sites[i];
+            site.public_ip = hb.public_ip.clone();
+            site.public_port = hb.public_port;
+            site.nat_type = hb.nat_type.clone();
+            site.using_relay = hb.using_relay;
+            site.rtt_ms = hb.rtt_ms;
+            site.heartbeat_count += 1;
+            site.last_heartbeat = Instant::now();
+            tracing::debug!(
+                "[dds] heartbeat {} rtt={:.1}ms nat={}",
+                hb.site_name,
+                hb.rtt_ms,
+                hb.nat_type
+            );
+        }
+    }
+
+    fn apply_candidate(&mut self, c: &IceCandidate) {
+        self.go_live();
+        if let Some(i) = self.site_index(&c.site_name) {
+            let info = CandidateInfo {
+                candidate_id: c.candidate_id.clone(),
+                candidate_type: c.candidate_type.clone(),
+                address: c.address.clone(),
+                port: c.port,
+                priority: c.priority,
+            };
+            let site = &mut self.sites[i];
+            match site
+                .candidates
+                .iter()
+                .position(|k| k.candidate_id == info.candidate_id)
+            {
+                Some(k) => site.candidates[k] = info,
+                None => site.candidates.push(info),
+            }
+        }
+    }
+
+    fn apply_message(&mut self, m: &SiteMessage) {
+        self.go_live();
+        let from = self.site_index(&m.from_site);
+        let to = self.site_index(&m.to_site);
+        let rtt_ms = ((m.received_ns - m.sent_ns) as f64) / 1.0e6;
+        if let (Some(a), Some(b)) = (from, to) {
+            for conn in &mut self.connections {
+                if (conn.from == a && conn.to == b) || (conn.from == b && conn.to == a) {
+                    conn.message_count += 1;
+                    conn.bytes_sent += m.payload_size.max(0) as u64;
+                    if rtt_ms > 0.0 {
+                        conn.rtt_ms = rtt_ms;
+                    }
+                }
+            }
+        }
+    }
+
+    /// Take whatever the sites published since the last frame.
+    fn poll_dds(&mut self) {
+        let Some(dds) = self.dds.take() else { return };
+        while let Ok(Some(hb)) = dds.heartbeat.take() {
+            self.apply_heartbeat(&hb);
+        }
+        while let Ok(Some(c)) = dds.candidate.take() {
+            self.apply_candidate(&c);
+        }
+        while let Ok(Some(m)) = dds.message.take() {
+            self.apply_message(&m);
+        }
+        self.dds = Some(dds);
     }
 
     /// Update simulation state
@@ -274,8 +440,8 @@ impl TopologyApp {
         let mut rng = rand::thread_rng();
         let elapsed = now.duration_since(self.start_time).as_secs_f64();
 
-        // Update heartbeats (every ~1 second)
-        if self.tick % 10 == 0 {
+        // Update heartbeats (every ~1 second), unless the sites publish them
+        if !self.live && self.tick % 10 == 0 {
             for site in &mut self.sites {
                 site.heartbeat_count += 1;
                 site.last_heartbeat = now;
@@ -302,8 +468,9 @@ impl TopologyApp {
                 IcePhase::Connected
             };
 
-            // Update RTT with jitter when connected
-            if conn.phase == IcePhase::Connected {
+            // Update RTT with jitter when connected, unless the sites publish
+            // the messages that carry it
+            if !self.live && conn.phase == IcePhase::Connected {
                 let jitter: f64 = rng.gen_range(-3.0..3.0);
                 let base_rtt = match (conn.from, conn.to) {
                     (0, 1) | (1, 0) => 140.0,
@@ -787,6 +954,10 @@ impl TopologyApp {
 
 impl eframe::App for TopologyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // Take the samples first: they decide whether the generated topology
+        // still has anything to do.
+        self.poll_dds();
+
         // Update simulation
         self.update_simulation();
 
@@ -815,12 +986,14 @@ impl eframe::App for TopologyApp {
 }
 
 fn main() -> eframe::Result<()> {
-    tracing_subscriber::fmt()
-        .with_env_filter(
-            tracing_subscriber::EnvFilter::from_default_env()
-                .add_directive("wan_topology=info".parse().unwrap()),
-        )
-        .init();
+    // RUST_LOG wins when it is set: adding a directive for this crate on top of
+    // the environment filter silently overrode it, so `wan_topology=debug`
+    // printed nothing.
+    let filter = match std::env::var("RUST_LOG") {
+        Ok(_) => tracing_subscriber::EnvFilter::from_default_env(),
+        Err(_) => tracing_subscriber::EnvFilter::new("wan_topology=info"),
+    };
+    tracing_subscriber::fmt().with_env_filter(filter).init();
 
     tracing::info!("Starting WAN Topology Viewer");
 
