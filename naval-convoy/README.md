@@ -5,11 +5,21 @@ HDDS demonstration showing a naval convoy being hunted by enemy submarines.
 ## Features
 
 - **Convoy simulation**: Merchant ships protected by destroyer/frigate escorts
-- **Submarine warfare**: Enemy subs stalking the convoy
+- **Submarine warfare**: Enemy subs on fixed courses near the convoy
 - **Sonar detection**: Active sonar pings with expanding radius visualization
-- **Combat**: Torpedoes, depth charges, and explosions
+- **Combat**: Torpedoes, depth charges, and explosions, which no run reaches yet
 - **3D visualization**: Three.js with custom ocean shader
 - **Real-time minimap**: Top-down tactical view
+
+**Why no torpedo ever flies.** A submarine fires when it comes within 4 nm of
+the convoy centre (`TORPEDO_RANGE_NM * 0.8`), but it holds the heading it was
+given at spawn: nothing steers it toward the convoy, and `submarine_ai`
+computes a convoy centre it then discards. Measured over 90 s of simulation,
+23459 submarine-to-convoy pairs, the closest approach is 4.46 nm, so the firing
+condition is never met and `naval/torpedo`, `naval/depth_charge` and
+`naval/explosion` stay silent. Sonar, convoy movement and combat events all
+work; giving the submarines an intercept course is a scenario decision, not a
+missing line of plumbing.
 - **Combat log**: Event feed with priority highlighting
 
 ## Quick Start
