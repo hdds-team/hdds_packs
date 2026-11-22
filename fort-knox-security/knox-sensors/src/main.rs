@@ -11,6 +11,9 @@ use rand::Rng;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // Sensor definitions (20 sensors across 5 zones)
 // ---------------------------------------------------------------------------
@@ -133,7 +136,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Create DDS participant
     let participant = Participant::builder("knox_sensors")
-        .domain_id(42)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

@@ -19,6 +19,9 @@ use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::Arc;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // Application state shared with UI callbacks
 // ---------------------------------------------------------------------------
@@ -200,7 +203,7 @@ struct DdsContext {
 
 fn try_create_dds() -> Option<DdsContext> {
     let participant = match hdds::Participant::builder("knox_monitor")
-        .domain_id(42)
+        .domain_id(DOMAIN_ID)
         .with_transport(hdds::TransportMode::UdpMulticast)
         .build()
     {

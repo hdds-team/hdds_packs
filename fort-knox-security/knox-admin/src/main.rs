@@ -11,6 +11,9 @@ use rand::Rng;
 use std::collections::VecDeque;
 use std::sync::Arc;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ---------------------------------------------------------------------------
 // Zone helpers
 // ---------------------------------------------------------------------------
@@ -225,7 +228,7 @@ impl AdminApp {
         hdds::DataWriter<PermissionChange>,
     )> {
         let participant = hdds::Participant::builder("knox_admin")
-            .domain_id(42)
+            .domain_id(DOMAIN_ID)
             .with_transport(hdds::TransportMode::UdpMulticast)
             .build()
             .ok()?;

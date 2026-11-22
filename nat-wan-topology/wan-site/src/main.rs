@@ -15,6 +15,9 @@ use rand::Rng;
 use std::time::{Duration, Instant};
 use wan_types::{IceCandidate, SiteHeartbeat, SiteMessage};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 /// Known sites with simulated geographic properties.
 struct SiteProfile {
     name: &'static str,
@@ -28,21 +31,21 @@ struct SiteProfile {
 const SITES: &[SiteProfile] = &[
     SiteProfile {
         name: "paris",
-        public_ip: "82.64.12.101",
+        public_ip: "192.0.2.101",
         base_port: 7400,
         nat_type: "full_cone",
         base_rtt: 15.0,
     },
     SiteProfile {
         name: "tokyo",
-        public_ip: "203.104.55.22",
+        public_ip: "198.51.100.22",
         base_port: 7401,
         nat_type: "symmetric",
         base_rtt: 120.0,
     },
     SiteProfile {
         name: "nyc",
-        public_ip: "74.125.200.33",
+        public_ip: "203.0.113.33",
         base_port: 7402,
         nat_type: "restricted",
         base_rtt: 45.0,
@@ -83,7 +86,7 @@ fn generate_ice_candidates(profile: &SiteProfile) -> Vec<IceCandidate> {
     candidates.push(IceCandidate {
         candidate_id: format!("{}-relay-0", profile.name),
         candidate_type: "relay".to_string(),
-        address: "34.107.221.82".to_string(), // Simulated TURN server
+        address: "203.0.113.1".to_string(), // Simulated TURN server
         port: 3478,
         priority: 16777215, // Relay priority (lowest)
         site_name: profile.name.to_string(),
@@ -130,7 +133,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create DDS participant
     let participant = Participant::builder(&format!("wan-site-{}", profile.name))
         .with_transport(TransportMode::UdpMulticast)
-        .domain_id(42)
+        .domain_id(DOMAIN_ID)
         .build()?;
 
     // Create writers

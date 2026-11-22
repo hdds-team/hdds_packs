@@ -5,7 +5,14 @@ HDDS demonstration showing NAT traversal and WAN topology visualization with:
 - ICE candidate exchange (host, server-reflexive, relay)
 - NAT type simulation (full cone, symmetric, restricted)
 - Real-time site heartbeats and inter-site messaging with latency
-- Interactive topology viewer with connection state animation (egui)
+- Topology viewer with connection state animation (egui)
+
+**What is live and what is not.** The DDS traffic in this demo is between the
+`wan-site` instances: they publish and subscribe to the three topics below.
+The `wan-topology` viewer is a presentation layer only. It draws a generated
+topology and subscribes to nothing, so running it alone shows a full picture
+and running it next to the sites shows the same one. Wiring it to the site
+topics is open work.
 
 ## Quick Start
 
@@ -28,8 +35,8 @@ cargo run --bin wan-site -- --site-name nyc
 +-----------+                  +-----------+                  +-----------+
       |                              |                              |
       +------------------------------+------------------------------+
-                                     |
-                                     v
+                                     :
+                                     :  no subscription yet
                               +--------------+
                               | wan-topology |
                               | (egui viewer)|
@@ -48,9 +55,9 @@ cargo run --bin wan-site -- --site-name nyc
 
 | Site | Public IP | NAT Type | Base RTT | Region |
 |------|-----------|----------|----------|--------|
-| Paris | 82.64.12.101 | full_cone | 15 ms | Europe |
-| Tokyo | 203.104.55.22 | symmetric | 120 ms | Asia |
-| NYC | 74.125.200.33 | restricted | 45 ms | N. America |
+| Paris | 192.0.2.101 | full_cone | 15 ms | Europe |
+| Tokyo | 198.51.100.22 | symmetric | 120 ms | Asia |
+| NYC | 203.0.113.33 | restricted | 45 ms | N. America |
 
 ## ICE Connection Phases
 
@@ -60,6 +67,9 @@ Gathering (0-2s) --> Checking (2-4s) --> Connected (4s+)
 ```
 
 ## Viewer Features
+
+These are drawn from data the viewer generates itself; it subscribes to none of
+the topics above.
 
 - **Topology Graph**: Sites as nodes, connections as color-coded lines
 - **Connection Types**: Green (direct P2P), Yellow (TURN relay), Red (failed)

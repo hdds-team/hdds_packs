@@ -14,6 +14,9 @@ use rand::Rng;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 const TICK_RATE: u64 = 60;
 const TICK_MS: u64 = 1000 / TICK_RATE;
 
@@ -168,7 +171,7 @@ async fn main() -> Result<()> {
     info!("==========================================");
 
     let participant = Participant::builder("arena_server")
-        .domain_id(99)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

@@ -5,7 +5,15 @@ HDDS demonstration showing Kubernetes-style cluster monitoring with:
 - Live discovery events (pod join/leave lifecycle)
 - Auto-scaling logic (scale up >70% CPU, scale down <30%)
 - Cross-site communication with relay detection
-- Real-time TUI dashboard (ratatui)
+- TUI dashboard (ratatui)
+
+**What is live and what is not.** `cloud-worker` publishes for real:
+`WorkloadMetric` and `DiscoveryEvent` go on the wire. `cloud-monitor` joins the
+domain but creates no reader, so everything it draws, the pod grid included, is
+generated inside the dashboard. Two of the four topics below,
+`cloud/scaling_decision` and `cloud/cross_site_message`, are declared in the
+IDL and published by nobody. Wiring the dashboard to the worker topics is open
+work.
 
 ## Quick Start
 
@@ -24,12 +32,12 @@ Dashboard controls: `q` quit, `+` scale up, `-` scale down.
 ## Architecture
 
 ```
-+--------------+      DDS UDP      +-----------------+
-| cloud-worker | ----------------> |  cloud-monitor  |
++--------------+   no reader yet   +-----------------+
+| cloud-worker | :...............> |  cloud-monitor  |
 | (pod sim x3) |                   | (TUI dashboard) |
 +--------------+                   +-----------------+
       |                                   |
-      | Publishes:                        | Subscribes + simulates:
+      | Publishes on DDS:                 | Generates locally:
       |-- WorkloadMetric (2 Hz)          |-- ScalingDecision (8s)
       +-- DiscoveryEvent (on join/leave) +-- CrossSiteMessage (3-8s)
 ```
@@ -44,6 +52,9 @@ Dashboard controls: `q` quit, `+` scale up, `-` scale down.
 | `cloud/scaling_decision` | ScalingDecision | ~8s | Auto-scaling up/down with reason |
 
 ## TUI Dashboard
+
+Every panel below is fed by the dashboard's own simulation, not by the worker
+topics; see the note at the top of this file.
 
 - **Pod Grid**: Name, node, CPU% bar chart, memory, connections, throughput, status
 - **Discovery Log**: Timestamped join/leave events (color-coded)

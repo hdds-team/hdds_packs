@@ -18,6 +18,9 @@ use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tracing::info;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 // ============================================================================
 // Shared state types
 // ============================================================================
@@ -548,7 +551,7 @@ fn main() {
     // Create DDS participant
     // build() returns Arc<Participant>
     let participant = Participant::builder("fleet_services")
-        .domain_id(42)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()
         .expect("Failed to create DDS participant");

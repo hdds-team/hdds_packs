@@ -12,6 +12,9 @@ use factory_types::factory::*;
 use hdds::{Participant, QoS, TransportMode};
 use rand::Rng;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 fn timestamp_us() -> u64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -200,7 +203,7 @@ async fn main() -> Result<()> {
 
     // Create DDS participant
     let participant = Participant::builder("factory_sim")
-        .domain_id(99)
+        .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 

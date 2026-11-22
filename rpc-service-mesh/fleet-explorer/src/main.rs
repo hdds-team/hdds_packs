@@ -22,6 +22,9 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 
+/// DDS domain for the demo packs, from the project-wide domain table.
+const DOMAIN_ID: u32 = 99;
+
 const APP_ID: &str = "com.hdds.fleet_explorer";
 
 // ============================================================================
@@ -303,7 +306,7 @@ fn build_ui(app: &Application) {
     spacer.set_hexpand(true);
     title_bar.append(&spacer);
 
-    let domain_label = Label::new(Some("Domain: 42 | Transport: UDP Multicast"));
+    let domain_label = Label::new(Some(&format!("Domain: {} | Transport: UDP Multicast", DOMAIN_ID)));
     domain_label.add_css_class("dim-label");
     title_bar.append(&domain_label);
 
@@ -736,8 +739,10 @@ fn build_rpc_tab(state: &Rc<RefCell<MeshState>>) -> GtkBox {
             .simulate_rpc_call(&svc, &method, &input_json);
         let elapsed = t0.elapsed();
 
+        // The reply is built in this process, so the figure below is how long
+        // that took. It is not a DDS round trip and must not read like one.
         let header = format!(
-            "// {} -> {}.{}()\n// Latency: {:.2}ms\n// Timestamp: {}\n\n",
+            "// {} -> {}.{}()\n// Simulated reply, built locally in {:.2}ms\n// Timestamp: {}\n\n",
             "fleet-explorer",
             svc,
             method,
@@ -746,7 +751,10 @@ fn build_rpc_tab(state: &Rc<RefCell<MeshState>>) -> GtkBox {
         );
 
         output_buf.set_text(&format!("{}{}", header, response));
-        latency_label.set_text(&format!("RTT: {:.2}ms", elapsed.as_secs_f64() * 1000.0));
+        latency_label.set_text(&format!(
+            "simulated locally in {:.2}ms",
+            elapsed.as_secs_f64() * 1000.0
+        ));
     });
 
     page
@@ -777,7 +785,7 @@ fn build_overview_tab(_state: &Rc<RefCell<MeshState>>) -> GtkBox {
     +-------------------+       +------------------+
             |                           |
             |    DDS Service Mesh       |
-            |    Domain 42              |
+            |    Domain 99              |
             |    UDP Multicast          |
             |                           |
     +-------------------+       +------------------+

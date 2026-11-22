@@ -5,7 +5,14 @@ HDDS demonstration showing a DDS-RPC pattern for fleet management microservices:
 - Typed request/reply dispatch over DDS pub/sub topics
 - Service discovery via heartbeat registration
 - Simulated vehicle movement, ticket lifecycle, and alert auto-acknowledgment
-- GTK4 service browser with discovery, RPC testing, and mesh overview
+- GTK4 service browser with discovery, request editor, and mesh overview
+
+**What is live and what is not.** `fleet-services` runs the four services and
+their request/reply topics on DDS. `fleet-explorer` joins no domain at all: the
+service tree, the participant count and the topic table are fixed values, and
+the request editor builds its reply in the viewer process, so the time it
+reports is how long that took and not a round trip. Wiring the explorer to the
+registry and reply topics is open work.
 
 ## Quick Start
 
@@ -55,8 +62,10 @@ Topic naming: `rpc/{Service}/{Method}/Request` and `.../Reply`
 
 ## GTK4 Explorer (3 tabs)
 
+All three tabs render fixed values; see the note at the top of this file.
+
 - **Service Discovery**: TreeView of services with health status, method listing
-- **RPC Test Panel**: Service/method selector, JSON request editor, send button, response viewer with latency
+- **RPC Test Panel**: Service/method selector, JSON request editor, send button, reply built in the viewer
 - **Mesh Overview**: ASCII topology diagram, topic statistics table
 
 ## Project Structure

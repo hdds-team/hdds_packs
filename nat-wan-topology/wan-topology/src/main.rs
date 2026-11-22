@@ -112,7 +112,7 @@ impl TopologyApp {
         let sites = vec![
             SiteInfo {
                 name: "Paris".to_string(),
-                public_ip: "82.64.12.101".to_string(),
+                public_ip: "192.0.2.101".to_string(),
                 public_port: 7400,
                 nat_type: "full_cone".to_string(),
                 using_relay: false,
@@ -129,14 +129,14 @@ impl TopologyApp {
                     CandidateInfo {
                         candidate_id: "paris-srflx-0".to_string(),
                         candidate_type: "srflx".to_string(),
-                        address: "82.64.12.101".to_string(),
+                        address: "192.0.2.101".to_string(),
                         port: 8400,
                         priority: 1694498815,
                     },
                     CandidateInfo {
                         candidate_id: "paris-relay-0".to_string(),
                         candidate_type: "relay".to_string(),
-                        address: "34.107.221.82".to_string(),
+                        address: "203.0.113.1".to_string(),
                         port: 3478,
                         priority: 16777215,
                     },
@@ -146,7 +146,7 @@ impl TopologyApp {
             },
             SiteInfo {
                 name: "Tokyo".to_string(),
-                public_ip: "203.104.55.22".to_string(),
+                public_ip: "198.51.100.22".to_string(),
                 public_port: 7401,
                 nat_type: "symmetric".to_string(),
                 using_relay: true,
@@ -163,14 +163,14 @@ impl TopologyApp {
                     CandidateInfo {
                         candidate_id: "tokyo-srflx-0".to_string(),
                         candidate_type: "srflx".to_string(),
-                        address: "203.104.55.22".to_string(),
+                        address: "198.51.100.22".to_string(),
                         port: 8401,
                         priority: 1694498815,
                     },
                     CandidateInfo {
                         candidate_id: "tokyo-relay-0".to_string(),
                         candidate_type: "relay".to_string(),
-                        address: "34.107.221.82".to_string(),
+                        address: "203.0.113.1".to_string(),
                         port: 3479,
                         priority: 16777215,
                     },
@@ -180,7 +180,7 @@ impl TopologyApp {
             },
             SiteInfo {
                 name: "NYC".to_string(),
-                public_ip: "74.125.200.33".to_string(),
+                public_ip: "203.0.113.33".to_string(),
                 public_port: 7402,
                 nat_type: "restricted".to_string(),
                 using_relay: false,
@@ -197,14 +197,14 @@ impl TopologyApp {
                     CandidateInfo {
                         candidate_id: "nyc-srflx-0".to_string(),
                         candidate_type: "srflx".to_string(),
-                        address: "74.125.200.33".to_string(),
+                        address: "203.0.113.33".to_string(),
                         port: 8402,
                         priority: 1694498815,
                     },
                     CandidateInfo {
                         candidate_id: "nyc-relay-0".to_string(),
                         candidate_type: "relay".to_string(),
-                        address: "34.107.221.82".to_string(),
+                        address: "203.0.113.1".to_string(),
                         port: 3480,
                         priority: 16777215,
                     },
