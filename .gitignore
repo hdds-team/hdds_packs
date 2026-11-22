@@ -16,23 +16,11 @@
 **/build/
 hdds-remote-sensor/archives/
 
-# --- Generated code (regenerable via `make gen`) ---
-# Hand-written (not generated) type modules: keep tracked
-!air-defense-radar/radar-types/src/lib.rs
-!naval-convoy/naval-types/src/lib.rs
-# Hand-written wrappers (include! the generated.rs next to them): keep tracked
-!artillery-fire-control/arty-types/src/lib.rs
-!cloud-k8s/cloud-types/src/lib.rs
-!convoy-escort/convoy-types/src/lib.rs
-!hot-reload-cockpit/cockpit-types/src/lib.rs
-!fort-knox-security/knox-types/src/lib.rs
-!mission-recorder/recorder-types/src/lib.rs
-!nat-wan-topology/wan-types/src/lib.rs
-!rpc-service-mesh/fleet-types/src/lib.rs
-!satellite-ground-station/sat-types/src/lib.rs
-!tsn-automotive/tsn-types/src/lib.rs
-!uds-fleet-diag/diag-types/src/lib.rs
-!xrce-micro-bridge/xrce-types/src/lib.rs
+# --- Generated code ---
+# The generated Rust is tracked, so a clone builds without a generator, and
+# `make gen` refreshes it in place after an IDL change. The fourteen negations
+# that used to live here exempted the hand-written wrappers from a rule that no
+# longer exists.
 **/*-viewer/src/types.ts
 sentinel-home/sentinel-types/python/
 sentinel-home/sentinel-types/typescript/

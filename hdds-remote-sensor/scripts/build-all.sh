@@ -22,30 +22,37 @@ success() { echo -e "${GREEN}[OK]${NC} $1"; }
 warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 fail() { echo -e "${RED}[FAIL]${NC} $1"; }
 
-# 1. Build HDDS-Micro C SDK (if esp toolchain available)
+# 1. Build HDDS-Micro C SDK, which needs the esp toolchain AND an hdds
+# checkout: the C SDK is built from the hdds sources, not from this repository.
+# `command -v cargo +esp` is not a test for that toolchain, it finds plain
+# cargo and succeeds everywhere, after which the cd below used to abort the
+# whole script under `set -e` and steps 2 to 4 never ran.
 echo ""
 echo "=== 1. HDDS-Micro C SDK (ESP32) ==="
-if command -v cargo +esp &> /dev/null; then
+if ! cargo +esp --version > /dev/null 2>&1; then
+    warn "esp-rs toolchain not available, skipping ESP32 SDK build"
+elif [ ! -d "${HDDS_SRC:-../hdds}" ]; then
+    warn "no hdds checkout at ${HDDS_SRC:-../hdds}, skipping ESP32 SDK build"
+    warn "point HDDS_SRC at one to build it"
+else
     cd "${HDDS_SRC:-../hdds}"
     if cargo +esp build --release -p hdds-micro-c \
         --target xtensa-esp32-espidf \
-        -Zbuild-std=std,panic_abort 2>/dev/null; then
+        -Zbuild-std=std,panic_abort; then
         success "Built libhdds_micro_c.a"
         cp target/xtensa-esp32-espidf/release/libhdds_micro_c.a \
            "$PROJECT_DIR/sensor-node-arduino/lib/hdds-micro/"
         success "Copied to sensor-node-arduino/lib/hdds-micro/"
     else
-        warn "ESP32 build failed (esp-rs toolchain issue?)"
+        warn "ESP32 build failed"
     fi
-else
-    warn "esp-rs toolchain not available, skipping ESP32 SDK build"
 fi
 
 # 2. Build Pi Gateway (cross-compile for ARM64)
 echo ""
 echo "=== 2. Pi Gateway (ARM64) ==="
 cd "$PROJECT_DIR/pi-gateway"
-if cargo build --release --target aarch64-unknown-linux-gnu 2>/dev/null; then
+if cargo build --release --target aarch64-unknown-linux-gnu; then
     success "Built hdds-pi-gateway (ARM64)"
     ls -lh target/aarch64-unknown-linux-gnu/release/hdds-pi-gateway
 else
@@ -56,7 +63,7 @@ fi
 echo ""
 echo "=== 3. Web Viewer ==="
 cd "$PROJECT_DIR/web-viewer"
-if cargo build --release 2>/dev/null; then
+if cargo build --release; then
     success "Built hdds-web-viewer (native)"
     ls -lh target/release/hdds-web-viewer
 else
