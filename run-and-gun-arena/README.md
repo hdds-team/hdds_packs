@@ -40,7 +40,7 @@ reads the keys but publishes nothing, so `arena-server` waits on
 sample anyway: the four players are bots with ids from 1000 up, and the AI
 sets their inputs again on every tick, right after reading the topic. Playing
 for real means the server accepting a human player, which is a design choice
-rather than a missing line. `space-invaders` shows the wiring itself: the
+rather than a missing line. `arcade-shooter` shows the wiring itself: the
 viewer encodes the input sample and hands it over in a `_raw` field.
 
 | Key | Action |

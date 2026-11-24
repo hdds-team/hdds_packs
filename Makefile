@@ -24,6 +24,7 @@ endef
 # Manual types (air-defense-radar, naval-convoy) use #[derive(DDS)] - no codegen needed
 
 CODEGEN_TARGETS = \
+	gen-arcade-shooter \
 	gen-artillery \
 	gen-cloud \
 	gen-convoy \
@@ -42,7 +43,6 @@ CODEGEN_TARGETS = \
 	gen-satellite \
 	gen-sentinel-demo \
 	gen-smart-factory \
-	gen-space-invaders \
 	gen-tsn \
 	gen-uds \
 	gen-xrce
@@ -54,6 +54,9 @@ check:
 
 gen: $(CODEGEN_TARGETS)
 	@echo "=== All types regenerated ==="
+
+gen-arcade-shooter:
+	@$(call GEN,arcade-shooter/idl/shooter.idl,arcade-shooter/shooter-types/src/lib.rs)
 
 gen-artillery:
 	@$(call GEN,artillery-fire-control/idl/artillery.idl,artillery-fire-control/arty-types/src/generated.rs)
@@ -109,9 +112,6 @@ gen-sentinel-demo:
 gen-smart-factory:
 	@$(call GEN,smart-factory/idl/factory.idl,smart-factory/factory-types/src/lib.rs)
 
-gen-space-invaders:
-	@$(call GEN,space-invaders/idl/invaders.idl,space-invaders/invaders-types/src/lib.rs)
-
 gen-tsn:
 	@$(call GEN,tsn-automotive/idl/tsn_vehicle.idl,tsn-automotive/tsn-types/src/generated.rs)
 
@@ -126,6 +126,7 @@ gen-xrce:
 
 DEMOS = \
 	air-defense-radar \
+	arcade-shooter \
 	artillery-fire-control \
 	cloud-k8s \
 	convoy-escort \
@@ -147,7 +148,6 @@ DEMOS = \
 	satellite-ground-station \
 	sentinel-demo \
 	smart-factory \
-	space-invaders \
 	tsn-automotive \
 	uds-fleet-diag \
 	xrce-micro-bridge

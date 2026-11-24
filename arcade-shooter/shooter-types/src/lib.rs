@@ -566,7 +566,7 @@ pub mod __hdds_key_payload {
 }
 
 #[allow(non_snake_case, clippy::module_inception)]
-pub mod invaders {
+pub mod shooter {
     use super::*;
 
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -687,7 +687,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_AlienType() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::AlienType") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_BASIC") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_FAST") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_HEAVY") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_BOSS") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::AlienType") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_BASIC") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_FAST") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_HEAVY") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("ALIEN_BOSS") }, ] })
     }
     
     #[doc(hidden)]
@@ -819,7 +819,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_GamePhase() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::GamePhase") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_WAITING") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_PLAYING") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_WAVE_CLEAR") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_GAME_OVER") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::GamePhase") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_WAITING") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_PLAYING") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_WAVE_CLEAR") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("PHASE_GAME_OVER") }, ] })
     }
     
     #[doc(hidden)]
@@ -951,7 +951,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_PowerUpType() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::PowerUpType") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_NONE") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_RAPID_FIRE") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_SHIELD") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_TRIPLE_SHOT") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Enumerated(::hdds::xtypes::CompleteEnumeratedType { enum_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteEnumeratedHeader { bit_bound: 32, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::PowerUpType") }, literal_seq: vec![::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 0, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0040) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_NONE") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 1, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_RAPID_FIRE") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 2, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_SHIELD") }, ::hdds::xtypes::CompleteEnumeratedLiteral { common: ::hdds::xtypes::CommonEnumeratedLiteral { value: 3, flags: ::hdds::xtypes::EnumeratedLiteralFlag(0x0000) }, detail: ::hdds::xtypes::CompleteMemberDetail::new("POWER_TRIPLE_SHOT") }, ] })
     }
     
     #[doc(hidden)]
@@ -972,7 +972,7 @@ pub mod invaders {
         pub y: f32,
         pub lives: u8,
         pub score: u32,
-        pub power_up: __hdds_root::invaders::PowerUpType,
+        pub power_up: __hdds_root::shooter::PowerUpType,
         pub power_up_time: f32,
         pub alive: bool,
         pub timestamp_us: u64,
@@ -1098,8 +1098,8 @@ pub mod invaders {
             __d.raw::<1>()?[0] };
             let __f4 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             u32::from_le_bytes(__d.get::<4>()?) };
-            let __f5 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::invaders::PowerUpType as ::core::default::Default>::default() } else {
-            __hdds_root::invaders::PowerUpType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
+            let __f5 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::shooter::PowerUpType as ::core::default::Default>::default() } else {
+            __hdds_root::shooter::PowerUpType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
             let __f6 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
             f32::from_le_bytes(__d.get::<4>()?) };
             let __f7 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { false } else {
@@ -1115,7 +1115,7 @@ pub mod invaders {
         #[doc(hidden)]
         #[must_use]
         pub fn __hdds_default() -> Self {
-            Player { player_id: 0, x: 0.0, y: 0.0, lives: 0, score: 0, power_up: <__hdds_root::invaders::PowerUpType as ::core::default::Default>::default(), power_up_time: 0.0, alive: false, timestamp_us: 0, }
+            Player { player_id: 0, x: 0.0, y: 0.0, lives: 0, score: 0, power_up: <__hdds_root::shooter::PowerUpType as ::core::default::Default>::default(), power_up_time: 0.0, alive: false, timestamp_us: 0, }
         }
     }
     
@@ -1154,8 +1154,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for Player {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0x99A68D36,  // FNV-1a hash of "invaders::Player"
-                    type_name: "invaders::Player",
+                    type_id: 0xCBE9D746,  // FNV-1a hash of "shooter::Player"
+                    type_name: "shooter::Player",
                     size_bytes: 40,
                     alignment: 8,
                     is_variable_size: false,
@@ -1274,7 +1274,7 @@ pub mod invaders {
             }
     
             fn nested_type_objects() -> Vec<::hdds::xtypes::CompleteTypeObject> {
-                vec![__hdds_root::invaders::__hdds_type_object_PowerUpType()]
+                vec![__hdds_root::shooter::__hdds_type_object_PowerUpType()]
             }
     
             fn encodes_xcdr1_natively() -> bool {
@@ -1355,7 +1355,7 @@ pub mod invaders {
         y: Option<f32>,
         lives: Option<u8>,
         score: Option<u32>,
-        power_up: Option<__hdds_root::invaders::PowerUpType>,
+        power_up: Option<__hdds_root::shooter::PowerUpType>,
         power_up_time: Option<f32>,
         alive: Option<bool>,
         timestamp_us: Option<u64>,
@@ -1399,7 +1399,7 @@ pub mod invaders {
     
         /// Set the `power_up` field
         #[must_use]
-        pub fn power_up(mut self, value: __hdds_root::invaders::PowerUpType) -> Self {
+        pub fn power_up(mut self, value: __hdds_root::shooter::PowerUpType) -> Self {
             self.power_up = Some(value);
             self
         }
@@ -1444,7 +1444,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_Player() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::Player") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("lives") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("score") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::invaders::__hdds_type_id_PowerUpType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_up") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_up_time") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alive") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 8, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::Player") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("lives") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("score") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::shooter::__hdds_type_id_PowerUpType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_up") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_up_time") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alive") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 8, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -1461,7 +1461,7 @@ pub mod invaders {
         #[derive(Debug, Clone, PartialEq)]
     pub struct Alien {
         pub alien_id: u32,
-        pub alien_type: __hdds_root::invaders::AlienType,
+        pub alien_type: __hdds_root::shooter::AlienType,
         pub x: f32,
         pub y: f32,
         pub health: i8,
@@ -1583,8 +1583,8 @@ pub mod invaders {
             let __dh = if __d.xcdr2 { Some(__d.begin_len()?) } else { None };
             let __f0 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             u32::from_le_bytes(__d.get::<4>()?) };
-            let __f1 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::invaders::AlienType as ::core::default::Default>::default() } else {
-            __hdds_root::invaders::AlienType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
+            let __f1 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::shooter::AlienType as ::core::default::Default>::default() } else {
+            __hdds_root::shooter::AlienType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
             let __f2 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
             f32::from_le_bytes(__d.get::<4>()?) };
             let __f3 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
@@ -1608,7 +1608,7 @@ pub mod invaders {
         #[doc(hidden)]
         #[must_use]
         pub fn __hdds_default() -> Self {
-            Alien { alien_id: 0, alien_type: <__hdds_root::invaders::AlienType as ::core::default::Default>::default(), x: 0.0, y: 0.0, health: 0, alive: false, row: 0, col: 0, timestamp_us: 0, }
+            Alien { alien_id: 0, alien_type: <__hdds_root::shooter::AlienType as ::core::default::Default>::default(), x: 0.0, y: 0.0, health: 0, alive: false, row: 0, col: 0, timestamp_us: 0, }
         }
     }
     
@@ -1647,8 +1647,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for Alien {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0x88398CAE,  // FNV-1a hash of "invaders::Alien"
-                    type_name: "invaders::Alien",
+                    type_id: 0xADD091FE,  // FNV-1a hash of "shooter::Alien"
+                    type_name: "shooter::Alien",
                     size_bytes: 32,
                     alignment: 8,
                     is_variable_size: false,
@@ -1767,7 +1767,7 @@ pub mod invaders {
             }
     
             fn nested_type_objects() -> Vec<::hdds::xtypes::CompleteTypeObject> {
-                vec![__hdds_root::invaders::__hdds_type_object_AlienType()]
+                vec![__hdds_root::shooter::__hdds_type_object_AlienType()]
             }
     
             fn encodes_xcdr1_natively() -> bool {
@@ -1844,7 +1844,7 @@ pub mod invaders {
     #[derive(Default)]
     pub struct AlienBuilder {
         alien_id: Option<u32>,
-        alien_type: Option<__hdds_root::invaders::AlienType>,
+        alien_type: Option<__hdds_root::shooter::AlienType>,
         x: Option<f32>,
         y: Option<f32>,
         health: Option<i8>,
@@ -1864,7 +1864,7 @@ pub mod invaders {
     
         /// Set the `alien_type` field
         #[must_use]
-        pub fn alien_type(mut self, value: __hdds_root::invaders::AlienType) -> Self {
+        pub fn alien_type(mut self, value: __hdds_root::shooter::AlienType) -> Self {
             self.alien_type = Some(value);
             self
         }
@@ -1937,7 +1937,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_Alien() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::Alien") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::invaders::__hdds_type_id_AlienType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_INT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("health") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alive") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("row") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("col") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 8, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::Alien") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::shooter::__hdds_type_id_AlienType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_INT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("health") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alive") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("row") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("col") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 8, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -2132,8 +2132,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for Bullet {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0x36C5204F,  // FNV-1a hash of "invaders::Bullet"
-                    type_name: "invaders::Bullet",
+                    type_id: 0xF1AD5ABF,  // FNV-1a hash of "shooter::Bullet"
+                    type_name: "shooter::Bullet",
                     size_bytes: 32,
                     alignment: 8,
                     is_variable_size: false,
@@ -2384,7 +2384,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_Bullet() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::Bullet") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("bullet_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("velocity_y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("from_player") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::Bullet") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("bullet_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("velocity_y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("from_player") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -2575,8 +2575,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for Explosion {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0x42C8F50E,  // FNV-1a hash of "invaders::Explosion"
-                    type_name: "invaders::Explosion",
+                    type_id: 0x832BDEBE,  // FNV-1a hash of "shooter::Explosion"
+                    type_name: "shooter::Explosion",
                     size_bytes: 24,
                     alignment: 8,
                     is_variable_size: false,
@@ -2808,7 +2808,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_Explosion() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::Explosion") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("explosion_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("frame") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::Explosion") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("explosion_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("frame") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -2825,7 +2825,7 @@ pub mod invaders {
         #[derive(Debug, Clone, PartialEq)]
     pub struct PowerUp {
         pub powerup_id: u32,
-        pub power_type: __hdds_root::invaders::PowerUpType,
+        pub power_type: __hdds_root::shooter::PowerUpType,
         pub x: f32,
         pub y: f32,
         pub active: bool,
@@ -2941,8 +2941,8 @@ pub mod invaders {
             let __dh = if __d.xcdr2 { Some(__d.begin_len()?) } else { None };
             let __f0 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             u32::from_le_bytes(__d.get::<4>()?) };
-            let __f1 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::invaders::PowerUpType as ::core::default::Default>::default() } else {
-            __hdds_root::invaders::PowerUpType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
+            let __f1 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::shooter::PowerUpType as ::core::default::Default>::default() } else {
+            __hdds_root::shooter::PowerUpType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
             let __f2 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
             f32::from_le_bytes(__d.get::<4>()?) };
             let __f3 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
@@ -2960,7 +2960,7 @@ pub mod invaders {
         #[doc(hidden)]
         #[must_use]
         pub fn __hdds_default() -> Self {
-            PowerUp { powerup_id: 0, power_type: <__hdds_root::invaders::PowerUpType as ::core::default::Default>::default(), x: 0.0, y: 0.0, active: false, timestamp_us: 0, }
+            PowerUp { powerup_id: 0, power_type: <__hdds_root::shooter::PowerUpType as ::core::default::Default>::default(), x: 0.0, y: 0.0, active: false, timestamp_us: 0, }
         }
     }
     
@@ -2999,8 +2999,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for PowerUp {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0xC10737B5,  // FNV-1a hash of "invaders::PowerUp"
-                    type_name: "invaders::PowerUp",
+                    type_id: 0x57335465,  // FNV-1a hash of "shooter::PowerUp"
+                    type_name: "shooter::PowerUp",
                     size_bytes: 32,
                     alignment: 8,
                     is_variable_size: false,
@@ -3089,7 +3089,7 @@ pub mod invaders {
             }
     
             fn nested_type_objects() -> Vec<::hdds::xtypes::CompleteTypeObject> {
-                vec![__hdds_root::invaders::__hdds_type_object_PowerUpType()]
+                vec![__hdds_root::shooter::__hdds_type_object_PowerUpType()]
             }
     
             fn encodes_xcdr1_natively() -> bool {
@@ -3166,7 +3166,7 @@ pub mod invaders {
     #[derive(Default)]
     pub struct PowerUpBuilder {
         powerup_id: Option<u32>,
-        power_type: Option<__hdds_root::invaders::PowerUpType>,
+        power_type: Option<__hdds_root::shooter::PowerUpType>,
         x: Option<f32>,
         y: Option<f32>,
         active: Option<bool>,
@@ -3183,7 +3183,7 @@ pub mod invaders {
     
         /// Set the `power_type` field
         #[must_use]
-        pub fn power_type(mut self, value: __hdds_root::invaders::PowerUpType) -> Self {
+        pub fn power_type(mut self, value: __hdds_root::shooter::PowerUpType) -> Self {
             self.power_type = Some(value);
             self
         }
@@ -3232,7 +3232,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_PowerUp() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::PowerUp") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("powerup_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::invaders::__hdds_type_id_PowerUpType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::PowerUp") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("powerup_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::shooter::__hdds_type_id_PowerUpType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("power_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("active") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -3415,8 +3415,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for PlayerInput {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0xA44F664A,  // FNV-1a hash of "invaders::PlayerInput"
-                    type_name: "invaders::PlayerInput",
+                    type_id: 0x4B4B31DA,  // FNV-1a hash of "shooter::PlayerInput"
+                    type_name: "shooter::PlayerInput",
                     size_bytes: 16,
                     alignment: 8,
                     is_variable_size: false,
@@ -3610,7 +3610,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_PlayerInput() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::PlayerInput") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_INT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("move_x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("fire") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::PlayerInput") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_INT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("move_x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_BOOLEAN }, detail: ::hdds::xtypes::CompleteMemberDetail::new("fire") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -3626,7 +3626,7 @@ pub mod invaders {
     
         #[derive(Debug, Clone, PartialEq)]
     pub struct GameState {
-        pub phase: __hdds_root::invaders::GamePhase,
+        pub phase: __hdds_root::shooter::GamePhase,
         pub current_wave: u8,
         pub aliens_remaining: u16,
         pub aliens_total: u16,
@@ -3743,8 +3743,8 @@ pub mod invaders {
         #[doc(hidden)]
         pub fn __hdds_dec(__d: &mut __hdds_cdr::Dec<'_>) -> Result<Self, CdrError> {
             let __dh = if __d.xcdr2 { Some(__d.begin_len()?) } else { None };
-            let __f0 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::invaders::GamePhase as ::core::default::Default>::default() } else {
-            __hdds_root::invaders::GamePhase::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
+            let __f0 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::shooter::GamePhase as ::core::default::Default>::default() } else {
+            __hdds_root::shooter::GamePhase::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
             let __f1 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             __d.raw::<1>()?[0] };
             let __f2 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
@@ -3766,7 +3766,7 @@ pub mod invaders {
         #[doc(hidden)]
         #[must_use]
         pub fn __hdds_default() -> Self {
-            GameState { phase: <__hdds_root::invaders::GamePhase as ::core::default::Default>::default(), current_wave: 0, aliens_remaining: 0, aliens_total: 0, alien_speed: 0.0, high_score: 0, timestamp_us: 0, }
+            GameState { phase: <__hdds_root::shooter::GamePhase as ::core::default::Default>::default(), current_wave: 0, aliens_remaining: 0, aliens_total: 0, alien_speed: 0.0, high_score: 0, timestamp_us: 0, }
         }
     }
     
@@ -3805,8 +3805,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for GameState {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0x323FCFDE,  // FNV-1a hash of "invaders::GameState"
-                    type_name: "invaders::GameState",
+                    type_id: 0x936FF08E,  // FNV-1a hash of "shooter::GameState"
+                    type_name: "shooter::GameState",
                     size_bytes: 32,
                     alignment: 8,
                     is_variable_size: false,
@@ -3905,7 +3905,7 @@ pub mod invaders {
             }
     
             fn nested_type_objects() -> Vec<::hdds::xtypes::CompleteTypeObject> {
-                vec![__hdds_root::invaders::__hdds_type_object_GamePhase()]
+                vec![__hdds_root::shooter::__hdds_type_object_GamePhase()]
             }
     
             fn encodes_xcdr1_natively() -> bool {
@@ -3928,7 +3928,7 @@ pub mod invaders {
     /// Builder for `GameState`
     #[derive(Default)]
     pub struct GameStateBuilder {
-        phase: Option<__hdds_root::invaders::GamePhase>,
+        phase: Option<__hdds_root::shooter::GamePhase>,
         current_wave: Option<u8>,
         aliens_remaining: Option<u16>,
         aliens_total: Option<u16>,
@@ -3940,7 +3940,7 @@ pub mod invaders {
     impl GameStateBuilder {
         /// Set the `phase` field
         #[must_use]
-        pub fn phase(mut self, value: __hdds_root::invaders::GamePhase) -> Self {
+        pub fn phase(mut self, value: __hdds_root::shooter::GamePhase) -> Self {
             self.phase = Some(value);
             self
         }
@@ -4004,7 +4004,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_GameState() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::GameState") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::invaders::__hdds_type_id_GamePhase() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("phase") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("current_wave") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("aliens_remaining") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("aliens_total") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_speed") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("high_score") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::GameState") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::shooter::__hdds_type_id_GamePhase() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("phase") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT8 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("current_wave") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("aliens_remaining") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("aliens_total") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_speed") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("high_score") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]
@@ -4023,7 +4023,7 @@ pub mod invaders {
         pub event_id: u32,
         pub alien_id: u32,
         pub player_id: u32,
-        pub alien_type: __hdds_root::invaders::AlienType,
+        pub alien_type: __hdds_root::shooter::AlienType,
         pub points: u16,
         pub x: f32,
         pub y: f32,
@@ -4145,8 +4145,8 @@ pub mod invaders {
             u32::from_le_bytes(__d.get::<4>()?) };
             let __f2 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             u32::from_le_bytes(__d.get::<4>()?) };
-            let __f3 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::invaders::AlienType as ::core::default::Default>::default() } else {
-            __hdds_root::invaders::AlienType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
+            let __f3 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { <__hdds_root::shooter::AlienType as ::core::default::Default>::default() } else {
+            __hdds_root::shooter::AlienType::__hdds_from_i32(i32::from_le_bytes(__d.get::<4>()?))? };
             let __f4 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0 } else {
             u16::from_le_bytes(__d.get::<2>()?) };
             let __f5 = if __dh.map_or(__d.remaining() == 0, |__e| __d.pos >= __e) { 0.0 } else {
@@ -4164,7 +4164,7 @@ pub mod invaders {
         #[doc(hidden)]
         #[must_use]
         pub fn __hdds_default() -> Self {
-            KillEvent { event_id: 0, alien_id: 0, player_id: 0, alien_type: <__hdds_root::invaders::AlienType as ::core::default::Default>::default(), points: 0, x: 0.0, y: 0.0, timestamp_us: 0, }
+            KillEvent { event_id: 0, alien_id: 0, player_id: 0, alien_type: <__hdds_root::shooter::AlienType as ::core::default::Default>::default(), points: 0, x: 0.0, y: 0.0, timestamp_us: 0, }
         }
     }
     
@@ -4203,8 +4203,8 @@ pub mod invaders {
         impl ::hdds::api::DDS for KillEvent {
             fn type_descriptor() -> &'static ::hdds::core::types::TypeDescriptor {
                 static DESC: ::hdds::core::types::TypeDescriptor = ::hdds::core::types::TypeDescriptor {
-                    type_id: 0xDB763325,  // FNV-1a hash of "invaders::KillEvent"
-                    type_name: "invaders::KillEvent",
+                    type_id: 0x00259935,  // FNV-1a hash of "shooter::KillEvent"
+                    type_name: "shooter::KillEvent",
                     size_bytes: 40,
                     alignment: 8,
                     is_variable_size: false,
@@ -4313,7 +4313,7 @@ pub mod invaders {
             }
     
             fn nested_type_objects() -> Vec<::hdds::xtypes::CompleteTypeObject> {
-                vec![__hdds_root::invaders::__hdds_type_object_AlienType()]
+                vec![__hdds_root::shooter::__hdds_type_object_AlienType()]
             }
     
             fn encodes_xcdr1_natively() -> bool {
@@ -4392,7 +4392,7 @@ pub mod invaders {
         event_id: Option<u32>,
         alien_id: Option<u32>,
         player_id: Option<u32>,
-        alien_type: Option<__hdds_root::invaders::AlienType>,
+        alien_type: Option<__hdds_root::shooter::AlienType>,
         points: Option<u16>,
         x: Option<f32>,
         y: Option<f32>,
@@ -4423,7 +4423,7 @@ pub mod invaders {
     
         /// Set the `alien_type` field
         #[must_use]
-        pub fn alien_type(mut self, value: __hdds_root::invaders::AlienType) -> Self {
+        pub fn alien_type(mut self, value: __hdds_root::shooter::AlienType) -> Self {
             self.alien_type = Some(value);
             self
         }
@@ -4474,7 +4474,7 @@ pub mod invaders {
     #[doc(hidden)]
     #[allow(non_snake_case, clippy::all, clippy::pedantic)]
     pub fn __hdds_type_object_KillEvent() -> ::hdds::xtypes::CompleteTypeObject {
-        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("invaders::KillEvent") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("event_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::invaders::__hdds_type_id_AlienType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("points") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
+        ::hdds::xtypes::CompleteTypeObject::Struct(::hdds::xtypes::CompleteStructType { struct_flags: ::hdds::xtypes::StructTypeFlag(0x0002), header: ::hdds::xtypes::CompleteStructHeader { base_type: None, detail: ::hdds::xtypes::CompleteTypeDetail::new("shooter::KillEvent") }, member_seq: vec![::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 0, member_flags: ::hdds::xtypes::MemberFlag(0x0021), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("event_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 1, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 2, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("player_id") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 3, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: __hdds_root::shooter::__hdds_type_id_AlienType() }, detail: ::hdds::xtypes::CompleteMemberDetail::new("alien_type") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 4, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT16 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("points") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 5, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("x") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 6, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_FLOAT32 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("y") }, ::hdds::xtypes::CompleteStructMember { common: ::hdds::xtypes::CommonStructMember { member_id: 7, member_flags: ::hdds::xtypes::MemberFlag(0x0001), member_type_id: ::hdds::xtypes::TypeIdentifier::TK_UINT64 }, detail: ::hdds::xtypes::CompleteMemberDetail::new("timestamp_us") }, ] })
     }
     
     #[doc(hidden)]

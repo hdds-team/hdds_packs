@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "invaders-types",
-    "invaders-sim",
+    "shooter-types",
+    "shooter-sim",
 ]
 
 [workspace.dependencies]

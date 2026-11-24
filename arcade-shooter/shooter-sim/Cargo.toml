@@ -1,10 +1,10 @@
 [package]
-name = "invaders-sim"
+name = "shooter-sim"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-invaders-types = { path = "../invaders-types" }
+shooter-types = { path = "../shooter-types" }
 hdds.workspace = true
 tokio.workspace = true
 serde.workspace = true

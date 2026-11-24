@@ -1,4 +1,4 @@
-// Space Invaders DDS Viewer
+// Arcade Shooter DDS Viewer
 // Canvas 2D rendering with sprites
 // Connects to HDDS via hdds-ws bridge (WebSocket JSON protocol).
 
@@ -7,8 +7,8 @@ const GAME_HEIGHT = 600;
 
 // hdds-ws protocol configuration
 const HDDS_WS_URL = `ws://${window.location.hostname || 'localhost'}:9090/ws`;
-const SUBSCRIBE_TOPICS = ['invaders/player', 'invaders/alien', 'invaders/bullet', 'invaders/explosion', 'invaders/powerup', 'invaders/game_state', 'invaders/kill_event'];
-const INPUT_TOPIC = 'invaders/player_input';
+const SUBSCRIBE_TOPICS = ['shooter/player', 'shooter/alien', 'shooter/bullet', 'shooter/explosion', 'shooter/powerup', 'shooter/game_state', 'shooter/kill_event'];
+const INPUT_TOPIC = 'shooter/player_input';
 // One player in this demo; the simulator keys its Player sample on this id.
 const PLAYER_ID = 1;
 
@@ -232,28 +232,28 @@ function handleWsMessage(msg: any) {
 
 function handleMessage(topic: string, data: unknown) {
     switch (topic) {
-        case 'invaders/player':
+        case 'shooter/player':
             player = data as Player;
             updateHUD();
             break;
-        case 'invaders/alien':
+        case 'shooter/alien':
             aliens = data as Alien[];
             break;
-        case 'invaders/bullet':
+        case 'shooter/bullet':
             bullets = data as Bullet[];
             break;
-        case 'invaders/explosion':
+        case 'shooter/explosion':
             explosions = data as Explosion[];
             break;
-        case 'invaders/powerup':
+        case 'shooter/powerup':
             powerups = data as PowerUp[];
             break;
-        case 'invaders/game_state':
+        case 'shooter/game_state':
             gameState = data as GameState;
             updateHUD();
             updateOverlays();
             break;
-        case 'invaders/kill_event':
+        case 'shooter/kill_event':
             const event = data as KillEvent;
             scorePopups.push({
                 x: event.x,

@@ -1,7 +1,7 @@
-// Space Invaders DDS - IDL Types
+// Arcade Shooter DDS - IDL Types
 // Classic arcade game with DDS-based multiplayer
 
-module invaders {
+module shooter {
 
     // Alien types (different point values and behaviors)
     enum AlienType {

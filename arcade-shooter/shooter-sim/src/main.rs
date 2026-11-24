@@ -1,9 +1,9 @@
-//! Space Invaders DDS Simulator
+//! Arcade Shooter DDS Simulator
 //!
 //! Classic arcade game with DDS-based state synchronization.
 
 use anyhow::Result;
-use invaders_types::invaders::*;
+use shooter_types::shooter::*;
 use hdds::{Participant, QoS, TransportMode};
 use rand::Rng;
 use std::collections::HashMap;
@@ -28,14 +28,14 @@ const ALIEN_SPACING_Y: f32 = 40.0;
 
 /// Topic names
 mod topics {
-    pub const PLAYER: &str = "invaders/player";
-    pub const ALIEN: &str = "invaders/alien";
-    pub const BULLET: &str = "invaders/bullet";
-    pub const EXPLOSION: &str = "invaders/explosion";
-    pub const POWERUP: &str = "invaders/powerup";
-    pub const GAME_STATE: &str = "invaders/game_state";
-    pub const KILL_EVENT: &str = "invaders/kill_event";
-    pub const PLAYER_INPUT: &str = "invaders/player_input";
+    pub const PLAYER: &str = "shooter/player";
+    pub const ALIEN: &str = "shooter/alien";
+    pub const BULLET: &str = "shooter/bullet";
+    pub const EXPLOSION: &str = "shooter/explosion";
+    pub const POWERUP: &str = "shooter/powerup";
+    pub const GAME_STATE: &str = "shooter/game_state";
+    pub const KILL_EVENT: &str = "shooter/kill_event";
+    pub const PLAYER_INPUT: &str = "shooter/player_input";
 }
 
 /// Current time in microseconds
@@ -505,17 +505,17 @@ impl GameSim {
 async fn main() -> Result<()> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
-    log::info!("Space Invaders DDS - Starting...");
+    log::info!("Arcade Shooter DDS - Starting...");
 
     // =========================================================================
     // Initialize HDDS DomainParticipant
     // =========================================================================
-    let participant = Participant::builder("space_invaders")
+    let participant = Participant::builder("arcade_shooter")
         .domain_id(DOMAIN_ID)
         .with_transport(TransportMode::UdpMulticast)
         .build()?;
 
-    log::info!("[DDS] Participant created: space_invaders");
+    log::info!("[DDS] Participant created: arcade_shooter");
 
     // Create QoS for reliable delivery
     let qos = QoS::default();

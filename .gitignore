@@ -30,7 +30,7 @@ videos/
 screenshots/
 images/
 **/assets/raw/
-space-invaders/assets/sprites/sprite_*.png
+arcade-shooter/assets/sprites/sprite_*.png
 
 # --- WIP / planning docs ---
 DEMO_NEXT.md

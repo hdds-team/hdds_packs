@@ -460,29 +460,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "invaders-sim"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "env_logger",
- "hdds",
- "invaders-types",
- "log",
- "rand",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "invaders-types"
-version = "0.1.0"
-dependencies = [
- "hdds",
- "serde",
-]
-
-[[package]]
 name = "is_terminal_polyfill"
 version = "1.70.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -877,6 +854,29 @@ dependencies = [
  "ryu",
  "serde",
  "unsafe-libyaml",
+]
+
+[[package]]
+name = "shooter-sim"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "env_logger",
+ "hdds",
+ "log",
+ "rand",
+ "serde",
+ "serde_json",
+ "shooter-types",
+ "tokio",
+]
+
+[[package]]
+name = "shooter-types"
+version = "0.1.0"
+dependencies = [
+ "hdds",
+ "serde",
 ]
 
 [[package]]

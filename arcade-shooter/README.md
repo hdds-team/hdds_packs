@@ -1,6 +1,6 @@
-# Space Invaders DDS
+# Arcade Shooter DDS
 
-Classic arcade game with DDS-based game state synchronization.
+Wave shooter with DDS-based game state synchronization.
 
 ## Features
 
@@ -14,13 +14,13 @@ Classic arcade game with DDS-based game state synchronization.
 
 ```bash
 # Terminal 1: Start the game server
-cargo run -p invaders-sim
+cargo run -p shooter-sim
 
 # Terminal 2: Start the WebSocket bridge
 hdds-ws --domain 99 --port 9090
 
 # Terminal 3: Start the viewer
-cd invaders-viewer && npm install && npm run dev
+cd shooter-viewer && npm install && npm run dev
 ```
 
 Then open http://localhost:5173 in your browser.
@@ -39,8 +39,8 @@ http://localhost:5173/?demo=1
 | R | Restart the offline demo |
 
 The arrows and SPACE drive the ship against the live simulator: the viewer
-publishes a `PlayerInput` sample on `invaders/player_input` at 60 Hz and
-`invaders-sim` reads it. The viewer encodes that sample itself, because the
+publishes a `PlayerInput` sample on `shooter/player_input` at 60 Hz and
+`shooter-sim` reads it. The viewer encodes that sample itself, because the
 bridge's JSON publish path writes a single string member, which a typed reader
 cannot decode; it hands the bytes over in a `_raw` field instead.
 
@@ -51,7 +51,7 @@ fire flag, so there is nothing on the wire to ask the simulator for a restart.
 
 ```
 ┌─────────────────────────┐      DDS       ┌──────────┐  WebSocket  ┌─────────────────┐
-│      invaders-sim       │ ─────────────►│  hdds-ws  │◄──────────►│     Browser     │
+│       shooter-sim       │ ─────────────►│  hdds-ws  │◄──────────►│     Browser     │
 │    (game logic)         │◄───────────── │  (bridge) │            │  (Canvas 2D)    │
 │                         │               └──────────┘            │                 │
 │  - Alien AI             │                                       │  - Sprites      │
@@ -65,13 +65,13 @@ fire flag, so there is nothing on the wire to ask the simulator for a restart.
 
 | Topic | Type | Description |
 |-------|------|-------------|
-| `invaders/player` | Player | Player position, lives, score, power-up |
-| `invaders/alien` | Alien[] | All aliens state (position, health, type) |
-| `invaders/bullet` | Bullet[] | Active bullets (player and alien) |
-| `invaders/explosion` | Explosion[] | Active explosion effects |
-| `invaders/powerup` | PowerUp[] | Dropped power-ups |
-| `invaders/game_state` | GameState | Wave, phase, high score |
-| `invaders/kill_event` | KillEvent | Kill notifications for effects |
+| `shooter/player` | Player | Player position, lives, score, power-up |
+| `shooter/alien` | Alien[] | All aliens state (position, health, type) |
+| `shooter/bullet` | Bullet[] | Active bullets (player and alien) |
+| `shooter/explosion` | Explosion[] | Active explosion effects |
+| `shooter/powerup` | PowerUp[] | Dropped power-ups |
+| `shooter/game_state` | GameState | Wave, phase, high score |
+| `shooter/kill_event` | KillEvent | Kill notifications for effects |
 
 ## Sprites
 

@@ -9,6 +9,7 @@ All demos use DDS domain 99.
 | Demo | Description | Viewer |
 |------|-------------|--------|
 | [air-defense-radar](air-defense-radar/) | Real-time radar tracking with threat classification and engagement zones | Web (Canvas) |
+| [arcade-shooter](arcade-shooter/) | Wave shooter where every game event is a DDS topic | Web (Canvas) |
 | [artillery-fire-control](artillery-fire-control/) | Fire mission coordination with ballistic trajectory computation | Web (Canvas) |
 | [cloud-k8s](cloud-k8s/) | Kubernetes pod metrics streaming via DDS — no polling, no Prometheus | Console (TUI) |
 | [convoy-escort](convoy-escort/) | VIP convoy protection with real-time GPS and tactical alerts | Web (Three.js) |
@@ -28,7 +29,6 @@ All demos use DDS domain 99.
 | [run-and-gun-arena](run-and-gun-arena/) | 2D platformer deathmatch synchronized via DDS pub/sub | Web (Canvas) |
 | [satellite-ground-station](satellite-ground-station/) | 8 satellites in LEO, MEO and GEO + 3 ground stations with orbital tracking | Web (Canvas) |
 | [smart-factory](smart-factory/) | Industry 4.0 — AGVs, conveyors, and production lines without central control | Web (Canvas) |
-| [space-invaders](space-invaders/) | Classic arcade game — every event is a DDS topic | Web (Canvas) |
 | [tsn-automotive](tsn-automotive/) | Multi-priority ECU communication with TSN deterministic networking | Console (TUI) |
 | [uds-fleet-diag](uds-fleet-diag/) | Fleet-wide ISO 14229 diagnostics — ECU health, firmware, AI alerts | Console |
 | [xrce-micro-bridge](xrce-micro-bridge/) | DDS-XRCE agent bridging resource-constrained micro-clients | Console (TUI) |
