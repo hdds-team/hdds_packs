@@ -41,7 +41,6 @@ CODEGEN_TARGETS = \
 	gen-rpc \
 	gen-run-and-gun \
 	gen-satellite \
-	gen-sentinel-demo \
 	gen-smart-factory \
 	gen-tsn \
 	gen-uds \
@@ -106,9 +105,6 @@ gen-run-and-gun:
 gen-satellite:
 	@$(call GEN,satellite-ground-station/idl/satellite.idl,satellite-ground-station/sat-types/src/generated.rs)
 
-gen-sentinel-demo:
-	@$(call GEN,sentinel-demo/idl/sentinel.idl,sentinel-demo/sentinel-types/src/generated.rs)
-
 gen-smart-factory:
 	@$(call GEN,smart-factory/idl/factory.idl,smart-factory/factory-types/src/lib.rs)
 
@@ -146,7 +142,6 @@ DEMOS = \
 	rpc-service-mesh \
 	run-and-gun-arena \
 	satellite-ground-station \
-	sentinel-demo \
 	smart-factory \
 	tsn-automotive \
 	uds-fleet-diag \

@@ -39,13 +39,7 @@ WIP_ROS2.md
 
 # --- Demos excluded (WIP / separate repos) ---
 sentinel-home/
-# sentinel-demo: only its hand-written types wrapper is tracked (meshes and the rest stay out)
-sentinel-demo/*
-!sentinel-demo/sentinel-types/
-sentinel-demo/sentinel-types/*
-!sentinel-demo/sentinel-types/src/
-sentinel-demo/sentinel-types/src/*
-!sentinel-demo/sentinel-types/src/lib.rs
+sentinel-demo/
 
 # --- Binary artifacts ---
 *.a
