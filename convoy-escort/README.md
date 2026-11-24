@@ -110,7 +110,7 @@ convoy-escort/
     │   ├── main.js         # Three.js + WebSocket
     │   └── types.ts        # hdds_gen TypeScript output
     └── public/
-        └── assets/models/  # 3D models (humvee.glb)
+        └── assets/models/  # escort-vehicle.glb, built by tools/
 ```
 
 ## Requirements
@@ -122,9 +122,18 @@ convoy-escort/
 
 ## 3D Assets
 
+The vehicle mesh is assembled from boxes and prisms by
+`tools/generate-vehicle-model.py`, which needs the standard library only
+and writes the same bytes on every run. No third-party mesh ships with
+this demo.
+
+```bash
+python3 tools/generate-vehicle-model.py
+```
+
 | Model | File | Source |
 |-------|------|--------|
-| Humvee | `convoy-viewer/public/assets/models/humvee.glb` | Free low-poly model, converted via 3dviewer.net |
+| Escort vehicle | `convoy-viewer/public/assets/models/escort-vehicle.glb` | Built in-repo, 288 triangles |
 
 ## License
 

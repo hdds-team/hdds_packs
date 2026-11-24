@@ -54,8 +54,9 @@ sentinel-demo/sentinel-types/src/*
 *.o
 *.obj
 *.glb
-# Exception: convoy-escort humvee model (196K, required for viewer)
-!convoy-escort/convoy-viewer/public/assets/models/humvee.glb
+# Exception: the escort vehicle the convoy viewer loads, built by
+# convoy-escort/tools/generate-vehicle-model.py
+!convoy-escort/convoy-viewer/public/assets/models/escort-vehicle.glb
 
 # --- Vendored third-party libs (auto-installed by PlatformIO via lib_deps) ---
 **/lib/EloquentEsp32cam/

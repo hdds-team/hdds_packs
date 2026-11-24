@@ -186,7 +186,7 @@ function initScene() {
 
     // Load vehicle model
     gltfLoader = new GLTFLoader();
-    gltfLoader.load('/assets/models/humvee.glb', (gltf) => {
+    gltfLoader.load('/assets/models/escort-vehicle.glb', (gltf) => {
         vehicleModel = gltf.scene;
         vehicleModel.traverse((node) => {
             if (node.isMesh) {
@@ -196,12 +196,10 @@ function initScene() {
         });
         console.log('Vehicle model loaded');
     }, undefined, (error) => {
+        // Leave the model unset: createVehicle then builds its own shaped
+        // group, which is the right size. A box substituted here would be
+        // scaled a second time by the caller and tower over the convoy.
         console.error('Error loading vehicle model:', error);
-        // Create fallback box
-        vehicleModel = new THREE.Mesh(
-            new THREE.BoxGeometry(4, 2, 8),
-            new THREE.MeshStandardMaterial({ color: 0x4a5568 })
-        );
     });
 
     // Window resize
@@ -288,8 +286,6 @@ function createVehicleMesh(vehicleId, role) {
     if (vehicleModel) {
         mesh = vehicleModel.clone();
         mesh.scale.set(2, 2, 2);
-        // Fix GLTF model orientation (model is exported upside-down)
-        mesh.rotation.x = Math.PI;
     } else {
         // Fallback box (vehicle-shaped)
         const group = new THREE.Group();
