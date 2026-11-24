@@ -75,7 +75,15 @@ fire flag, so there is nothing on the wire to ask the simulator for a restart.
 
 ## Sprites
 
-Sprites are in `assets/sprites/`:
+The sprites in `assets/sprites/` are drawn by `tools/generate-sprites.py` from
+plain geometry. It needs the standard library only and rewrites the same bytes
+on every run, so the provenance of the artwork is the script itself and no
+third-party asset ships with this demo.
+
+```bash
+python3 tools/generate-sprites.py
+```
+
 - `player.png` - Player ship
 - `alien1.png`, `alien2.png`, `alien3.png` - Alien types
 - `bullet_player.png`, `bullet_alien.png` - Projectiles
