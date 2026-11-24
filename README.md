@@ -18,7 +18,6 @@ All demos use DDS domain 99.
 | [hdds-remote-sensor](hdds-remote-sensor/) | ESP32 + Raspberry Pi decentralized sensor over HC-12 radio | Web |
 | [hot-reload-cockpit](hot-reload-cockpit/) | Live QoS policy tuning with sliders — no restarts | Desktop (FLTK) |
 | [lidar-mapping](lidar-mapping/) | Robot SLAM — autonomous maze exploration and occupancy grid mapping | Web (Canvas) |
-| [metal-slug-arena](metal-slug-arena/) | 2D platformer deathmatch synchronized via DDS pub/sub | Web (Canvas) |
 | [mission-recorder](mission-recorder/) | Record, replay and analyze all DDS traffic from a session | Console (TUI) |
 | [nat-wan-topology](nat-wan-topology/) | DDS connectivity through NAT and firewalls with ICE | Desktop (egui) |
 | [naval-convoy](naval-convoy/) | Merchant ships escorted against submarines — sonar, torpedoes, depth charges | Web (Three.js) |
@@ -26,6 +25,7 @@ All demos use DDS domain 99.
 | [railway-network](railway-network/) | Independent train processes coordinated by DDS signaling | Web (Canvas) |
 | [robot-swarm](robot-swarm/) | 12 robots with boids, formations, and emergent behavior patterns | Web (Canvas) |
 | [rpc-service-mesh](rpc-service-mesh/) | DDS-RPC service discovery, health checks, and live invocation browser | GTK4 |
+| [run-and-gun-arena](run-and-gun-arena/) | 2D platformer deathmatch synchronized via DDS pub/sub | Web (Canvas) |
 | [satellite-ground-station](satellite-ground-station/) | 8 satellites in LEO, MEO and GEO + 3 ground stations with orbital tracking | Web (Canvas) |
 | [smart-factory](smart-factory/) | Industry 4.0 — AGVs, conveyors, and production lines without central control | Web (Canvas) |
 | [space-invaders](space-invaders/) | Classic arcade game — every event is a DDS topic | Web (Canvas) |

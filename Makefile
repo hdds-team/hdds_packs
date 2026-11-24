@@ -32,13 +32,13 @@ CODEGEN_TARGETS = \
 	gen-fort-knox \
 	gen-hot-reload \
 	gen-lidar \
-	gen-metal-slug \
 	gen-mission \
 	gen-nat-wan \
 	gen-predictive \
 	gen-railway \
 	gen-robot-swarm \
 	gen-rpc \
+	gen-run-and-gun \
 	gen-satellite \
 	gen-sentinel-demo \
 	gen-smart-factory \
@@ -79,9 +79,6 @@ gen-hot-reload:
 gen-lidar:
 	@$(call GEN,lidar-mapping/idl/lidar.idl,lidar-mapping/lidar-types/src/lib.rs)
 
-gen-metal-slug:
-	@$(call GEN,metal-slug-arena/idl/arena.idl,metal-slug-arena/arena-types/src/lib.rs)
-
 gen-mission:
 	@$(call GEN,mission-recorder/idl/mission.idl,mission-recorder/recorder-types/src/generated.rs)
 
@@ -99,6 +96,9 @@ gen-robot-swarm:
 
 gen-rpc:
 	@$(call GEN,rpc-service-mesh/idl/service_mesh.idl,rpc-service-mesh/fleet-types/src/generated.rs)
+
+gen-run-and-gun:
+	@$(call GEN,run-and-gun-arena/idl/arena.idl,run-and-gun-arena/arena-types/src/lib.rs)
 
 gen-satellite:
 	@$(call GEN,satellite-ground-station/idl/satellite.idl,satellite-ground-station/sat-types/src/generated.rs)
@@ -136,7 +136,6 @@ DEMOS = \
 	hdds-remote-sensor/web-viewer \
 	hot-reload-cockpit \
 	lidar-mapping \
-	metal-slug-arena \
 	mission-recorder \
 	nat-wan-topology \
 	naval-convoy \
@@ -144,6 +143,7 @@ DEMOS = \
 	railway-network \
 	robot-swarm \
 	rpc-service-mesh \
+	run-and-gun-arena \
 	satellite-ground-station \
 	sentinel-demo \
 	smart-factory \

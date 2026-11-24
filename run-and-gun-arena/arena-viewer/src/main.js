@@ -1,5 +1,5 @@
 /**
- * Metal Slug Arena - Game Client
+ * Run and Gun Arena - Game Client
  *
  * TODO: Add real sprite sheets for better visuals
  * - Download sprites from spriters-resource.com or opengameart.org
@@ -100,7 +100,7 @@ const killFeed = document.getElementById('kill-feed');
  * Initialize game
  */
 function init() {
-    console.log('[ARENA] Metal Slug Arena initializing...');
+    console.log('[ARENA] Run and Gun Arena initializing...');
     console.log('[ARENA] Demo mode:', DEMO_MODE);
 
     // Setup input handlers

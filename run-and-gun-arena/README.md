@@ -1,6 +1,7 @@
-# Metal Slug Arena
+# Run and Gun Arena
 
-HDDS multiplayer 2D arena combat game inspired by Metal Slug!
+HDDS multiplayer 2D arena combat: four fighters, two teams, and every
+event published as a DDS topic.
 
 ## Features
 

@@ -1,4 +1,4 @@
-//! Metal Slug Arena - Game Server
+//! Run and Gun Arena - Game Server
 //!
 //! Authoritative game server that manages:
 //! - Player physics and collision
@@ -166,7 +166,7 @@ async fn main() -> Result<()> {
     ).init();
 
     info!("==========================================");
-    info!("  METAL SLUG ARENA - Game Server");
+    info!("  RUN AND GUN ARENA - Game Server");
     info!("  HDDS Multiplayer Demo");
     info!("==========================================");
 

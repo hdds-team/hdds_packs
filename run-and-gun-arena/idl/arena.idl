@@ -1,5 +1,5 @@
 /*
- * Metal Slug Arena Demo - HDDS IDL
+ * Run and Gun Arena Demo - HDDS IDL
  *
  * Multiplayer 2D arena combat game with real-time state sync via DDS.
  * Bidirectional: server publishes game state, clients publish inputs.
