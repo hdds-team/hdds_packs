@@ -2,7 +2,7 @@
 name = "hdds-pi-gateway"
 version = "0.1.0"
 edition = "2021"
-license = "MIT"
+license = "Apache-2.0 OR MIT"
 description = "HDDS Remote Sensor - Pi Zero 2 W Gateway with full HDDS"
 
 [dependencies]

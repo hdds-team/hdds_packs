@@ -123,4 +123,5 @@ demo-name/
 
 ## License
 
-Apache-2.0 OR MIT
+Licensed under either of [Apache-2.0](LICENSE-APACHE) or
+[MIT](LICENSE-MIT), at your option.

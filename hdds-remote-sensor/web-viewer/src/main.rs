@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 OR MIT
 // HDDS Remote Sensor - Web Viewer
 //
 // Subscribes to DDS topics and serves a web UI for visualization.

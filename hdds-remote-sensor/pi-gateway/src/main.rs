@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 OR MIT
 // HDDS Remote Sensor - Pi Zero 2 W Gateway
 //
 // Receives compact sensor data from HC-12 radio and publishes via full HDDS stack.

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 OR MIT
 // Protocol definitions for HC-12 communication with HDDS-Micro
 //
 // Frame format: [0xAA][0x55][LEN_HI][LEN_LO][RTPS...]
