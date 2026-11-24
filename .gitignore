@@ -30,7 +30,6 @@ videos/
 screenshots/
 images/
 **/assets/raw/
-arcade-shooter/assets/sprites/sprite_*.png
 
 # --- WIP / planning docs ---
 DEMO_NEXT.md
