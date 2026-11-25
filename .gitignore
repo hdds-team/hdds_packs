@@ -26,9 +26,11 @@ sentinel-home/sentinel-types/python/
 sentinel-home/sentinel-types/typescript/
 
 # --- Media (hosted on web, not in git) ---
-videos/
-screenshots/
-images/
+# Anchored to the root on purpose: unanchored, these matched a directory of
+# the same name at ANY depth and silently hid docs/screenshots/.
+/videos/
+/screenshots/
+/images/
 **/assets/raw/
 
 # --- WIP / planning docs ---
