@@ -94,6 +94,32 @@ let powerups: PowerUp[] = [];
 let gameState: GameState | null = null;
 let scorePopups: ScorePopup[] = [];
 
+// DDS delivers one sample per instance, never a list: every entity carries its
+// own @key and the simulator rewrites each live one on every tick. So the
+// viewer keeps the latest sample per key and drops whatever stopped being
+// refreshed, which is how an alien that died leaves the screen.
+const STALE_MS = 400;
+type Seen<T> = Map<number, { value: T; at: number }>;
+const alienSeen: Seen<Alien> = new Map();
+const bulletSeen: Seen<Bullet> = new Map();
+const explosionSeen: Seen<Explosion> = new Map();
+const powerupSeen: Seen<PowerUp> = new Map();
+let renderFailed = false;
+
+function keep<T>(seen: Seen<T>, key: number, value: T): void {
+    seen.set(key, { value, at: performance.now() });
+}
+
+function live<T>(seen: Seen<T>): T[] {
+    const now = performance.now();
+    const out: T[] = [];
+    for (const [key, entry] of seen) {
+        if (now - entry.at > STALE_MS) seen.delete(key);
+        else out.push(entry.value);
+    }
+    return out;
+}
+
 // Input state
 const keys: Record<string, boolean> = {};
 
@@ -237,16 +263,16 @@ function handleMessage(topic: string, data: unknown) {
             updateHUD();
             break;
         case 'shooter/alien':
-            aliens = data as Alien[];
+            keep(alienSeen, (data as Alien).alien_id, data as Alien);
             break;
         case 'shooter/bullet':
-            bullets = data as Bullet[];
+            keep(bulletSeen, (data as Bullet).bullet_id, data as Bullet);
             break;
         case 'shooter/explosion':
-            explosions = data as Explosion[];
+            keep(explosionSeen, (data as Explosion).explosion_id, data as Explosion);
             break;
         case 'shooter/powerup':
-            powerups = data as PowerUp[];
+            keep(powerupSeen, (data as PowerUp).powerup_id, data as PowerUp);
             break;
         case 'shooter/game_state':
             gameState = data as GameState;
@@ -541,19 +567,36 @@ function drawPowerUpIndicator() {
 
 // Main render loop
 function render() {
-    // Clear
-    ctx.fillStyle = '#0a0a1a';
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    try {
+        if (!demoMode) {
+            // Offline mode drives these arrays itself.
+            aliens = live(alienSeen);
+            bullets = live(bulletSeen);
+            explosions = live(explosionSeen);
+            powerups = live(powerupSeen);
+        }
 
-    // Draw layers
-    drawStars();
-    drawPowerups();
-    drawAliens();
-    drawBullets();
-    drawPlayer();
-    drawExplosions();
-    drawScorePopups();
-    drawPowerUpIndicator();
+        // Clear
+        ctx.fillStyle = '#0a0a1a';
+        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        // Draw layers
+        drawStars();
+        drawPowerups();
+        drawAliens();
+        drawBullets();
+        drawPlayer();
+        drawExplosions();
+        drawScorePopups();
+        drawPowerUpIndicator();
+    } catch (err) {
+        // A frame that throws must not end the animation: the loop is
+        // rescheduled below whatever happened, and the cause is reported once.
+        if (!renderFailed) {
+            renderFailed = true;
+            console.error('[render] frame failed, animation continues', err);
+        }
+    }
 
     requestAnimationFrame(render);
 }

@@ -66,12 +66,16 @@ fire flag, so there is nothing on the wire to ask the simulator for a restart.
 | Topic | Type | Description |
 |-------|------|-------------|
 | `shooter/player` | Player | Player position, lives, score, power-up |
-| `shooter/alien` | Alien[] | All aliens state (position, health, type) |
-| `shooter/bullet` | Bullet[] | Active bullets (player and alien) |
-| `shooter/explosion` | Explosion[] | Active explosion effects |
-| `shooter/powerup` | PowerUp[] | Dropped power-ups |
+| `shooter/alien` | Alien | One sample per alien, keyed by `alien_id` |
+| `shooter/bullet` | Bullet | One sample per bullet, keyed by `bullet_id` |
+| `shooter/explosion` | Explosion | One sample per effect, keyed by `explosion_id` |
+| `shooter/powerup` | PowerUp | One sample per pickup, keyed by `powerup_id` |
 | `shooter/game_state` | GameState | Wave, phase, high score |
 | `shooter/kill_event` | KillEvent | Kill notifications for effects |
+
+Each entity is published as its own keyed instance and rewritten on every
+tick, so the viewer keeps the latest sample per key and drops any key that
+stops being refreshed. A list never travels on the wire.
 
 ## Sprites
 
