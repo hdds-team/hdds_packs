@@ -590,10 +590,10 @@ function startDemoMode() {
 
     // Create demo players
     const demoPlayers = [
-        { player_id: 1, name: 'MARCO', team: 1, x: 100, y: 400, health: 100, weapon: 0, kills: 3, deaths: 1 },
-        { player_id: 2, name: 'TARMA', team: 1, x: 200, y: 250, health: 75, weapon: 1, kills: 5, deaths: 2 },
-        { player_id: 3, name: 'ERI', team: 2, x: 600, y: 400, health: 50, weapon: 2, kills: 2, deaths: 3 },
-        { player_id: 4, name: 'FIO', team: 2, x: 500, y: 150, health: 100, weapon: 3, kills: 4, deaths: 1 },
+        { player_id: 1, name: 'RANGER', team: 1, x: 100, y: 400, health: 100, weapon: 0, kills: 3, deaths: 1 },
+        { player_id: 2, name: 'SCOUT', team: 1, x: 200, y: 250, health: 75, weapon: 1, kills: 5, deaths: 2 },
+        { player_id: 3, name: 'MEDIC', team: 2, x: 600, y: 400, health: 50, weapon: 2, kills: 2, deaths: 3 },
+        { player_id: 4, name: 'GUNNER', team: 2, x: 500, y: 150, health: 100, weapon: 3, kills: 4, deaths: 1 },
     ];
 
     demoPlayers.forEach(p => {

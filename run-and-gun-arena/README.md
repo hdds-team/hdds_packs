@@ -89,7 +89,7 @@ viewer encodes the input sample and hands it over in a `_raw` field.
 
 ## Bot Players
 
-The server spawns 4 AI bot players (Marco, Tarma, Eri, Fio) for testing.
+The server spawns 4 AI bot players (Ranger, Scout, Medic, Gunner) for testing.
 They perform random actions to simulate combat.
 
 ## Dependencies

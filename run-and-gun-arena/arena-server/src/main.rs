@@ -237,7 +237,7 @@ async fn main() -> Result<()> {
     }
 
     // Add bot players
-    for (id, name) in [(1001, "Marco"), (1002, "Tarma"), (1003, "Eri"), (1004, "Fio")] {
+    for (id, name) in [(1001, "Ranger"), (1002, "Scout"), (1003, "Medic"), (1004, "Gunner")] {
         let t = if players.values().filter(|p| p.player.team == Team::RED).count()
             <= players.values().filter(|p| p.player.team == Team::BLUE).count() { Team::RED } else { Team::BLUE };
         players.insert(id, PlayerSim::new(id, name, t, &mut rng));
