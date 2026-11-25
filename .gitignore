@@ -36,7 +36,9 @@ DEMO_NEXT.md
 WIP_ROS2.md
 **/README2.md
 
-# --- Demos excluded (WIP / separate repos) ---
+# --- Not part of the pack, kept out on purpose ---
+# These two trees sit next to the pack but are not published with it. Leaving
+# them untracked is a decision, not an oversight: do not add them.
 sentinel-home/
 sentinel-demo/
 
